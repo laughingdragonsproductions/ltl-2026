@@ -135,10 +135,10 @@ export function InteractiveMap() {
             key={key}
             type="button"
             onClick={() => setLayers((prev) => ({ ...prev, [key]: !prev[key] }))}
-            className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${
+            className={`rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-wide ${
               layers[key]
-                ? "bg-orange-600 text-white"
-                : "bg-zinc-800 text-zinc-400"
+                ? "bg-[var(--ld-purple)] text-white"
+                : "border border-[var(--ld-purple-dim)]/50 bg-black/40 text-[var(--ld-muted)]"
             }`}
           >
             {key}
@@ -146,8 +146,8 @@ export function InteractiveMap() {
         ))}
       </div>
 
-      <div className="relative w-full overflow-hidden rounded-xl border border-zinc-700 bg-zinc-900">
-        <div className="relative aspect-[4/3] w-full">
+      <div className="relative w-full overflow-hidden rounded-xl border border-[var(--ld-purple-dim)]/50 bg-black/60 ld-glow-purple">
+        <div className="relative aspect-[4/3] w-full touch-pan-y">
           <Image
             src="/maps/ltl-2026-official-amenity-map.png"
             alt="Louder Than Life 2026 official festival map"
@@ -161,7 +161,7 @@ export function InteractiveMap() {
               type="button"
               title={point.name}
               onClick={() => setSelected(point)}
-              className={`absolute h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-black shadow-lg transition hover:scale-150 ${dotColor(point.layer, tier)}`}
+              className={`absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-black shadow-lg transition hover:scale-125 sm:h-3 sm:w-3 ${dotColor(point.layer, tier)}`}
               style={{ left: `${point.x}%`, top: `${point.y}%` }}
             />
           ))}
@@ -169,19 +169,22 @@ export function InteractiveMap() {
       </div>
 
       {selected && (
-        <div className="rounded-lg border border-zinc-700 bg-zinc-900 p-4">
+        <div className="rounded-lg border border-[var(--ld-purple-dim)]/50 bg-[var(--ld-purple-dim)]/20 p-4">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h3 className="text-lg font-bold text-orange-400">{selected.name}</h3>
-              <p className="text-xs uppercase text-zinc-500">{selected.layer}</p>
+              <h3 className="text-lg font-bold text-[var(--ld-neon-green)]">
+                {selected.name}
+              </h3>
+              <p className="text-xs uppercase text-[var(--ld-muted)]">{selected.layer}</p>
               {selected.detail && (
-                <p className="mt-2 text-sm text-zinc-300">{selected.detail}</p>
+                <p className="mt-2 text-sm text-[var(--ld-text)]">{selected.detail}</p>
               )}
             </div>
             <button
               type="button"
               onClick={() => setSelected(null)}
-              className="text-zinc-500 hover:text-white"
+              className="rounded px-2 py-1 text-[var(--ld-muted)] hover:bg-black/30 hover:text-white"
+              aria-label="Close"
             >
               ✕
             </button>
@@ -189,9 +192,9 @@ export function InteractiveMap() {
         </div>
       )}
 
-      <p className="text-xs text-zinc-500">
-        Map pins use percentage coordinates on the official 2026 amenity map. Layout is confirmed;
-        absolute GPS is approximate.
+      <p className="text-xs text-[var(--ld-muted)]">
+        {points.length} pins visible · Tap a dot for details · Pin positions are percentage
+        coords on the official 2026 map
       </p>
     </div>
   );

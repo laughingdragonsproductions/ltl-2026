@@ -50,12 +50,7 @@ export default function RootLayout({
       </head>
       <body className="flex min-h-full flex-col bg-[var(--ld-black)] text-[var(--ld-text)]">
         <TierProvider>
-          <header className="border-b border-[var(--ld-purple-dim)]/30 px-4 py-4 text-center">
-            <span className="text-sm font-black tracking-widest text-[var(--ld-neon-green)]">
-              LTL26
-            </span>
-          </header>
-          <main className="mx-auto w-full max-w-4xl flex-1">{children}</main>
+          <main className="mx-auto w-full flex-1">{children}</main>
           <SiteFooter />
         </TierProvider>
       </body>

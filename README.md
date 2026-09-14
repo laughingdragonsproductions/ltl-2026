@@ -16,6 +16,18 @@ npm install
 npm run dev
 ```
 
+Open **http://localhost:3000** → **Preview map** → `/map` for the base build test.
+
+### Map base build (current scope)
+
+- **Home** (`/`) — coming soon landing with **Preview map** link
+- **Map** (`/map`) — official amenity image + tap pins (stages, entrances, VIP, POIs)
+- **Pass tier** toggle in header (GA / VIP / Top Shelf) filters VIP-only pins
+- **Layer chips** toggle categories on/off
+- Satellite overlay and other routes exist in repo but are not linked yet
+
+Test on your phone: run dev with `npm run dev -- -H 0.0.0.0` and open your PC's LAN IP on the same Wi‑Fi.
+
 ## Deploy
 
 ```bash

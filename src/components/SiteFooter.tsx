@@ -16,7 +16,7 @@ export function SiteFooter() {
           Laughing Dragons Productions
         </a>
       </p>
-      <p className="mt-1 text-[10px] opacity-70">© {new Date().getFullYear()} ltl26.com</p>
+      <p className="mt-1 text-[10px] opacity-70">© 2026 ltl26.com</p>
     </footer>
   );
 }
