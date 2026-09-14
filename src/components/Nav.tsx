@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 const links = [
   { href: "/map", label: "Map" },
+  { href: "/overlay", label: "Overlay" },
   { href: "/schedule", label: "Schedule" },
   { href: "/walkthrough", label: "Walk" },
   { href: "/arrival", label: "VIP" },
@@ -38,10 +39,7 @@ export function Nav() {
             </Link>
           ))}
         </nav>
-        <Link
-          href="/"
-          className="text-xs text-[var(--ld-muted)] hover:text-white"
-        >
+        <Link href="/" className="text-xs text-[var(--ld-muted)] hover:text-white">
           Home
         </Link>
       </div>

@@ -33,9 +33,9 @@ export default function HomePage() {
             Fan-built companion
           </p>
           <p className="mt-4 text-sm leading-relaxed text-[var(--ld-text)]">
-            Pinch-zoom map, live GPS, set times, VIP guides —{" "}
-            <strong className="text-white">10 free minutes</strong> to find your stage, then
-            $5 unlock through Sunday.
+            Free official tap map forever.{" "}
+            <strong className="text-white">Virtual overlay</strong> (live GPS) gets 10 free
+            minutes, then $5 unlock through Sunday.
           </p>
         </div>
 
@@ -43,8 +43,14 @@ export default function HomePage() {
           href="/map"
           className="mt-8 inline-flex min-h-[44px] items-center gap-2 rounded-full border border-[var(--ld-neon-green)]/60 bg-[var(--ld-neon-green)] px-8 py-3 text-sm font-black uppercase tracking-wide text-black transition hover:opacity-90"
         >
-          Open map
+          Free map
           <span aria-hidden>→</span>
+        </Link>
+        <Link
+          href="/overlay"
+          className="mt-3 text-sm font-semibold text-[var(--ld-purple)] underline hover:text-white"
+        >
+          Try virtual overlay →
         </Link>
 
         <ShareButton

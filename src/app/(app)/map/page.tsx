@@ -1,65 +1,48 @@
-"use client";
-
-import { useState } from "react";
+import Link from "next/link";
 import { InteractiveMap } from "@/components/InteractiveMap";
-import { LiveGpsMap } from "@/components/LiveGpsMap";
 import { ShareButton } from "@/components/ShareButton";
 
-type MapMode = "touch" | "gps";
-
 export default function MapPage() {
-  const [mode, setMode] = useState<MapMode>("touch");
-
   return (
     <div>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-[var(--ld-purple)]">
-            Mobile-first
+            Always free
           </p>
           <h1 className="mt-1 text-3xl font-black text-[var(--ld-neon-green)]">
             Festival Map
           </h1>
           <p className="mt-2 max-w-2xl text-sm text-[var(--ld-muted)]">
-            Pinch-zoom the official map or use live GPS. Switch pass tier above to filter VIP
-            pins. First 10 minutes free.
+            Official amenity map with pinch-zoom and tap pins. No time limit. Switch pass tier
+            above to filter VIP points.
           </p>
         </div>
         <ShareButton />
       </div>
 
-      <div className="mt-4 flex gap-2">
-        <button
-          type="button"
-          onClick={() => setMode("touch")}
-          className={`min-h-[44px] rounded-full px-4 py-2 text-sm font-bold ${
-            mode === "touch"
-              ? "bg-[var(--ld-neon-green)] text-black"
-              : "bg-zinc-900 text-[var(--ld-muted)]"
-          }`}
-        >
-          2D Tap Map
-        </button>
-        <button
-          type="button"
-          onClick={() => setMode("gps")}
-          className={`min-h-[44px] rounded-full px-4 py-2 text-sm font-bold ${
-            mode === "gps"
-              ? "bg-[var(--ld-purple)] text-white"
-              : "bg-zinc-900 text-[var(--ld-muted)]"
-          }`}
-        >
-          Live GPS
-        </button>
+      <div className="mt-6">
+        <InteractiveMap fullscreen />
       </div>
 
-      <div className="mt-6">
-        {mode === "touch" ? (
-          <InteractiveMap fullscreen />
-        ) : (
-          <LiveGpsMap />
-        )}
-      </div>
+      <Link
+        href="/overlay"
+        className="mt-8 flex items-center justify-between gap-4 rounded-2xl border border-[var(--ld-purple)]/50 bg-[var(--ld-purple-dim)]/20 p-5 transition hover:border-[var(--ld-neon-green)]/40"
+      >
+        <div>
+          <p className="text-xs font-bold uppercase tracking-widest text-[var(--ld-neon-green)]">
+            Premium
+          </p>
+          <p className="mt-1 text-lg font-black text-white">Virtual Overlay</p>
+          <p className="mt-1 text-sm text-[var(--ld-muted)]">
+            Live GPS + satellite with the official map aligned on the real grounds. 10 free
+            minutes, then $5 through Sunday.
+          </p>
+        </div>
+        <span className="shrink-0 text-2xl text-[var(--ld-neon-green)]" aria-hidden>
+          →
+        </span>
+      </Link>
     </div>
   );
 }

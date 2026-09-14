@@ -3,6 +3,8 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { PaywallGate } from "@/components/PaywallGate";
+import { useSession } from "@/lib/session-context";
 
 const WalkthroughExperience = dynamic(
   () =>
@@ -53,14 +55,50 @@ export function WalkthroughLoader() {
           live GPS — built for the crowd and spotty signal.
         </p>
         <Link
-          href="/map"
-          className="mt-6 inline-flex min-h-[44px] items-center rounded-full bg-[var(--ld-neon-green)] px-8 py-3 text-sm font-black text-black"
+          href="/overlay"
+          className="mt-4 inline-flex min-h-[44px] items-center rounded-full bg-[var(--ld-purple)] px-8 py-3 text-sm font-black text-white"
         >
-          Open 2D Map
+          Virtual Overlay
+        </Link>
+        <Link
+          href="/map"
+          className="mt-3 block text-sm text-[var(--ld-neon-green)] underline"
+        >
+          Free basic map
         </Link>
       </div>
     );
   }
 
-  return <WalkthroughExperience />;
+  return (
+    <WalkthroughPaywall>
+      <WalkthroughExperience />
+    </WalkthroughPaywall>
+  );
+}
+
+function WalkthroughPaywall({ children }: { children: React.ReactNode }) {
+  const { expired, unlocked, openSupportModal } = useSession();
+
+  if (expired && !unlocked) {
+    return (
+      <div className="rounded-2xl border border-[var(--ld-purple-dim)]/50 bg-black/80 p-8 text-center">
+        <p className="text-sm text-[var(--ld-text)]">
+          3D walk is part of the premium overlay package. Basic map is still free.
+        </p>
+        <button
+          type="button"
+          onClick={openSupportModal}
+          className="mt-4 rounded-full bg-[var(--ld-neon-green)] px-8 py-3 text-sm font-black text-black"
+        >
+          Unlock — $5
+        </button>
+        <Link href="/map" className="mt-3 block text-sm text-[var(--ld-muted)] underline">
+          Back to free map
+        </Link>
+      </div>
+    );
+  }
+
+  return <PaywallGate>{children}</PaywallGate>;
 }

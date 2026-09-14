@@ -11,6 +11,7 @@ import {
   type ReactNode,
 } from "react";
 import { usePathname } from "next/navigation";
+import { isOverlayTimerPath } from "./overlay-routes";
 import {
   addUsedMs,
   formatRemaining,
@@ -26,6 +27,7 @@ type SessionContextValue = {
   remainingLabel: string;
   unlocked: boolean;
   expired: boolean;
+  overlayTrialActive: boolean;
   showSupportModal: boolean;
   openSupportModal: () => void;
   dismissSupportModal: () => void;
@@ -37,6 +39,7 @@ const SessionContext = createContext<SessionContextValue | null>(null);
 export function SessionProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const skipTimer = pathname.startsWith("/support");
+  const overlayTrialActive = isOverlayTimerPath(pathname);
   const lastTickRef = useRef<number | null>(null);
   const [state, setState] = useState<SessionState>(() => loadSession());
   const [showSupportModal, setShowSupportModal] = useState(false);
@@ -56,7 +59,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   }, [skipTimer, refreshSession, pathname]);
 
   useEffect(() => {
-    if (skipTimer) return;
+    if (skipTimer || !overlayTrialActive) {
+      lastTickRef.current = null;
+      return;
+    }
 
     const tick = () => {
       const now = Date.now();
@@ -83,28 +89,32 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     return () => {
       clearInterval(id);
       document.removeEventListener("visibilitychange", onVis);
+      lastTickRef.current = null;
     };
-  }, [skipTimer]);
+  }, [skipTimer, overlayTrialActive]);
 
   const unlocked = isUnlocked(state);
   const remainingMs = unlocked ? Infinity : getRemainingMs(state);
   const expired = !unlocked && remainingMs <= 0;
 
   useEffect(() => {
-    if (expired && !modalDismissed && !skipTimer) {
+    if (expired && !modalDismissed && !skipTimer && overlayTrialActive) {
       setShowSupportModal(true);
     }
-  }, [expired, modalDismissed, skipTimer]);
+  }, [expired, modalDismissed, skipTimer, overlayTrialActive]);
 
   const value = useMemo<SessionContextValue>(
     () => ({
       remainingMs: remainingMs === Infinity ? 0 : remainingMs,
       remainingLabel:
         unlocked && state.unlockedUntil
-          ? "Unlocked through Sunday"
-          : `Free: ${formatRemaining(remainingMs === Infinity ? 0 : remainingMs)} — find your stage`,
+          ? "Overlay unlocked through Sunday"
+          : overlayTrialActive
+            ? `Overlay trial: ${formatRemaining(remainingMs === Infinity ? 0 : remainingMs)}`
+            : `10 free min on Virtual Overlay`,
       unlocked,
       expired,
+      overlayTrialActive,
       showSupportModal,
       openSupportModal: () => setShowSupportModal(true),
       dismissSupportModal: () => {
@@ -117,6 +127,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       remainingMs,
       unlocked,
       expired,
+      overlayTrialActive,
       showSupportModal,
       refreshSession,
       state.unlockedUntil,

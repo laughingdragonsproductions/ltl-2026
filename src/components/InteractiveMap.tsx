@@ -12,8 +12,6 @@ import {
   type MapPoint,
 } from "@/lib/map-points";
 import { useTier } from "@/lib/tier-context";
-import { PaywallGate } from "@/components/PaywallGate";
-
 type QuickFilter = "all" | "stages" | "food" | "vip" | "pois";
 
 const QUICK_FILTERS: { id: QuickFilter; label: string }[] = [
@@ -56,7 +54,6 @@ export function InteractiveMap({ fullscreen = false }: { fullscreen?: boolean })
     : "h-[min(70vh,560px)] min-h-[320px]";
 
   return (
-    <PaywallGate>
       <div className="space-y-3">
         <div className="flex flex-wrap gap-2">
           {QUICK_FILTERS.map((f) => (
@@ -160,10 +157,9 @@ export function InteractiveMap({ fullscreen = false }: { fullscreen?: boolean })
         )}
 
         <p className="text-xs text-[var(--ld-muted)]">
-          {points.length} pins · Pinch to zoom · Tap for details
+          {points.length} pins · Always free · Pinch to zoom · Tap for details
         </p>
       </div>
-    </PaywallGate>
   );
 }
 

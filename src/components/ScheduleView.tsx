@@ -4,7 +4,6 @@ import { useCallback, useMemo, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { data, getStageName } from "@/lib/data";
 import { ShareButton } from "@/components/ShareButton";
-import { PaywallGate } from "@/components/PaywallGate";
 import { useTier } from "@/lib/tier-context";
 import type { PassTier } from "@/lib/data";
 
@@ -96,7 +95,6 @@ export function ScheduleView() {
       : `https://ltl26.com/schedule?day=${selectedDay}`;
 
   return (
-    <PaywallGate>
       <div className="space-y-4">
         {nowNext && (nowNext.current || nowNext.next) && (
           <div className="sticky top-[7.5rem] z-20 rounded-lg border border-orange-700/50 bg-orange-950/40 p-4 backdrop-blur md:top-24">
@@ -224,7 +222,6 @@ export function ScheduleView() {
           . Red rows = overlapping sets you might have to choose between.
         </p>
       </div>
-    </PaywallGate>
   );
 }
 

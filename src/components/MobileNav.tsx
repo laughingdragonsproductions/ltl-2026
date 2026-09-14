@@ -6,12 +6,13 @@ import { useState } from "react";
 
 const tabs = [
   { href: "/map", label: "Map", icon: "🗺️" },
+  { href: "/overlay", label: "Overlay", icon: "📍" },
   { href: "/schedule", label: "Schedule", icon: "🎸" },
-  { href: "/walkthrough", label: "Walk", icon: "👣" },
   { href: "/arrival", label: "VIP", icon: "⭐" },
 ];
 
 const moreLinks = [
+  { href: "/walkthrough", label: "3D Walk (desktop)" },
   { href: "/know", label: "Know Before You Go" },
   { href: "/credentials", label: "Credentials & Wristbands" },
   { href: "/", label: "Home" },

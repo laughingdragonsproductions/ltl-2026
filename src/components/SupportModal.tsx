@@ -24,9 +24,10 @@ export function SupportModal() {
           You&apos;ve had 10 minutes to find where you&apos;re going
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-[var(--ld-text)]">
-          This unofficial LTL companion costs real money to host.{" "}
-          <strong className="text-white">$5</strong> unlocks the map and schedule through
-          Sunday night — and hides all promo ads.
+          The basic tap map stays free.{" "}
+          <strong className="text-white">$5</strong> unlocks the{" "}
+          <strong className="text-white">virtual overlay</strong> (live GPS + aligned amenity
+          map) through Sunday — and hides promo ads.
         </p>
 
         {STRIPE_LINK ? (

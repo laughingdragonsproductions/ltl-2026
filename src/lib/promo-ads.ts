@@ -27,10 +27,10 @@ export const PROMO_ADS: PromoAd[] = [
   },
   {
     id: "ltl26",
-    title: "Unlock ad-free LTL26",
-    tagline: "$5 support removes promo banners through festival weekend",
-    href: "/map",
-    cta: "Back to map",
+    title: "Virtual Overlay",
+    tagline: "Live GPS + amenity map aligned on the grounds — 10 min free trial",
+    href: "/overlay",
+    cta: "Try overlay",
     accent: "orange",
   },
 ];

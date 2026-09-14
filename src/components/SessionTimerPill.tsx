@@ -1,13 +1,12 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { useSession } from "@/lib/session-context";
 
 export function SessionTimerPill() {
-  const pathname = usePathname();
-  const { remainingLabel, unlocked, expired, openSupportModal } = useSession();
+  const { remainingLabel, unlocked, expired, openSupportModal, overlayTrialActive } =
+    useSession();
 
-  if (pathname.startsWith("/support")) return null;
+  if (!overlayTrialActive && !unlocked) return null;
 
   return (
     <button
@@ -21,7 +20,7 @@ export function SessionTimerPill() {
             : "bg-[var(--ld-purple-dim)]/40 text-[var(--ld-muted)] ring-1 ring-[var(--ld-purple-dim)]/50"
       }`}
     >
-      {expired && !unlocked ? "Free time ended — tap to unlock" : remainingLabel}
+      {expired && !unlocked ? "Overlay trial ended — unlock" : remainingLabel}
     </button>
   );
 }

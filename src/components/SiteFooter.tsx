@@ -18,7 +18,7 @@ export function SiteFooter() {
             href={STRIPE_LINK}
             className="font-semibold text-[var(--ld-neon-green)] hover:underline"
           >
-            Unlock map + ad-free ($5)
+            Unlock overlay + ad-free ($5)
           </a>
         </p>
       )}
