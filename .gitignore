@@ -40,4 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-.vercel
+# Google Flow local ingredients (screenshots/clips — large)
+/assets/flow-ingredients/*
+!/assets/flow-ingredients/.gitkeep

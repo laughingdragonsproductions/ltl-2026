@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "export:unreal": "node scripts/export-unreal-geojson.mjs"
+    "export:unreal": "node scripts/export-unreal-geojson.mjs",
+    "flow:brief": "node scripts/google-flow/generate-flow-brief.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.8",

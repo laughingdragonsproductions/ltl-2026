@@ -48,6 +48,18 @@ Open **http://localhost:3000/map**
 - **Session** — 10 min free, then $5 Stripe unlock through Sept 21
 - **PWA** — add to home screen (`manifest.json`)
 
+## Viral video (Google Flow)
+
+Bots write Veo 3 prompts from 2025 LTL recap style → ltl26.com promo.
+
+```bash
+npm run flow:brief
+```
+
+Output: `assets/flow-export/flow-brief.md`  
+Bot instructions: `scripts/google-flow/AGENTS.md`  
+Drop 2025 reference stills in `assets/flow-ingredients/` before opening Flow.
+
 ## Data
 
 Structured festival data lives in `data/` on `G:\ltl-2026`.

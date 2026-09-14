@@ -1,0 +1,92 @@
+{
+  "project": "LTL26 Viral Website Promo",
+  "productUrl": "https://ltl26.com/map",
+  "brand": {
+    "site": "ltl26.com",
+    "studio": "Laughing Dragons Productions",
+    "partner": "LitPrintz.com",
+    "palette": "neon green #39ff14, purple #9b30ff, black #0a0a0f",
+    "disclaimer": "Unofficial fan companion — not affiliated with DWP or Louder Than Life"
+  },
+  "flowDefaults": {
+    "model": "Veo 3",
+    "durationSec": 8,
+    "aspectRatios": ["9:16", "16:9"],
+    "audio": true
+  },
+  "sourceVideos2025": [
+    "Louder Than Life 2025 official recap (DWP / YouTube)",
+    "Crowd/stage B-roll matching Kentucky Expo Center outdoor festival",
+    "User POV phone footage style from 2025 attendance if available"
+  ],
+  "shots": [
+    {
+      "id": "01-hook",
+      "beat": "Hook",
+      "onScreenText": "LOST AT LOUDER THAN LIFE?",
+      "ingredients": ["ltl2025_crowd_wide", "phone_pov"],
+      "veoPrompt": "Vertical 9:16 handheld POV. A festival-goer in black band shirt holds a phone while walking through a massive outdoor rock festival crowd at golden hour. Kentucky expo-style grounds, ferris wheel distant, orange stage glow. They look confused, scrolling a map. Slow push-in on the phone. Audio: distant metal drums, crowd chatter, SFX: notification ping. Cinematic, gritty, high contrast. No readable artist names on stages."
+    },
+    {
+      "id": "02-crowd-energy",
+      "beat": "2025 energy match",
+      "onScreenText": null,
+      "ingredients": ["ltl2025_recap_frame_crowd", "stage_lights"],
+      "veoPrompt": "Wide tracking shot through festival crowd, Louder Than Life 2025 aesthetic — thousands of metal fans, bourbon barrels decor, fire pits glow, purple and orange lighting. Camera glides shoulder-height. Audio: roaring crowd, guitar riff muffled in distance. Documentary festival recap style."
+    },
+    {
+      "id": "03-free-map",
+      "beat": "Product — free map",
+      "onScreenText": "FREE OFFICIAL MAP",
+      "ingredients": ["ltl26_map_screenshot", "phone_pov"],
+      "veoPrompt": "Close-up over-the-shoulder shot. Smartphone shows a dark-themed festival map app with neon green pins on an official amenity map layout (ingredient reference). Thumb taps a stage pin. Static camera, shallow depth of field, crowd blurred behind. Audio: soft UI tap, ambient festival noise. Text overlay space at top."
+    },
+    {
+      "id": "04-overlay-gps",
+      "beat": "Product — virtual overlay",
+      "onScreenText": "LIVE GPS OVERLAY",
+      "ingredients": ["ltl26_overlay_screenshot", "satellite_ground_aerial"],
+      "veoPrompt": "Medium shot. Phone screen shows satellite view with semi-transparent festival map aligned on real grounds and a blue GPS dot among colored pins (ingredient). Hand centers map on user location. Slow orbit around phone. Audio: whoosh transition, GPS lock chime. Futuristic fan-app feel, neon green accent UI."
+    },
+    {
+      "id": "05-vip-tier",
+      "beat": "VIP value",
+      "onScreenText": "VIP · GA · TOP SHELF",
+      "ingredients": ["vip_zone_photo_2025", "ltl26_tier_ui"],
+      "veoPrompt": "Split-screen feel in one frame: left side VIP lounge shaded seating with live screen (2025 festival VIP vibe ingredient); right side phone toggling VIP pass tier filter on map app. Quick cut energy within one clip — rack focus phone to VIP area. Audio: muffled VIP lounge audio vs main stage boom."
+    },
+    {
+      "id": "06-schedule",
+      "beat": "Schedule share",
+      "onScreenText": "WHO'S ON NOW",
+      "ingredients": ["ltl26_schedule_screenshot"],
+      "veoPrompt": "Handheld close-up of phone showing dark festival schedule with NOW/NEXT banner in orange. User hits share button. Background: walking between stages, motion blur. Audio: notification, crowd swell. Social viral UGC style."
+    },
+    {
+      "id": "07-cta",
+      "beat": "CTA",
+      "onScreenText": "ltl26.com",
+      "ingredients": ["ltl26_home_screenshot", "neon_logo"],
+      "veoPrompt": "Crane-up reveal from phone showing ltl26.com landing page (ingredient) to wide night festival skyline with stage fireworks/sparks. Bold neon green URL glow composited in center. Audio: epic rock build, crowd cheer peak. End frame hold 1 second."
+    },
+    {
+      "id": "08-outro-brand",
+      "beat": "Brand",
+      "onScreenText": "Laughing Dragons · LitPrintz.com",
+      "ingredients": ["ldp_brand", "litprintz"],
+      "veoPrompt": "Static 9:16 end card. Black background, neon green ltl26.com logo pulse, purple underline. Subtle grain. Text: unofficial fan companion. Audio: single guitar power chord decay. Minimal motion graphics."
+    }
+  ],
+  "voiceoverScript": [
+    "You're at Louder Than Life. The grounds are huge.",
+    "ltl26 dot com — free official map. Pinch, tap, find your stage.",
+    "Virtual overlay puts you on live GPS with the amenity map aligned on the real festival.",
+    "Ten minutes free. Five bucks unlocks everything and kills the ads.",
+    "ltl26 dot com — unofficial fan companion. See you in the pit."
+  ],
+  "captionCopy": {
+    "tiktok": "POV: you're lost between 7 stages at LTL 😭 free map + live GPS overlay → ltl26.com #LouderThanLife #LTL2026 #festivalmap",
+    "instagram": "Unofficial LTL companion built by fans. Free tap map. Live GPS overlay. ltl26.com 🎸",
+    "reddit": "Made a free LTL 2026 map + GPS overlay for the expo grounds (unofficial). ltl26.com — feedback welcome before gates open."
+  }
+}
