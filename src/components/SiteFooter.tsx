@@ -1,21 +1,24 @@
+import { LitprintzAssociationClient } from "@/components/LitprintzAssociationClient";
+
 const STRIPE_LINK = process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK;
 const KOFI_URL = process.env.NEXT_PUBLIC_KOFI_URL;
 
 export function SiteFooter() {
   return (
     <footer className="border-t border-[var(--ld-purple-dim)]/40 bg-black/40 px-4 py-6 text-center text-xs text-[var(--ld-muted)]">
-      <p>
+      <LitprintzAssociationClient />
+      <p className="mt-2">
         Unofficial fan project · Not affiliated with Danny Wimmer Presents or Louder Than
         Life
       </p>
-      <p className="mt-1">Support keeps servers running</p>
+      <p className="mt-1">Support keeps servers running · Pay to hide promo ads</p>
       {STRIPE_LINK && (
         <p className="mt-2">
           <a
             href={STRIPE_LINK}
             className="font-semibold text-[var(--ld-neon-green)] hover:underline"
           >
-            Unlock map ($5)
+            Unlock map + ad-free ($5)
           </a>
         </p>
       )}

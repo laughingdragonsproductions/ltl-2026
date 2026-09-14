@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { PromoAds } from "@/components/PromoAds";
 import { SupportModal } from "@/components/SupportModal";
 import { SessionTimerPill } from "@/components/SessionTimerPill";
 
@@ -16,6 +17,7 @@ export function GlobalSessionUI() {
 
   return (
     <>
+      <PromoAds />
       <SupportModal />
       {!isAppRoute && pathname !== "/" && (
         <div className="fixed right-4 top-4 z-50">

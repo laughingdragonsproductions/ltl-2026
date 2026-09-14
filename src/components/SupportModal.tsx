@@ -26,7 +26,7 @@ export function SupportModal() {
         <p className="mt-3 text-sm leading-relaxed text-[var(--ld-text)]">
           This unofficial LTL companion costs real money to host.{" "}
           <strong className="text-white">$5</strong> unlocks the map and schedule through
-          Sunday night.
+          Sunday night — and hides all promo ads.
         </p>
 
         {STRIPE_LINK ? (
