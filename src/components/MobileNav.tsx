@@ -12,6 +12,7 @@ const tabs = [
 ];
 
 const moreLinks = [
+  { href: "/games", label: "Festival Games" },
   { href: "/walkthrough", label: "3D Walk (desktop)" },
   { href: "/know", label: "Know Before You Go" },
   { href: "/credentials", label: "Credentials & Wristbands" },

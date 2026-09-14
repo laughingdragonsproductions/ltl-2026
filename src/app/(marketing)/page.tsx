@@ -52,6 +52,12 @@ export default function HomePage() {
         >
           Try virtual overlay →
         </Link>
+        <Link
+          href="/games"
+          className="mt-2 text-sm font-semibold text-[var(--ld-muted)] underline hover:text-white"
+        >
+          Play festival games →
+        </Link>
 
         <ShareButton
           url="https://ltl26.com/map"

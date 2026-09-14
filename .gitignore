@@ -43,3 +43,6 @@ next-env.d.ts
 # Google Flow local ingredients (screenshots/clips — large)
 /assets/flow-ingredients/*
 !/assets/flow-ingredients/.gitkeep
+
+# Temp game source downloads (not shipped)
+/scripts/_src-*

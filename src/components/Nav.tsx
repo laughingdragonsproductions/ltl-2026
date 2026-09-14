@@ -10,6 +10,7 @@ const links = [
   { href: "/walkthrough", label: "Walk" },
   { href: "/arrival", label: "VIP" },
   { href: "/know", label: "Know" },
+  { href: "/games", label: "Games" },
 ];
 
 export function Nav() {
@@ -30,7 +31,8 @@ export function Nav() {
               key={link.href}
               href={link.href}
               className={`rounded px-3 py-1.5 font-semibold ${
-                pathname === link.href
+                pathname === link.href ||
+                (link.href === "/games" && pathname.startsWith("/games"))
                   ? "bg-[var(--ld-purple)] text-white"
                   : "text-[var(--ld-muted)] hover:bg-[var(--ld-purple-dim)]/30 hover:text-white"
               }`}

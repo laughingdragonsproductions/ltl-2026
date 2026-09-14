@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "export:unreal": "node scripts/export-unreal-geojson.mjs",
-    "flow:brief": "node scripts/google-flow/generate-flow-brief.mjs"
+    "flow:brief": "node scripts/google-flow/generate-flow-brief.mjs",
+    "games:assets": "node scripts/prepare-game-assets.mjs",
+    "games:band-matcher": "node scripts/compile-band-matcher.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.8",

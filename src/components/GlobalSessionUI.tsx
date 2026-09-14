@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { PromoAds } from "@/components/PromoAds";
+import { RewardVideoModal } from "@/components/RewardVideoModal";
 import { SupportModal } from "@/components/SupportModal";
 import { SessionTimerPill } from "@/components/SessionTimerPill";
 
@@ -13,12 +14,14 @@ export function GlobalSessionUI() {
     pathname.startsWith("/walkthrough") ||
     pathname.startsWith("/arrival") ||
     pathname.startsWith("/credentials") ||
-    pathname.startsWith("/know");
+    pathname.startsWith("/know") ||
+    pathname.startsWith("/games");
 
   return (
     <>
       <PromoAds />
       <SupportModal />
+      <RewardVideoModal />
       {!isAppRoute && pathname !== "/" && (
         <div className="fixed right-4 top-4 z-50">
           <SessionTimerPill />

@@ -4,30 +4,38 @@ Bots (Cursor agents, Gemini, etc.) use this folder to produce **copy-paste promp
 
 ## Goal
 
-30–45s vertical viral promo for **https://ltl26.com/map** that **feels like LTL 2025 recap energy** but showcases the **website** (free map + virtual overlay).
+~30s vertical viral promo (raw **51s** across 8 clips, each **under 10s**) for **https://ltl26.com/map** that **feels like LTL 2025 recap energy** but showcases the **website** (free map + virtual overlay).
 
 ## Bot run order
 
 1. Read `viral-ltl26-shotlist.json`
 2. Read `SOURCES.md` — ensure human exported ingredients to `assets/flow-ingredients/`
 3. Run `npm run flow:brief` → outputs `assets/flow-export/flow-brief.md`
-4. For each shot in JSON, paste **veoPrompt** into Flow with listed **ingredients**
+4. For each shot, set **durationSec** in Flow, attach **ingredients**, paste assembled **Flow prompt** + **negativePrompt**
 5. Export clips → stitch in CapCut/DaVinci with **onScreenText** overlays
 6. Add **voiceoverScript** as VO or captions
 7. Post with **captionCopy** variants
 
-## Veo prompt formula (required)
+## Veo / Flow prompt formula (required)
 
-Every generated prompt MUST follow:
+Store shots in JSON with these fields; `generate-flow-brief.mjs` assembles the paste-ready prompt:
 
-```
-[Shot type + camera] + [subject + ONE action] + [environment] + [lighting/style] + [Audio: ...]
-```
+| Field | Example |
+|-------|---------|
+| `cinematography` | `9:16 vertical handheld POV, 24mm, slow push-in` |
+| `subjectAction` | One subject, **one action** only |
+| `environment` | Festival grounds, time of day, crowd density |
+| `lightingStyle` | UGC / recap / product-demo look |
+| `audio` | SFX + ambience with optional timing (`at 4 seconds`) |
+| `constraints` | No logos, leave top third for overlay text |
+| `negativePrompt` | split screen, cuts, on-screen text, watermarks |
 
-- One action per 8s clip  
-- Quote dialogue if any: `A voice says, "..."`  
-- No DWP logos, no official LTL trademark claims in generated footage  
-- Always leave room for text overlay when `onScreenText` is set  
+Rules:
+
+- **Every clip under 10 seconds** (`durationSec` per shot: 5–8s)
+- **No split-screen, no in-clip cuts** — Flow fails on multi-scene prompts
+- **Never ask Flow to render promo text** — burn `onScreenText` in edit
+- No DWP logos, no official LTL trademark claims in generated footage
 
 ## Gemini system prompt (for expanding shots)
 

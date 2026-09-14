@@ -16,6 +16,7 @@ import {
   addUsedMs,
   formatRemaining,
   getRemainingMs,
+  grantVideoExtension,
   isUnlocked,
   loadSession,
   type SessionState,
@@ -29,8 +30,12 @@ type SessionContextValue = {
   expired: boolean;
   overlayTrialActive: boolean;
   showSupportModal: boolean;
+  showVideoModal: boolean;
   openSupportModal: () => void;
   dismissSupportModal: () => void;
+  openVideoModal: () => void;
+  closeVideoModal: () => void;
+  completeVideoReward: () => void;
   refreshSession: () => void;
 };
 
@@ -43,10 +48,27 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const lastTickRef = useRef<number | null>(null);
   const [state, setState] = useState<SessionState>(() => loadSession());
   const [showSupportModal, setShowSupportModal] = useState(false);
+  const [showVideoModal, setShowVideoModal] = useState(false);
   const [modalDismissed, setModalDismissed] = useState(false);
 
   const refreshSession = useCallback(() => {
     setState(loadSession());
+  }, []);
+
+  const openVideoModal = useCallback(() => {
+    setShowSupportModal(false);
+    setShowVideoModal(true);
+  }, []);
+
+  const closeVideoModal = useCallback(() => {
+    setShowVideoModal(false);
+  }, []);
+
+  const completeVideoReward = useCallback(() => {
+    setState(grantVideoExtension());
+    setShowVideoModal(false);
+    setShowSupportModal(false);
+    setModalDismissed(true);
   }, []);
 
   useEffect(() => {
@@ -98,10 +120,16 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const expired = !unlocked && remainingMs <= 0;
 
   useEffect(() => {
-    if (expired && !modalDismissed && !skipTimer && overlayTrialActive) {
+    if (
+      expired &&
+      !modalDismissed &&
+      !skipTimer &&
+      overlayTrialActive &&
+      !showVideoModal
+    ) {
       setShowSupportModal(true);
     }
-  }, [expired, modalDismissed, skipTimer, overlayTrialActive]);
+  }, [expired, modalDismissed, skipTimer, overlayTrialActive, showVideoModal]);
 
   const value = useMemo<SessionContextValue>(
     () => ({
@@ -111,16 +139,20 @@ export function SessionProvider({ children }: { children: ReactNode }) {
           ? "All features · Ad-free"
           : overlayTrialActive
             ? `Overlay trial: ${formatRemaining(remainingMs === Infinity ? 0 : remainingMs)}`
-            : `10 free min · then $5 for all features`,
+            : `10 free min · watch video or $5 unlock`,
       unlocked,
       expired,
       overlayTrialActive,
       showSupportModal,
+      showVideoModal,
       openSupportModal: () => setShowSupportModal(true),
       dismissSupportModal: () => {
         setShowSupportModal(false);
         setModalDismissed(true);
       },
+      openVideoModal,
+      closeVideoModal,
+      completeVideoReward,
       refreshSession,
     }),
     [
@@ -129,6 +161,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       expired,
       overlayTrialActive,
       showSupportModal,
+      showVideoModal,
+      openVideoModal,
+      closeVideoModal,
+      completeVideoReward,
       refreshSession,
       state.unlockedUntil,
     ]

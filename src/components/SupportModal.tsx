@@ -6,7 +6,7 @@ const STRIPE_LINK = process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK;
 const KOFI_URL = process.env.NEXT_PUBLIC_KOFI_URL;
 
 export function SupportModal() {
-  const { showSupportModal, dismissSupportModal, unlocked } = useSession();
+  const { showSupportModal, dismissSupportModal, openVideoModal, unlocked } = useSession();
 
   if (!showSupportModal || unlocked) return null;
 
@@ -25,16 +25,25 @@ export function SupportModal() {
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-[var(--ld-text)]">
           This unofficial LTL companion costs real money to make and host. The basic tap map
-          stays free.{" "}
+          stays free. Watch a short promo video for{" "}
+          <strong className="text-white">another 10 minutes</strong>, or{" "}
           <strong className="text-white">$5</strong> unlocks{" "}
           <strong className="text-white">all features</strong> and removes{" "}
           <strong className="text-white">all ads</strong> — always.
         </p>
 
+        <button
+          type="button"
+          onClick={openVideoModal}
+          className="mt-5 flex w-full items-center justify-center rounded-full border border-[var(--ld-purple)] bg-[var(--ld-purple-dim)]/30 px-6 py-3 text-sm font-black text-[var(--ld-neon-green)] transition hover:bg-[var(--ld-purple-dim)]/50"
+        >
+          Watch video → +10 min free
+        </button>
+
         {STRIPE_LINK ? (
           <a
             href={STRIPE_LINK}
-            className="mt-5 flex w-full items-center justify-center rounded-full bg-[var(--ld-neon-green)] px-6 py-3 text-sm font-black text-black transition hover:opacity-90"
+            className="mt-3 flex w-full items-center justify-center rounded-full bg-[var(--ld-neon-green)] px-6 py-3 text-sm font-black text-black transition hover:opacity-90"
           >
             Unlock all features — $5
           </a>

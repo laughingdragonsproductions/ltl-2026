@@ -20,7 +20,7 @@ export function SessionTimerPill() {
             : "bg-[var(--ld-purple-dim)]/40 text-[var(--ld-muted)] ring-1 ring-[var(--ld-purple-dim)]/50"
       }`}
     >
-      {expired && !unlocked ? "Unlock all features — $5" : remainingLabel}
+      {expired && !unlocked ? "Watch video · or $5 unlock" : remainingLabel}
     </button>
   );
 }

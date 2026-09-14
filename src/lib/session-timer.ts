@@ -6,6 +6,8 @@ const STORAGE_KEY = "ltl26_session";
 export type SessionState = {
   usedMs: number;
   unlockedUntil: string | null;
+  /** How many times the user earned +10 min by watching a promo video */
+  videoExtensions?: number;
 };
 
 export function loadSession(): SessionState {
@@ -53,6 +55,16 @@ export function addUsedMs(deltaMs: number): SessionState {
   const state = loadSession();
   if (isUnlocked(state)) return state;
   state.usedMs = Math.min(FREE_LIMIT_MS + 60_000, state.usedMs + deltaMs);
+  saveSession(state);
+  return state;
+}
+
+/** Reset overlay trial usage — another full 10 minutes after watching a promo video. */
+export function grantVideoExtension(): SessionState {
+  const state = loadSession();
+  if (isUnlocked(state)) return state;
+  state.usedMs = 0;
+  state.videoExtensions = (state.videoExtensions ?? 0) + 1;
   saveSession(state);
   return state;
 }
