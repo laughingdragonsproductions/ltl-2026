@@ -1,0 +1,10 @@
+{
+  "name": "LTL26 — Louder Than Life 2026 Map",
+  "short_name": "LTL26",
+  "description": "Interactive Louder Than Life 2026 festival map",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#0a0a0f",
+  "lang": "en-US"
+}

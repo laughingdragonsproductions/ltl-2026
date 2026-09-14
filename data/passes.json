@@ -1,0 +1,92 @@
+{
+  "tiers": [
+    {
+      "id": "ga",
+      "name": "General Admission",
+      "access": [
+        "All festival stages",
+        "Kentucky Kingdom amusement rides",
+        "Kroger Big Bourbon Bar",
+        "The Hunter's Club",
+        "Art activations"
+      ],
+      "lockerZone": "Highland or Cardinal GA lockers depending on entrance"
+    },
+    {
+      "id": "vip",
+      "name": "VIP",
+      "startingPrice": 917,
+      "access": [
+        "Everything in GA",
+        "Dedicated festival entry lanes",
+        "Commemorative laminate",
+        "Shaded VIP lounge with main stage AV streams",
+        "Dedicated bars (pay per drink)",
+        "Outdoor seating with main stage views",
+        "Premium food offerings (additional purchase)",
+        "Air-conditioned flushable restrooms",
+        "VIP merch stand",
+        "VIP locker rentals"
+      ],
+      "entrance": "VIP Entrance near Main Merch / Louder-Life stages",
+      "mapZone": "vip-green"
+    },
+    {
+      "id": "topshelf",
+      "name": "Angel's Envy Top Shelf VIP",
+      "startingPrice": 2358,
+      "access": [
+        "Everything in GA and VIP",
+        "Express VIP entry lanes",
+        "Top Shelf Skybox",
+        "Dedicated main-stage viewing area",
+        "Elevated shaded platform viewing both main stages",
+        "All-inclusive beer, wine, cocktails, NA drinks in Top Shelf",
+        "Ultra-premium single-barrel bourbon",
+        "Complimentary Anthony Lamas hors d'oeuvres (lunch & dinner)",
+        "Complimentary Wi-Fi",
+        "Top Shelf Guest Services team",
+        "Top Shelf-only lockers",
+        "First right to renew 2027 Top Shelf"
+      ],
+      "entrance": "Top Shelf Entrance (east edge, Angel's Envy zone)",
+      "mapZone": "topshelf-red",
+      "restrictions": ["GA and standard VIP cannot enter Top Shelf locker area"]
+    }
+  ],
+  "lockerLocations": [
+    {
+      "id": "highland-ga",
+      "name": "Highland GA Lockers",
+      "location": "South entrance area",
+      "bestFor": ["Camping", "General parking"],
+      "tiers": ["ga", "vip", "topshelf"]
+    },
+    {
+      "id": "cardinal-ga",
+      "name": "Cardinal GA Lockers",
+      "location": "North entrance area",
+      "bestFor": ["Rideshare", "Select parking lots"],
+      "tiers": ["ga", "vip", "topshelf"]
+    },
+    {
+      "id": "vip",
+      "name": "VIP Lockers",
+      "location": "Inside VIP area",
+      "requires": "VIP or Top Shelf credential",
+      "tiers": ["vip", "topshelf"]
+    },
+    {
+      "id": "topshelf",
+      "name": "Angel's Envy Top Shelf VIP Lockers",
+      "location": "Inside Top Shelf VIP area",
+      "requires": "Top Shelf credential only",
+      "tiers": ["topshelf"]
+    }
+  ],
+  "lockerDetails": {
+    "dimensions": "8\"H x 12\"W x 18\"D",
+    "features": ["Universal phone charger", "Overnight storage for 4-day rentals"],
+    "priceRange": "$20-$85 for weekend"
+  }
+}

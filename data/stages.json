@@ -1,0 +1,62 @@
+{
+  "stages": [
+    {
+      "id": "louder",
+      "name": "Louder Stage",
+      "type": "main",
+      "description": "Primary main stage, east side of grounds",
+      "mapPosition": { "x": 82, "y": 28 },
+      "confidence": "confirmed"
+    },
+    {
+      "id": "life",
+      "name": "Life Stage",
+      "type": "main",
+      "description": "Secondary main stage adjacent to Louder",
+      "mapPosition": { "x": 88, "y": 32 },
+      "confidence": "confirmed"
+    },
+    {
+      "id": "loudmouth",
+      "name": "Loudmouth Stage",
+      "type": "secondary",
+      "description": "South of main stages",
+      "mapPosition": { "x": 72, "y": 55 },
+      "confidence": "confirmed"
+    },
+    {
+      "id": "impact",
+      "name": "Impact Stage",
+      "type": "secondary",
+      "description": "NEW FOR 2026 — fully shaded tent between Expo Center and Broadbent Arena",
+      "mapPosition": { "x": 48, "y": 18 },
+      "confidence": "confirmed",
+      "new2026": true
+    },
+    {
+      "id": "decibel",
+      "name": "Decibel Stage",
+      "type": "secondary",
+      "description": "West side of grounds",
+      "mapPosition": { "x": 12, "y": 38 },
+      "confidence": "confirmed"
+    },
+    {
+      "id": "reverb",
+      "name": "Reverb Stage",
+      "type": "secondary",
+      "description": "West side, near Decibel",
+      "mapPosition": { "x": 18, "y": 48 },
+      "confidence": "confirmed"
+    },
+    {
+      "id": "bourbon-bar",
+      "name": "Kroger Big Bourbon Bar",
+      "type": "activation",
+      "description": "Partner activation #8 — also appears on schedule",
+      "mapPosition": { "x": 55, "y": 42 },
+      "partnerId": 8,
+      "confidence": "confirmed"
+    }
+  ]
+}

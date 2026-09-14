@@ -1,0 +1,39 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "coordinateSystem": "map-percent",
+    "description": "x and y are 0-100 percentages on the official amenity map overlay"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "id": "main-merch", "name": "Main Merch", "type": "merch", "tiers": ["ga", "vip", "topshelf"] },
+      "geometry": { "type": "Point", "coordinates": [62, 32] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "id": "access-center", "name": "Access Center", "type": "access-center", "tiers": ["ga", "vip", "topshelf"] },
+      "geometry": { "type": "Point", "coordinates": [56, 82] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "id": "vip-lockers", "name": "VIP Lockers", "type": "locker", "tiers": ["vip", "topshelf"] },
+      "geometry": { "type": "Point", "coordinates": [74, 45] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "id": "topshelf-lockers", "name": "Top Shelf Lockers", "type": "locker", "tiers": ["topshelf"] },
+      "geometry": { "type": "Point", "coordinates": [91, 38] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "id": "highland-ga-lockers", "name": "Highland GA Lockers", "type": "locker", "tiers": ["ga", "vip", "topshelf"] },
+      "geometry": { "type": "Point", "coordinates": [60, 86] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "id": "cardinal-ga-lockers", "name": "Cardinal GA Lockers", "type": "locker", "tiers": ["ga", "vip", "topshelf"] },
+      "geometry": { "type": "Point", "coordinates": [32, 12] }
+    }
+  ]
+}

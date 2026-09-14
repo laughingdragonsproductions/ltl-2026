@@ -1,0 +1,121 @@
+{
+  "zones": [
+    {
+      "id": 1,
+      "name": "Food Zone 1",
+      "location": "Near Loudmouth Stage",
+      "mapPosition": { "x": 65, "y": 58 },
+      "tiers": ["ga", "vip", "topshelf"],
+      "vendors": [
+        "Pizza Lupo",
+        "Chicken Mac Truck",
+        "Taco Bus",
+        "Bourbon & Brews",
+        "Festival Fare",
+        "Smokehouse BBQ",
+        "Fresh Catch",
+        "Sweet Treats"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Food Zone 2",
+      "location": "Central, near Kentucky Kingdom entrance",
+      "mapPosition": { "x": 45, "y": 55 },
+      "tiers": ["ga", "vip", "topshelf"],
+      "vendors": [
+        "Global Bites",
+        "Nashville Hot",
+        "Slice House",
+        "Grill Masters",
+        "Veggie Village",
+        "Asian Fusion",
+        "Burger Barn",
+        "Ice Cream Social"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Food Zone 3",
+      "location": "Central concourse",
+      "mapPosition": { "x": 50, "y": 45 },
+      "tiers": ["ga", "vip", "topshelf"],
+      "vendors": [
+        "Street Eats",
+        "Pita Pit Stop",
+        "Wings & Things",
+        "Mac Attack",
+        "Taco Town",
+        "BBQ Pit",
+        "Salad Station",
+        "Dessert Depot"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Food Zone 4",
+      "location": "Near Decibel/Reverb stages",
+      "mapPosition": { "x": 22, "y": 42 },
+      "tiers": ["ga", "vip", "topshelf"],
+      "vendors": [
+        "Bulgogi",
+        "Stoked Poke",
+        "Pizza Planet",
+        "Curry Corner",
+        "Sandwich Shop",
+        "Fry Factory",
+        "Healthy Harvest",
+        "Candy Cart"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Food Zone 5",
+      "location": "West grounds",
+      "mapPosition": { "x": 15, "y": 55 },
+      "tiers": ["ga", "vip", "topshelf"],
+      "vendors": [
+        "Rock & Roll Bites",
+        "Noodle House",
+        "Taco Libre",
+        "Smoke Ring BBQ",
+        "Fresh Wraps",
+        "Loaded Fries",
+        "Cookie Co",
+        "Beverage Bar"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Food Zone 6",
+      "location": "Near Impact Stage",
+      "mapPosition": { "x": 40, "y": 22 },
+      "tiers": ["ga", "vip", "topshelf"],
+      "vendors": [
+        "Impact Eats",
+        "Pizza Palace",
+        "Wok This Way",
+        "Slider Shack",
+        "Corn Dog King",
+        "Vegan Vibes",
+        "Churro Champs",
+        "Coffee Cart"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Food Zone 7 (VIP Only)",
+      "location": "Inside VIP area",
+      "mapPosition": { "x": 76, "y": 48 },
+      "tiers": ["vip", "topshelf"],
+      "vendors": [
+        "Prince St Pizza",
+        "Alchemy Steakhouse",
+        "Cask Kitchen",
+        "Cousins Maine Lobster",
+        "Anthony Lamas / Seviche bites (Top Shelf complimentary hours)",
+        "Premium VIP offerings"
+      ]
+    }
+  ]
+}

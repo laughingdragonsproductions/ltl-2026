@@ -1,0 +1,27 @@
+{
+  "name": "Kentucky Kingdom",
+  "includedWith": ["ga", "vip", "topshelf"],
+  "entrance": "Kentucky Kingdom Entrance",
+  "attractions": [
+    { "id": "A", "name": "Lightning Run", "mapPosition": { "x": 38, "y": 78 } },
+    { "id": "B", "name": "Storm Chaser", "mapPosition": { "x": 42, "y": 82 } },
+    { "id": "C", "name": "Kentucky Flyer", "mapPosition": { "x": 48, "y": 80 } },
+    { "id": "D", "name": "T3", "mapPosition": { "x": 35, "y": 75 } },
+    { "id": "E", "name": "Cyclos", "mapPosition": { "x": 50, "y": 85 } },
+    { "id": "F", "name": "Raging Rapids", "mapPosition": { "x": 44, "y": 88 } },
+    { "id": "G", "name": "Breakdance", "mapPosition": { "x": 32, "y": 82 } },
+    { "id": "H", "name": "Cyclone", "mapPosition": { "x": 46, "y": 76 } },
+    { "id": "I", "name": "FearFall", "mapPosition": { "x": 40, "y": 70 } },
+    { "id": "J", "name": "Scream Xtreme", "mapPosition": { "x": 52, "y": 78 } },
+    { "id": "K", "name": "King Louie's Playland", "mapPosition": { "x": 36, "y": 68 } },
+    { "id": "L", "name": "Giant Wheel", "mapPosition": { "x": 55, "y": 72 } },
+    { "id": "M", "name": "Bluebeard's Bounty", "mapPosition": { "x": 30, "y": 70 } },
+    { "id": "N", "name": "Cobra's Curse", "mapPosition": { "x": 48, "y": 72 } },
+    { "id": "O", "name": "Roller Skater", "mapPosition": { "x": 34, "y": 86 } },
+    { "id": "P", "name": "Starship 3000", "mapPosition": { "x": 50, "y": 68 } },
+    { "id": "Q", "name": "Cyclone Splash", "mapPosition": { "x": 42, "y": 74 } },
+    { "id": "R", "name": "Ferris Wheel Jr", "mapPosition": { "x": 38, "y": 66 } },
+    { "id": "S", "name": "Kingdom Coaster", "mapPosition": { "x": 46, "y": 84 } }
+  ],
+  "note": "Free amusement ride access for all festival pass holders during show hours"
+}

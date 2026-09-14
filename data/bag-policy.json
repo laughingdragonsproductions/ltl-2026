@@ -1,0 +1,41 @@
+{
+  "allowed": [
+    "Cell phones and small portable chargers",
+    "Sunscreen (non-aerosol)",
+    "One factory-sealed 20oz water OR one empty plastic refillable bottle (no Hydroflasks/Yeti)",
+    "Binoculars",
+    "Towels and light blankets (restricted in some areas)",
+    "Small point-and-shoot cameras",
+    "Hats, sunglasses, earplugs",
+    "Sealed cigarette/cigar packs",
+    "Vape pens and e-cigarettes"
+  ],
+  "prohibited": [
+    "Chains, chain wallets, spikes",
+    "Metal containers (Yeti, Hydroflask)",
+    "Umbrellas",
+    "Large bags, backpacks, duffle bags",
+    "Camelbaks and refillable hydration packs",
+    "Chairs and inflatable loungers",
+    "Aerosol cans",
+    "Coolers and picnic baskets",
+    "Outside food/beverages (except sealed water)",
+    "Glass containers",
+    "Strollers",
+    "Video cameras, GoPros, professional cameras",
+    "Selfie sticks, lasers, drones",
+    "Totems, hula hoops, balloons, confetti, glow sticks",
+    "Weapons, drugs, pets (except service animals)"
+  ],
+  "security": "Metal detectors at all entrances. No on-site storage for prohibited items.",
+  "cashless": {
+    "insideVenue": ["Credit/debit", "Apple Pay", "Google Pay", "Tap to Pay", "Registered RFID wristband"],
+    "parking": ["Cash", "Card"],
+    "reverseAtm": {
+      "available": true,
+      "fee": 4.95,
+      "min": 5,
+      "max": 500
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "name": "Louder Than Life 2026",
+  "tagline": "America's Loudest Rock & Metal Festival",
+  "dates": {
+    "start": "2026-09-17",
+    "end": "2026-09-20",
+    "days": [
+      { "date": "2026-09-17", "label": "Thursday", "headliner": "Iron Maiden" },
+      { "date": "2026-09-18", "label": "Friday", "headliner": "My Chemical Romance" },
+      { "date": "2026-09-19", "label": "Saturday", "headliner": "Limp Bizkit" },
+      { "date": "2026-09-20", "label": "Sunday", "headliner": "Tool" }
+    ]
+  },
+  "venue": {
+    "name": "Highland Festival Grounds at Kentucky Expo Center",
+    "address": "937 Phillips Lane, Louisville, KY 40209",
+    "coordinates": { "lat": 38.1969, "lng": -85.7416 }
+  },
+  "gatesOpen": "10:45",
+  "bandCount": 200,
+  "stageCount": 7,
+  "rainOrShine": true,
+  "reEntry": {
+    "allowed": false,
+    "exceptions": ["Camping wristband holders", "Jampack Hotel + Admission package"]
+  },
+  "contacts": {
+    "info": "info@louderthanlifefestival.com",
+    "access": "access@louderthanlifefestival.com",
+    "frontGate": "customerservice@frontgatetickets.com"
+  },
+  "links": {
+    "official": "https://louderthanlifefestival.com/",
+    "passInfo": "https://louderthanlifefestival.com/pass-info/",
+    "parking": "https://louderthanlifefestival.com/parking-info/",
+    "schedule": "https://louderthanlifefestival.com/schedules/",
+    "registerWristband": "https://louderthanlifefestival.com/pass-info/"
+  }
+}

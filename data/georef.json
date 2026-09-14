@@ -1,0 +1,23 @@
+{
+  "venue": {
+    "name": "Kentucky Expo Center / Highland Festival Grounds",
+    "center": { "lat": 38.1969, "lng": -85.7416 }
+  },
+  "bounds": {
+    "west": -85.752,
+    "east": -85.728,
+    "north": 38.204,
+    "south": 38.188
+  },
+  "festivalMapPlane": {
+    "widthMeters": 1200,
+    "depthMeters": 900,
+    "description": "Official amenity map projected onto horizontal plane; map-percent coords map linearly to X/Z"
+  },
+  "satellite": {
+    "provider": "Esri World Imagery",
+    "tileUrl": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    "defaultZoom": 16,
+    "tileSizeMetersAtZoom16": 611
+  }
+}

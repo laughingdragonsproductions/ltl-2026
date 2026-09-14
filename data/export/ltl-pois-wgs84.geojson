@@ -1,0 +1,972 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "source": "LTL 2026 Virtual Map",
+    "crs": "EPSG:4326",
+    "venue": {
+      "name": "Kentucky Expo Center / Highland Festival Grounds",
+      "center": {
+        "lat": 38.1969,
+        "lng": -85.7416
+      }
+    },
+    "bounds": {
+      "west": -85.752,
+      "east": -85.728,
+      "north": 38.204,
+      "south": 38.188
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "louder",
+        "name": "Louder Stage",
+        "category": "stage",
+        "stageType": "main"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.73232,
+          38.19952,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "life",
+        "name": "Life Stage",
+        "category": "stage",
+        "stageType": "main"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.73088,
+          38.19888,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "loudmouth",
+        "name": "Loudmouth Stage",
+        "category": "stage",
+        "stageType": "secondary"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.73472,
+          38.1952,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "impact",
+        "name": "Impact Stage",
+        "category": "stage",
+        "stageType": "secondary"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74047999999999,
+          38.20112,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "decibel",
+        "name": "Decibel Stage",
+        "category": "stage",
+        "stageType": "secondary"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74911999999999,
+          38.19792,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "reverb",
+        "name": "Reverb Stage",
+        "category": "stage",
+        "stageType": "secondary"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74767999999999,
+          38.19632,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bourbon-bar",
+        "name": "Kroger Big Bourbon Bar",
+        "category": "stage",
+        "stageType": "activation"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.7388,
+          38.19728,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cardinal",
+        "name": "Cardinal Entrance",
+        "category": "entrance",
+        "requiresTier": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.7436,
+          38.20272,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kingdom",
+        "name": "Kentucky Kingdom Entrance",
+        "category": "entrance",
+        "requiresTier": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74192,
+          38.19408,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "highland",
+        "name": "Highland Entrance",
+        "category": "entrance",
+        "requiresTier": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.73808,
+          38.18992,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "camping",
+        "name": "Camping Entrance",
+        "category": "entrance",
+        "requiresTier": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.73952,
+          38.189280000000004,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "vip",
+        "name": "VIP Entrance",
+        "category": "entrance",
+        "requiresTier": "vip"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.73567999999999,
+          38.19792,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "topshelf",
+        "name": "Top Shelf Entrance",
+        "category": "entrance",
+        "requiresTier": "topshelf"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.72919999999999,
+          38.1984,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "vip-green",
+        "name": "VIP Area",
+        "category": "vip-zone",
+        "tier": "vip"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.734,
+          38.19728,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "topshelf-red",
+        "name": "Angel's Envy Top Shelf VIP",
+        "category": "vip-zone",
+        "tier": "topshelf"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.72991999999999,
+          38.199200000000005,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "food-1",
+        "name": "Food Zone 1",
+        "category": "food",
+        "zoneId": 1
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.73639999999999,
+          38.194720000000004,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "food-2",
+        "name": "Food Zone 2",
+        "category": "food",
+        "zoneId": 2
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74119999999999,
+          38.1952,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "food-3",
+        "name": "Food Zone 3",
+        "category": "food",
+        "zoneId": 3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74,
+          38.1968,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "food-4",
+        "name": "Food Zone 4",
+        "category": "food",
+        "zoneId": 4
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74672,
+          38.19728,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "food-5",
+        "name": "Food Zone 5",
+        "category": "food",
+        "zoneId": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74839999999999,
+          38.1952,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "food-6",
+        "name": "Food Zone 6",
+        "category": "food",
+        "zoneId": 6
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74239999999999,
+          38.20048,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "food-7",
+        "name": "Food Zone 7 (VIP Only)",
+        "category": "food",
+        "zoneId": 7
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.73375999999999,
+          38.19632,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "partner-1",
+        "name": "Partner Activation 1",
+        "category": "partner"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.7448,
+          38.1984,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "partner-2",
+        "name": "Partner Activation 2",
+        "category": "partner"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74288,
+          38.1976,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "partner-3",
+        "name": "Partner Activation 3",
+        "category": "partner"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.746,
+          38.196,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "partner-4",
+        "name": "Partner Activation 4",
+        "category": "partner"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.7376,
+          38.199200000000005,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "partner-5",
+        "name": "Partner Activation 5",
+        "category": "partner"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.73519999999999,
+          38.1936,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "partner-6",
+        "name": "Partner Activation 6",
+        "category": "partner"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.7436,
+          38.1936,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "partner-7",
+        "name": "The Music Experience",
+        "category": "partner"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74,
+          38.19792,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "partner-8",
+        "name": "Kroger Big Bourbon Bar",
+        "category": "partner"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.7388,
+          38.19728,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "partner-9",
+        "name": "Partner Activation 9",
+        "category": "partner"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.73711999999999,
+          38.19632,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "partner-10",
+        "name": "Partner Activation 10",
+        "category": "partner"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74528,
+          38.19952,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "partner-11",
+        "name": "Partner Activation 11",
+        "category": "partner"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74119999999999,
+          38.19248,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "partner-12",
+        "name": "Wanderink Tattoo Studio",
+        "category": "partner"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.73808,
+          38.19568,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "partner-13",
+        "name": "Partner Activation 13",
+        "category": "partner"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74719999999999,
+          38.19408,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "partner-14",
+        "name": "Partner Activation 14",
+        "category": "partner"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74047999999999,
+          38.19312,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "partner-15",
+        "name": "Tito's Handmade Vodka",
+        "category": "partner"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.73952,
+          38.1984,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "partner-16",
+        "name": "Partner Activation 16",
+        "category": "partner"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.73567999999999,
+          38.19248,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "partner-17",
+        "name": "Partner Activation 17",
+        "category": "partner"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74239999999999,
+          38.194720000000004,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kingdom-A",
+        "name": "Lightning Run",
+        "category": "kingdom"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74288,
+          38.191520000000004,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kingdom-B",
+        "name": "Storm Chaser",
+        "category": "kingdom"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74192,
+          38.19088,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kingdom-C",
+        "name": "Kentucky Flyer",
+        "category": "kingdom"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74047999999999,
+          38.1912,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kingdom-D",
+        "name": "T3",
+        "category": "kingdom"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.7436,
+          38.192,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kingdom-E",
+        "name": "Cyclos",
+        "category": "kingdom"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74,
+          38.190400000000004,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kingdom-F",
+        "name": "Raging Rapids",
+        "category": "kingdom"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74144,
+          38.18992,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kingdom-G",
+        "name": "Breakdance",
+        "category": "kingdom"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74432,
+          38.19088,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kingdom-H",
+        "name": "Cyclone",
+        "category": "kingdom"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74096,
+          38.19184,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kingdom-I",
+        "name": "FearFall",
+        "category": "kingdom"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74239999999999,
+          38.192800000000005,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kingdom-J",
+        "name": "Scream Xtreme",
+        "category": "kingdom"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.73952,
+          38.191520000000004,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kingdom-K",
+        "name": "King Louie's Playland",
+        "category": "kingdom"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74336,
+          38.19312,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kingdom-L",
+        "name": "Giant Wheel",
+        "category": "kingdom"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.7388,
+          38.19248,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kingdom-M",
+        "name": "Bluebeard's Bounty",
+        "category": "kingdom"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.7448,
+          38.192800000000005,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kingdom-N",
+        "name": "Cobra's Curse",
+        "category": "kingdom"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74047999999999,
+          38.19248,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kingdom-O",
+        "name": "Roller Skater",
+        "category": "kingdom"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74383999999999,
+          38.19024,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kingdom-P",
+        "name": "Starship 3000",
+        "category": "kingdom"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74,
+          38.19312,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kingdom-Q",
+        "name": "Cyclone Splash",
+        "category": "kingdom"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74192,
+          38.19216,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kingdom-R",
+        "name": "Ferris Wheel Jr",
+        "category": "kingdom"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74288,
+          38.19344,
+          0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kingdom-S",
+        "name": "Kingdom Coaster",
+        "category": "kingdom"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -85.74096,
+          38.190560000000005,
+          0
+        ]
+      }
+    }
+  ]
+}

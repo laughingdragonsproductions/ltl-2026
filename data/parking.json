@@ -1,0 +1,50 @@
+{
+  "note": "Parking is sold separately from festival admission. VIP does not include parking.",
+  "onsite": {
+    "pricePerDay": 40,
+    "payment": ["Cash", "Card"],
+    "policy": "First-come, first-served",
+    "opensBeforeGates": "90 minutes",
+    "lots": ["E", "F", "H", "B", "W", "V"],
+    "gates": [1, 4, 6],
+    "overnight": false,
+    "reEntry": "If you leave the lot you must repurchase parking",
+    "rvAllowed": false
+  },
+  "accessible": {
+    "lot": "Lot B",
+    "gate": 1,
+    "requires": ["Valid disabled parking placard/permit/plate", "Proof it belongs to you"]
+  },
+  "premium": {
+    "provider": "ParkMobile",
+    "note": "4-day reserved off-site lots around KEC; single-use unless noted"
+  },
+  "rideshare": {
+    "location": "Army National Guard Recruiter",
+    "address": "2729 Crittenden Dr, Louisville, KY 40209"
+  },
+  "shuttles": {
+    "downtown": {
+      "provider": "Pegasus",
+      "route": "Kentucky International Convention Center to festival",
+      "hours": "10:00 AM - midnight daily",
+      "frequency": "Every 15-25 minutes",
+      "fourDayPass": 175
+    },
+    "parcTarc": {
+      "parkAt": "PARC garage, 115 W Jefferson St",
+      "price": 20,
+      "includes": "Round-trip TARC for everyone in car",
+      "bus": "#2 from S 1st & W Liberty",
+      "dropOff": "Phillips Lane near Gate 1",
+      "return": "Crittenden near Gate 4"
+    }
+  },
+  "entranceParkingHints": [
+    { "entrance": "Highland", "bestFor": ["Camping", "On-site general parking", "VIP if parking south lots"] },
+    { "entrance": "Cardinal", "bestFor": ["Rideshare drop-off area", "North approach"] },
+    { "entrance": "VIP Entrance", "bestFor": ["VIP laminate holders entering near Main Merch"] },
+    { "entrance": "Top Shelf Entrance", "bestFor": ["Top Shelf credential holders, east side"] }
+  ]
+}

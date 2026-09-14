@@ -1,0 +1,63 @@
+{
+  "entrances": [
+    {
+      "id": "cardinal",
+      "name": "Cardinal Entrance",
+      "side": "north",
+      "mapPosition": { "x": 35, "y": 8 },
+      "bestFor": ["Rideshare", "North parking approach", "Cardinal GA lockers"],
+      "boxOffice": true,
+      "confidence": "confirmed"
+    },
+    {
+      "id": "kingdom",
+      "name": "Kentucky Kingdom Entrance",
+      "side": "center-west",
+      "mapPosition": { "x": 42, "y": 62 },
+      "bestFor": ["Kentucky Kingdom rides (included with GA)", "Zone 2 food"],
+      "confidence": "confirmed"
+    },
+    {
+      "id": "highland",
+      "name": "Highland Entrance",
+      "side": "south",
+      "mapPosition": { "x": 58, "y": 88 },
+      "bestFor": ["Camping", "General parking", "Highland GA lockers"],
+      "boxOffice": true,
+      "willCall": true,
+      "confidence": "confirmed"
+    },
+    {
+      "id": "camping",
+      "name": "Camping Entrance",
+      "side": "south",
+      "mapPosition": { "x": 52, "y": 92 },
+      "bestFor": ["Campers with camping wristband", "Daily re-entry exception"],
+      "confidence": "confirmed"
+    },
+    {
+      "id": "vip",
+      "name": "VIP Entrance",
+      "side": "east-center",
+      "mapPosition": { "x": 68, "y": 38 },
+      "requiresTier": "vip",
+      "bestFor": ["VIP laminate + RFID holders", "Near Main Merch"],
+      "confidence": "confirmed"
+    },
+    {
+      "id": "topshelf",
+      "name": "Top Shelf Entrance",
+      "side": "east",
+      "mapPosition": { "x": 95, "y": 35 },
+      "requiresTier": "topshelf",
+      "bestFor": ["Angel's Envy Top Shelf credential holders"],
+      "confidence": "confirmed"
+    }
+  ],
+  "boxOfficeWillCall": {
+    "name": "Box Office & Will Call",
+    "near": "Highland Entrance",
+    "mapPosition": { "x": 55, "y": 85 },
+    "hours": "Thu-Sun 9:30am-10:00pm"
+  }
+}

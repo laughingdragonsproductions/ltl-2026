@@ -1,0 +1,54 @@
+{
+  "lastUpdated": "2026-09-14",
+  "sources": [
+    {
+      "id": "official-pass-info",
+      "title": "Louder Than Life Pass Info",
+      "url": "https://louderthanlifefestival.com/pass-info/",
+      "type": "official"
+    },
+    {
+      "id": "official-passes",
+      "title": "Louder Than Life Passes",
+      "url": "https://louderthanlifefestival.com/passes/",
+      "type": "official"
+    },
+    {
+      "id": "official-parking",
+      "title": "Louder Than Life Parking Info",
+      "url": "https://louderthanlifefestival.com/parking-info/",
+      "type": "official"
+    },
+    {
+      "id": "official-festival-info",
+      "title": "Louder Than Life Festival Info",
+      "url": "https://louderthanlifefestival.com/festival-info/",
+      "type": "official"
+    },
+    {
+      "id": "official-schedule",
+      "title": "Louder Than Life Schedules",
+      "url": "https://louderthanlifefestival.com/schedules/",
+      "type": "official"
+    },
+    {
+      "id": "official-amenity-map",
+      "title": "Louder Than Life 2026 Official Amenity Map",
+      "url": "user-provided",
+      "type": "official-map",
+      "file": "assets/maps/ltl-2026-official-amenity-map.png"
+    },
+    {
+      "id": "wlky-map",
+      "title": "WLKY — 2026 stage map with Impact Stage",
+      "url": "https://www.wlky.com/article/map-for-2026-louder-than-life-includes-new-fully-shaded-stage/73456679",
+      "type": "news"
+    },
+    {
+      "id": "courier-journal-parking",
+      "title": "Courier Journal — Parking and road closures",
+      "url": "https://www.courier-journal.com/story/entertainment/arts/music/2026/09/14/louder-than-life-2026-festival-parking-shuttle-service-road-closures-louisville-kentucky-expo-center/91257117007/",
+      "type": "news"
+    }
+  ]
+}
