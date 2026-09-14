@@ -21,10 +21,11 @@ Open **http://localhost:3000** → **Preview map** → `/map` for the base build
 ### Map base build (current scope)
 
 - **Home** (`/`) — coming soon landing with **Preview map** link
-- **Map** (`/map`) — official amenity image + tap pins (stages, entrances, VIP, POIs)
+- **Map** (`/map`) — **Live GPS** (default): OpenStreetMap + your blue dot, colored pins for stages/entrances/VIP, distance when you tap a pin
+- **Official map** tab — static amenity image fallback (no GPS)
 - **Pass tier** toggle in header (GA / VIP / Top Shelf) filters VIP-only pins
-- **Layer chips** toggle categories on/off
-- Satellite overlay and other routes exist in repo but are not linked yet
+- **Layer chips** toggle categories; optional satellite + festival overlay
+- GPS requires HTTPS in production (ltl26.com) and location permission on device
 
 Test on your phone: run dev with `npm run dev -- -H 0.0.0.0` and open your PC's LAN IP on the same Wi‑Fi.
 

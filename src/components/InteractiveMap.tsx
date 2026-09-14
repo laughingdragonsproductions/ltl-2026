@@ -2,130 +2,26 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
-import { data, tierHasAccess, type PassTier } from "@/lib/data";
+import type { PassTier } from "@/lib/data";
+import {
+  buildAllMapPoints,
+  DEFAULT_LAYERS,
+  filterMapPoints,
+  type LayerKey,
+  type MapPoint,
+} from "@/lib/map-points";
 import { useTier } from "@/lib/tier-context";
-
-type LayerKey =
-  | "stages"
-  | "entrances"
-  | "vip"
-  | "food"
-  | "partners"
-  | "kingdom"
-  | "pois";
-
-type MapPoint = {
-  id: string;
-  name: string;
-  x: number;
-  y: number;
-  layer: LayerKey;
-  detail?: string;
-  tiers?: string[];
-};
 
 export function InteractiveMap() {
   const { tier } = useTier();
-  const [layers, setLayers] = useState<Record<LayerKey, boolean>>({
-    stages: true,
-    entrances: true,
-    vip: true,
-    food: false,
-    partners: false,
-    kingdom: false,
-    pois: true,
-  });
+  const [layers, setLayers] = useState(DEFAULT_LAYERS);
   const [selected, setSelected] = useState<MapPoint | null>(null);
 
-  const points = useMemo(() => {
-    const all: MapPoint[] = [];
-
-    for (const s of data.stages.stages) {
-      all.push({
-        id: s.id,
-        name: s.name,
-        x: s.mapPosition.x,
-        y: s.mapPosition.y,
-        layer: "stages",
-        detail: s.description,
-      });
-    }
-
-    for (const e of data.entrances.entrances) {
-      all.push({
-        id: e.id,
-        name: e.name,
-        x: e.mapPosition.x,
-        y: e.mapPosition.y,
-        layer: "entrances",
-        detail: e.bestFor?.join(" · "),
-        tiers: e.requiresTier ? [e.requiresTier] : ["ga", "vip", "topshelf"],
-      });
-    }
-
-    for (const z of data.vipZones.zones) {
-      all.push({
-        id: z.id,
-        name: z.name,
-        x: z.mapPosition.x,
-        y: z.mapPosition.y,
-        layer: "vip",
-        detail: z.amenities.slice(0, 4).join(" · "),
-        tiers: [z.tier],
-      });
-    }
-
-    for (const f of data.foodZones.zones) {
-      all.push({
-        id: `food-${f.id}`,
-        name: f.name,
-        x: f.mapPosition.x,
-        y: f.mapPosition.y,
-        layer: "food",
-        detail: f.vendors.slice(0, 3).join(", "),
-        tiers: f.tiers,
-      });
-    }
-
-    for (const p of data.partners.partners) {
-      all.push({
-        id: `partner-${p.id}`,
-        name: p.name,
-        x: p.mapPosition.x,
-        y: p.mapPosition.y,
-        layer: "partners",
-        detail: p.description,
-      });
-    }
-
-    for (const a of data.kingdom.attractions) {
-      all.push({
-        id: `kingdom-${a.id}`,
-        name: `${a.id}: ${a.name}`,
-        x: a.mapPosition.x,
-        y: a.mapPosition.y,
-        layer: "kingdom",
-      });
-    }
-
-    for (const feature of data.pois.features) {
-      const [x, y] = feature.geometry.coordinates;
-      all.push({
-        id: feature.properties.id,
-        name: feature.properties.name,
-        x,
-        y,
-        layer: "pois",
-        tiers: feature.properties.tiers,
-      });
-    }
-
-    return all.filter(
-      (p) =>
-        layers[p.layer] &&
-        tierHasAccess(tier, p.tiers)
-    );
-  }, [layers, tier]);
+  const allPoints = useMemo(() => buildAllMapPoints(), []);
+  const points = useMemo(
+    () => filterMapPoints(allPoints, layers, tier),
+    [allPoints, layers, tier]
+  );
 
   return (
     <div className="space-y-4">
@@ -193,8 +89,7 @@ export function InteractiveMap() {
       )}
 
       <p className="text-xs text-[var(--ld-muted)]">
-        {points.length} pins visible · Tap a dot for details · Pin positions are percentage
-        coords on the official 2026 map
+        {points.length} pins · Static official map view (no GPS)
       </p>
     </div>
   );
