@@ -1,6 +1,21 @@
+import Image from "next/image";
+
 export default function HomePage() {
   return (
-    <div className="flex min-h-[calc(100vh-8rem)] flex-col items-center justify-center px-4 text-center">
+    <div className="relative flex min-h-[calc(100vh-8rem)] flex-col items-center justify-center overflow-hidden px-4 text-center">
+      <div className="pointer-events-none absolute inset-0 opacity-[0.12]">
+        <Image
+          src="/maps/ltl-2026-official-amenity-map.png"
+          alt=""
+          fill
+          priority
+          className="object-cover object-center"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--ld-black)] via-[var(--ld-black)]/80 to-[var(--ld-black)]" />
+      </div>
+
+      <div className="relative z-10 flex flex-col items-center">
       <p className="text-xs font-bold uppercase tracking-[0.35em] text-[var(--ld-purple)]">
         Louder Than Life 2026
       </p>
@@ -24,6 +39,7 @@ export default function HomePage() {
       <p className="mt-8 max-w-lg text-sm text-[var(--ld-muted)]">
         Sept 17–20, 2026 · Highland Festival Grounds · Kentucky Expo Center
       </p>
+      </div>
     </div>
   );
 }

@@ -32,7 +32,18 @@ npx vercel --prod
 
 ## Repo
 
-GitHub: `laughingdragonsproductions/ltl-2026` (or as configured)
+**https://github.com/laughingdragonsproductions/ltl-2026**
+
+### First-time Vercel setup
+
+1. [Import the GitHub repo](https://vercel.com/new) into Vercel (Laughing Dragons account).
+2. Framework preset: **Next.js** — defaults are fine; `vercel.json` is included.
+3. Deploy once on the default `*.vercel.app` URL to confirm the build.
+4. **Settings → Domains** → add `ltl26.com` and `www.ltl26.com`.
+5. At your domain registrar, set:
+   - **A** `@` → `76.76.21.21`
+   - **CNAME** `www` → `cname.vercel-dns.com`
+6. Wait for Vercel to show **Valid Configuration** and issue HTTPS (usually a few minutes).
 
 ## Data
 
