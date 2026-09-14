@@ -11,14 +11,16 @@ export function SiteFooter() {
         Unofficial fan project · Not affiliated with Danny Wimmer Presents or Louder Than
         Life
       </p>
-      <p className="mt-1">Support keeps servers running · Pay to hide promo ads</p>
+      <p className="mt-1">
+        Costs real money to make and host · $5 unlocks all features &amp; removes all ads
+      </p>
       {STRIPE_LINK && (
         <p className="mt-2">
           <a
             href={STRIPE_LINK}
             className="font-semibold text-[var(--ld-neon-green)] hover:underline"
           >
-            Unlock overlay + ad-free ($5)
+            Unlock everything — $5
           </a>
         </p>
       )}

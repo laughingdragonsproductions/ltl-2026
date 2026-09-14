@@ -21,13 +21,14 @@ export function SupportModal() {
           Fan-built map
         </p>
         <h2 id="support-title" className="mt-2 text-xl font-black text-[var(--ld-neon-green)]">
-          You&apos;ve had 10 minutes to find where you&apos;re going
+          You&apos;ve had 10 minutes on the virtual overlay
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-[var(--ld-text)]">
-          The basic tap map stays free.{" "}
-          <strong className="text-white">$5</strong> unlocks the{" "}
-          <strong className="text-white">virtual overlay</strong> (live GPS + aligned amenity
-          map) through Sunday — and hides promo ads.
+          This unofficial LTL companion costs real money to make and host. The basic tap map
+          stays free.{" "}
+          <strong className="text-white">$5</strong> unlocks{" "}
+          <strong className="text-white">all features</strong> and removes{" "}
+          <strong className="text-white">all ads</strong> — always.
         </p>
 
         {STRIPE_LINK ? (
@@ -35,7 +36,7 @@ export function SupportModal() {
             href={STRIPE_LINK}
             className="mt-5 flex w-full items-center justify-center rounded-full bg-[var(--ld-neon-green)] px-6 py-3 text-sm font-black text-black transition hover:opacity-90"
           >
-            Unlock $5 — Card / Apple Pay
+            Unlock all features — $5
           </a>
         ) : (
           <p className="mt-5 rounded-lg border border-yellow-600/40 bg-yellow-950/30 px-3 py-2 text-xs text-yellow-200">
@@ -65,7 +66,7 @@ export function SupportModal() {
         </button>
 
         <p className="mt-3 text-center text-[10px] text-[var(--ld-muted)]">
-          Unofficial fan guide · Support keeps servers running
+          Unofficial fan guide · Real hosting costs · Basic map always free
         </p>
       </div>
     </div>

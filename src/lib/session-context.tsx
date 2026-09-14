@@ -108,10 +108,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       remainingMs: remainingMs === Infinity ? 0 : remainingMs,
       remainingLabel:
         unlocked && state.unlockedUntil
-          ? "Overlay unlocked through Sunday"
+          ? "All features · Ad-free"
           : overlayTrialActive
             ? `Overlay trial: ${formatRemaining(remainingMs === Infinity ? 0 : remainingMs)}`
-            : `10 free min on Virtual Overlay`,
+            : `10 free min · then $5 for all features`,
       unlocked,
       expired,
       overlayTrialActive,

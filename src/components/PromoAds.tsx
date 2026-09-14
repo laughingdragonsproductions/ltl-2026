@@ -105,7 +105,7 @@ export function LitprintzAssociation() {
         LitPrintz.com
       </a>
       {unlocked && (
-        <span className="ml-2 text-[var(--ld-neon-green)]">· Ad-free supporter</span>
+        <span className="ml-2 text-[var(--ld-neon-green)]">· All ads removed</span>
       )}
     </p>
   );

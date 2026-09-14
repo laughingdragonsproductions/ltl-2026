@@ -84,14 +84,14 @@ function WalkthroughPaywall({ children }: { children: React.ReactNode }) {
     return (
       <div className="rounded-2xl border border-[var(--ld-purple-dim)]/50 bg-black/80 p-8 text-center">
         <p className="text-sm text-[var(--ld-text)]">
-          3D walk is part of the premium overlay package. Basic map is still free.
+          $5 unlocks all features (overlay, 3D walk) and removes all ads. Basic map stays free.
         </p>
         <button
           type="button"
           onClick={openSupportModal}
           className="mt-4 rounded-full bg-[var(--ld-neon-green)] px-8 py-3 text-sm font-black text-black"
         >
-          Unlock — $5
+          Unlock all features — $5
         </button>
         <Link href="/map" className="mt-3 block text-sm text-[var(--ld-muted)] underline">
           Back to free map

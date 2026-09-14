@@ -239,9 +239,10 @@ export function VirtualOverlayMap() {
             Virtual overlay
           </p>
           <p className="mt-1 text-sm text-[var(--ld-text)]">
-            Live satellite + official map aligned on real GPS. See where you are vs stages,
-            VIP, and food. <strong className="text-[var(--ld-neon-green)]">10 free minutes</strong>{" "}
-            then $5 unlock through Sunday.
+            Live satellite + official map aligned on real GPS.{" "}
+            <strong className="text-[var(--ld-neon-green)]">10 free minutes</strong>, then{" "}
+            <strong className="text-white">$5</strong> unlocks all features and removes all ads
+            always.
           </p>
         </div>
 
@@ -306,15 +307,15 @@ export function VirtualOverlayMap() {
                 Trial ended
               </p>
               <p className="mt-2 max-w-sm text-sm text-[var(--ld-text)]">
-                The basic tap map stays free. Unlock the virtual overlay for live GPS + aligned
-                festival map through Sunday.
+                This unofficial LTL companion costs real money to make and host. The basic map
+                stays free. $5 unlocks all features and removes all ads — always.
               </p>
               <button
                 type="button"
                 onClick={openSupportModal}
                 className="mt-6 rounded-full bg-[var(--ld-neon-green)] px-8 py-3 text-sm font-black text-black"
               >
-                Unlock overlay — $5
+                Unlock all features — $5
               </button>
             </div>
           ) : (

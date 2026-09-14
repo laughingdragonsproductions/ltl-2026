@@ -47,9 +47,10 @@ function SuccessContent() {
           <p className="text-xs font-bold uppercase tracking-widest text-[var(--ld-neon-green)]">
             Thank you
           </p>
-          <h1 className="mt-2 text-2xl font-black text-white">Map unlocked through Sunday</h1>
+          <h1 className="mt-2 text-2xl font-black text-white">All features unlocked</h1>
           <p className="mt-3 text-sm text-[var(--ld-muted)]">
-            Your $5 support keeps this fan project online for everyone at the fest.
+            All ads are removed. Thank you — your $5 helps keep this unofficial companion
+            online.
           </p>
           <Link
             href="/map"

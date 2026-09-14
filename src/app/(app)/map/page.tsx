@@ -35,8 +35,8 @@ export default function MapPage() {
           </p>
           <p className="mt-1 text-lg font-black text-white">Virtual Overlay</p>
           <p className="mt-1 text-sm text-[var(--ld-muted)]">
-            Live GPS + satellite with the official map aligned on the real grounds. 10 free
-            minutes, then $5 through Sunday.
+            Live GPS + aligned amenity map. 10 free minutes, then $5 unlocks all features and
+            removes all ads always.
           </p>
         </div>
         <span className="shrink-0 text-2xl text-[var(--ld-neon-green)]" aria-hidden>

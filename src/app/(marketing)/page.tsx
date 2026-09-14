@@ -33,9 +33,9 @@ export default function HomePage() {
             Fan-built companion
           </p>
           <p className="mt-4 text-sm leading-relaxed text-[var(--ld-text)]">
-            Free official tap map forever.{" "}
-            <strong className="text-white">Virtual overlay</strong> (live GPS) gets 10 free
-            minutes, then $5 unlock through Sunday.
+            This unofficial LTL companion costs real money to make and host. Free official tap
+            map forever — <strong className="text-white">$5</strong> unlocks all features and
+            removes all ads always.
           </p>
         </div>
 
