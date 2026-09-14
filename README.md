@@ -1,13 +1,14 @@
 # LTL26 — Louder Than Life 2026 Interactive Map
 
-**https://ltl26.com** — unofficial fan festival companion.
+**https://ltl26.com/map** — unofficial fan festival companion.
 
 Created by [Laughing Dragons Productions](https://brandonsparks.com).
 
 ## Live site
 
 - Production: **https://ltl26.com** (Vercel + HTTPS)
-- Coming soon landing → full map, schedule, VIP guides rolling out before Sept 17, 2026
+- Default share URL: **https://ltl26.com/map**
+- Mobile-first: pinch map, live GPS, schedule, VIP guides, 10-min free session
 
 ## Local development
 
@@ -16,47 +17,36 @@ npm install
 npm run dev
 ```
 
-Open **http://localhost:3000** → **Preview map** → `/map` for the base build test.
+Open **http://localhost:3000/map**
 
-### Map base build (current scope)
+## Deploy (Vercel)
 
-- **Home** (`/`) — coming soon landing with **Preview map** link
-- **Map** (`/map`) — **Live GPS** (default): OpenStreetMap + your blue dot, colored pins for stages/entrances/VIP, distance when you tap a pin
-- **Official map** tab — static amenity image fallback (no GPS)
-- **Pass tier** toggle in header (GA / VIP / Top Shelf) filters VIP-only pins
-- **Layer chips** toggle categories; optional satellite + festival overlay
-- GPS requires HTTPS in production (ltl26.com) and location permission on device
+1. Import **laughingdragonsproductions/ltl-2026** on [vercel.com/new](https://vercel.com/new) (LDP account).
+2. Add environment variables (see `.env.example`):
+   - `STRIPE_SECRET_KEY`
+   - `NEXT_PUBLIC_STRIPE_PAYMENT_LINK`
+   - `NEXT_PUBLIC_KOFI_URL` (optional)
+3. Deploy — auto-builds on every push to `master`.
+4. **Settings → Domains** → `ltl26.com` + `www.ltl26.com`
+5. DNS: **A** `@` → `76.76.21.21`, **CNAME** `www` → `cname.vercel-dns.com`
 
-Test on your phone: run dev with `npm run dev -- -H 0.0.0.0` and open your PC's LAN IP on the same Wi‑Fi.
+## Stripe setup
 
-## Deploy
-
-```bash
-npx vercel --prod
-```
-
-### Custom domain (ltl26.com)
-
-1. Vercel project → Settings → Domains → add `ltl26.com` and `www.ltl26.com`
-2. At your registrar, point DNS to Vercel:
-   - **A** `@` → `76.76.21.21`
-   - **CNAME** `www` → `cname.vercel-dns.com`
-3. Vercel provisions HTTPS automatically.
+1. [Stripe Dashboard](https://dashboard.stripe.com) → Business name → public-safe name (e.g. “LTL Festival Map”).
+2. Product → $5 one-time “LTL 2026 Map Support”.
+3. Payment Link → redirect to `https://ltl26.com/support/success?session_id={CHECKOUT_SESSION_ID}`.
 
 ## Repo
 
 **https://github.com/laughingdragonsproductions/ltl-2026**
 
-### First-time Vercel setup
+## Features
 
-1. [Import the GitHub repo](https://vercel.com/new) into Vercel (Laughing Dragons account).
-2. Framework preset: **Next.js** — defaults are fine; `vercel.json` is included.
-3. Deploy once on the default `*.vercel.app` URL to confirm the build.
-4. **Settings → Domains** → add `ltl26.com` and `www.ltl26.com`.
-5. At your domain registrar, set:
-   - **A** `@` → `76.76.21.21`
-   - **CNAME** `www` → `cname.vercel-dns.com`
-6. Wait for Vercel to show **Valid Configuration** and issue HTTPS (usually a few minutes).
+- **2D tap map** — pinch/pan/zoom on official amenity art
+- **Live GPS** — OpenStreetMap + your location vs stages
+- **Schedule** — NOW/NEXT, overlap hints, shareable `?day=&stage=&tier=` links
+- **Session** — 10 min free, then $5 Stripe unlock through Sept 21
+- **PWA** — add to home screen (`manifest.json`)
 
 ## Data
 

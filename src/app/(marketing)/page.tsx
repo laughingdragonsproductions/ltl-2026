@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ShareButton } from "@/components/ShareButton";
 
 export default function HomePage() {
   return (
@@ -24,29 +25,32 @@ export default function HomePage() {
           ltl26.com
         </h1>
         <p className="mt-3 text-lg text-[var(--ld-muted)] sm:text-xl">
-          Interactive festival map
+          Live map & schedule
         </p>
 
         <div className="ld-glow-purple mt-10 max-w-md rounded-2xl border border-[var(--ld-purple)]/50 bg-[var(--ld-purple-dim)]/20 px-8 py-10">
           <p className="text-sm font-semibold uppercase tracking-widest text-[var(--ld-neon-green)]">
-            Coming Soon
+            Fan-built companion
           </p>
           <p className="mt-4 text-sm leading-relaxed text-[var(--ld-text)]">
-            Full interactive map, VIP guides, set times, and more — launching before gates
-            open <strong className="text-white">Sept 17–20</strong> in Louisville.
+            Pinch-zoom map, live GPS, set times, VIP guides —{" "}
+            <strong className="text-white">10 free minutes</strong> to find your stage, then
+            $5 unlock through Sunday.
           </p>
         </div>
 
         <Link
           href="/map"
-          className="mt-8 inline-flex items-center gap-2 rounded-full border border-[var(--ld-neon-green)]/60 bg-[var(--ld-neon-green)]/10 px-6 py-3 text-sm font-bold uppercase tracking-wide text-[var(--ld-neon-green)] transition hover:bg-[var(--ld-neon-green)]/20"
+          className="mt-8 inline-flex min-h-[44px] items-center gap-2 rounded-full border border-[var(--ld-neon-green)]/60 bg-[var(--ld-neon-green)] px-8 py-3 text-sm font-black uppercase tracking-wide text-black transition hover:opacity-90"
         >
-          Preview map
+          Open map
           <span aria-hidden>→</span>
         </Link>
-        <p className="mt-2 text-[10px] uppercase tracking-wider text-[var(--ld-muted)]">
-          Base build — tap pins to test
-        </p>
+
+        <ShareButton
+          url="https://ltl26.com/map"
+          className="mt-4"
+        />
 
         <p className="mt-8 max-w-lg text-sm text-[var(--ld-muted)]">
           Sept 17–20, 2026 · Highland Festival Grounds · Kentucky Expo Center

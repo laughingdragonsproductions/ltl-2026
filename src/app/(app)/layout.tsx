@@ -1,10 +1,5 @@
-import { Nav } from "@/components/Nav";
+import { AppShell } from "@/components/AppShell";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <>
-      <Nav />
-      <div className="mx-auto w-full max-w-6xl px-4 py-6">{children}</div>
-    </>
-  );
+  return <AppShell>{children}</AppShell>;
 }

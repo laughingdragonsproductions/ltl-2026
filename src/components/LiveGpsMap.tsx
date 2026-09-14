@@ -15,6 +15,7 @@ import {
   type MapPoint,
 } from "@/lib/map-points";
 import { useTier } from "@/lib/tier-context";
+import { PaywallGate } from "@/components/PaywallGate";
 
 type UserLocation = { lat: number; lng: number };
 
@@ -266,6 +267,7 @@ export function LiveGpsMap() {
   }
 
   return (
+    <PaywallGate>
     <div className="space-y-4">
       <div className="flex flex-wrap gap-2">
         {(Object.keys(layers) as LayerKey[]).map((key) => (
@@ -340,5 +342,6 @@ export function LiveGpsMap() {
         {locStatus === "active" && userLocation && " GPS active."}
       </p>
     </div>
+    </PaywallGate>
   );
 }
