@@ -15,8 +15,6 @@ import {
   type MapPoint,
 } from "@/lib/map-points";
 import { useTier } from "@/lib/tier-context";
-import { PaywallGate } from "@/components/PaywallGate";
-import { useSession } from "@/lib/session-context";
 
 type UserLocation = { lat: number; lng: number };
 
@@ -43,7 +41,6 @@ function pointsToGeoJson(points: MapPoint[]): GeoJSON.FeatureCollection {
 
 export function VirtualOverlayMap() {
   const { tier } = useTier();
-  const { expired, unlocked, openSupportModal } = useSession();
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const popupRef = useRef<maplibregl.Popup | null>(null);
@@ -63,10 +60,8 @@ export function VirtualOverlayMap() {
   );
   const geojson = useMemo(() => pointsToGeoJson(visiblePoints), [visiblePoints]);
 
-  const blocked = expired && !unlocked;
-
   useEffect(() => {
-    if (!containerRef.current || mapRef.current || blocked) return;
+    if (!containerRef.current || mapRef.current) return;
 
     const map = new maplibregl.Map({
       container: containerRef.current,
@@ -191,7 +186,7 @@ export function VirtualOverlayMap() {
       mapRef.current = null;
       setMapReady(false);
     };
-  }, [blocked]);
+  }, []);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -232,17 +227,14 @@ export function VirtualOverlayMap() {
   }
 
   return (
-    <PaywallGate>
       <div className="space-y-4">
         <div className="rounded-xl border border-[var(--ld-purple)]/40 bg-[var(--ld-purple-dim)]/15 p-4">
-          <p className="text-xs font-bold uppercase tracking-widest text-[var(--ld-purple)]">
-            Virtual overlay
+          <p className="text-xs font-bold uppercase tracking-widest text-[var(--ld-neon-green)]">
+            Free · GPS overlay
           </p>
           <p className="mt-1 text-sm text-[var(--ld-text)]">
-            Live satellite + official map aligned on real GPS.{" "}
-            <strong className="text-[var(--ld-neon-green)]">10 free minutes</strong>, then{" "}
-            <strong className="text-white">$5</strong> unlocks all features and removes all ads
-            always.
+            Live satellite + official map aligned on real GPS. Basic map and this overlay are free.{" "}
+            <strong className="text-white">$5</strong> unlocks the walking 3D map and all games.
           </p>
         </div>
 
@@ -301,26 +293,7 @@ export function VirtualOverlayMap() {
         </div>
 
         <div className="relative overflow-hidden rounded-xl border border-[var(--ld-purple-dim)]/50 ld-glow-purple">
-          {blocked ? (
-            <div className="flex h-[min(70vh,560px)] min-h-[320px] flex-col items-center justify-center bg-black/80 p-6 text-center">
-              <p className="text-xs font-bold uppercase tracking-widest text-[var(--ld-purple)]">
-                Trial ended
-              </p>
-              <p className="mt-2 max-w-sm text-sm text-[var(--ld-text)]">
-                This unofficial LTL companion costs real money to make and host. The basic map
-                stays free. $5 unlocks all features and removes all ads — always.
-              </p>
-              <button
-                type="button"
-                onClick={openSupportModal}
-                className="mt-6 rounded-full bg-[var(--ld-neon-green)] px-8 py-3 text-sm font-black text-black"
-              >
-                Unlock all features — $5
-              </button>
-            </div>
-          ) : (
-            <div ref={containerRef} className="h-[min(70vh,560px)] w-full min-h-[320px]" />
-          )}
+          <div ref={containerRef} className="h-[min(70vh,560px)] w-full min-h-[320px]" />
         </div>
 
         <p className="text-xs text-[var(--ld-muted)]">
@@ -329,6 +302,5 @@ export function VirtualOverlayMap() {
           {locStatus === "denied" && " · Enable location for live positioning"}
         </p>
       </div>
-    </PaywallGate>
   );
 }

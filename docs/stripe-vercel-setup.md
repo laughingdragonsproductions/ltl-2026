@@ -1,6 +1,14 @@
 # Stripe on Vercel (test mode, checkout gated)
 
-Public checkout stays hidden until `NEXT_PUBLIC_STRIPE_ENABLED=true`. Until then, the paywall shows **Coming soon**.
+Public checkout stays hidden until `NEXT_PUBLIC_STRIPE_ENABLED=true`. Until then, premium gates show **Coming soon**.
+
+## What $5 unlocks
+
+- Walking 3D map (`/walkthrough`)
+- All festival games (Flappy Skull stays free)
+- Ad-free experience
+
+**Free forever:** basic tap map (`/map`), GPS overlay (`/overlay`), locators, Flappy Skull.
 
 ## Vercel environment variables
 

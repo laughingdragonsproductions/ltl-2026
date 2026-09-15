@@ -3,8 +3,8 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { PaywallGate } from "@/components/PaywallGate";
 import { useSession } from "@/lib/session-context";
+import { STRIPE_CHECKOUT_ENABLED, STRIPE_PAYMENT_LINK } from "@/lib/stripe-public";
 
 const WalkthroughExperience = dynamic(
   () =>
@@ -28,6 +28,7 @@ function isMobilePrimary(): boolean {
 
 export function WalkthroughLoader() {
   const [mobile, setMobile] = useState<boolean | null>(null);
+  const { unlocked, openSupportModal } = useSession();
 
   useEffect(() => {
     setMobile(isMobilePrimary());
@@ -51,14 +52,15 @@ export function WalkthroughLoader() {
           3D walk is best on laptop
         </h2>
         <p className="mx-auto mt-3 max-w-sm text-sm text-[var(--ld-muted)]">
-          On your phone, use the pinch-zoom <strong className="text-white">2D Map</strong> with
-          live GPS — built for the crowd and spotty signal.
+          On your phone, use the free pinch-zoom <strong className="text-white">2D Map</strong> or{" "}
+          <strong className="text-white">GPS Overlay</strong> — built for the crowd and spotty
+          signal.
         </p>
         <Link
           href="/overlay"
           className="mt-4 inline-flex min-h-[44px] items-center rounded-full bg-[var(--ld-purple)] px-8 py-3 text-sm font-black text-white"
         >
-          Virtual Overlay
+          Free GPS Overlay
         </Link>
         <Link
           href="/map"
@@ -70,35 +72,42 @@ export function WalkthroughLoader() {
     );
   }
 
-  return (
-    <WalkthroughPaywall>
-      <WalkthroughExperience />
-    </WalkthroughPaywall>
-  );
-}
-
-function WalkthroughPaywall({ children }: { children: React.ReactNode }) {
-  const { expired, unlocked, openSupportModal } = useSession();
-
-  if (expired && !unlocked) {
+  if (!unlocked) {
     return (
       <div className="rounded-2xl border border-[var(--ld-purple-dim)]/50 bg-black/80 p-8 text-center">
-        <p className="text-sm text-[var(--ld-text)]">
-          $5 unlocks all features (overlay, 3D walk) and removes all ads. Basic map stays free.
+        <p className="text-xs font-bold uppercase tracking-widest text-[var(--ld-purple)]">
+          Premium · 3D walk
         </p>
-        <button
-          type="button"
-          onClick={openSupportModal}
-          className="mt-4 rounded-full bg-[var(--ld-neon-green)] px-8 py-3 text-sm font-black text-black"
-        >
-          Unlock all features — $5
-        </button>
-        <Link href="/map" className="mt-3 block text-sm text-[var(--ld-muted)] underline">
+        <h2 className="mt-2 text-xl font-black text-[var(--ld-neon-green)]">
+          Walking 3D festival map
+        </h2>
+        <p className="mx-auto mt-3 max-w-sm text-sm text-[var(--ld-muted)]">
+          First-person WASD walkthrough of the grounds. Basic map, GPS overlay, and{" "}
+          <strong className="text-white">Flappy Skull</strong> stay free.{" "}
+          <strong className="text-white">$5</strong> unlocks the 3D walk and all festival games.
+        </p>
+        {STRIPE_CHECKOUT_ENABLED && STRIPE_PAYMENT_LINK ? (
+          <a
+            href={STRIPE_PAYMENT_LINK}
+            className="mt-6 inline-flex rounded-full bg-[var(--ld-neon-green)] px-8 py-3 text-sm font-black text-black"
+          >
+            Unlock 3D walk + all games — $5
+          </a>
+        ) : (
+          <button
+            type="button"
+            onClick={openSupportModal}
+            className="mt-6 rounded-full bg-[var(--ld-neon-green)] px-8 py-3 text-sm font-black text-black"
+          >
+            Unlock 3D walk + all games — $5 · Coming soon
+          </button>
+        )}
+        <Link href="/map" className="mt-4 block text-sm text-[var(--ld-muted)] underline">
           Back to free map
         </Link>
       </div>
     );
   }
 
-  return <PaywallGate>{children}</PaywallGate>;
+  return <WalkthroughExperience />;
 }

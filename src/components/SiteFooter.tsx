@@ -12,7 +12,7 @@ export function SiteFooter() {
         Life
       </p>
       <p className="mt-1">
-        Costs real money to make and host · $5 unlocks all features &amp; removes all ads
+        Free map &amp; GPS overlay · $5 unlocks 3D walk + all games &amp; removes ads
       </p>
       {STRIPE_CHECKOUT_ENABLED && STRIPE_PAYMENT_LINK ? (
         <p className="mt-2">

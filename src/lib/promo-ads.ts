@@ -28,7 +28,7 @@ export const PROMO_ADS: PromoAd[] = [
   {
     id: "ltl26",
     title: "Virtual Overlay",
-    tagline: "Live GPS on the grounds — 10 min free, then watch a video for +10 min",
+    tagline: "Live GPS on the grounds — free overlay with tap locators",
     href: "/overlay",
     cta: "Try overlay",
     accent: "orange",

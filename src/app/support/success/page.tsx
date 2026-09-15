@@ -49,8 +49,8 @@ function SuccessContent() {
           </p>
           <h1 className="mt-2 text-2xl font-black text-white">All features unlocked</h1>
           <p className="mt-3 text-sm text-[var(--ld-muted)]">
-            All ads are removed. Thank you — your $5 helps keep this unofficial companion
-            online.
+            Walking 3D map and all festival games are unlocked. Ads are removed. Thank you — your
+            $5 helps keep this unofficial companion online.
           </p>
           <Link
             href="/map"

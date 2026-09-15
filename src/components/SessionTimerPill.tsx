@@ -3,24 +3,23 @@
 import { useSession } from "@/lib/session-context";
 
 export function SessionTimerPill() {
-  const { remainingLabel, unlocked, expired, openSupportModal, overlayTrialActive } =
-    useSession();
+  const { unlocked, openSupportModal } = useSession();
 
-  if (!overlayTrialActive && !unlocked) return null;
+  if (unlocked) {
+    return (
+      <span className="rounded-full bg-[var(--ld-neon-green)]/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-[var(--ld-neon-green)] ring-1 ring-[var(--ld-neon-green)]/40 sm:text-xs">
+        Unlocked · Ad-free
+      </span>
+    );
+  }
 
   return (
     <button
       type="button"
-      onClick={() => expired && openSupportModal()}
-      className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wide sm:text-xs ${
-        unlocked
-          ? "bg-[var(--ld-neon-green)]/20 text-[var(--ld-neon-green)] ring-1 ring-[var(--ld-neon-green)]/40"
-          : expired
-            ? "bg-red-950/60 text-red-300 ring-1 ring-red-500/50"
-            : "bg-[var(--ld-purple-dim)]/40 text-[var(--ld-muted)] ring-1 ring-[var(--ld-purple-dim)]/50"
-      }`}
+      onClick={openSupportModal}
+      className="rounded-full bg-[var(--ld-purple-dim)]/40 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-[var(--ld-muted)] ring-1 ring-[var(--ld-purple-dim)]/50 hover:text-white sm:text-xs"
     >
-      {expired && !unlocked ? "Watch video · or $5 unlock" : remainingLabel}
+      3D + games · $5
     </button>
   );
 }

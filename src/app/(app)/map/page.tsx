@@ -31,12 +31,28 @@ export default function MapPage() {
       >
         <div>
           <p className="text-xs font-bold uppercase tracking-widest text-[var(--ld-neon-green)]">
-            Premium
+            Free
           </p>
-          <p className="mt-1 text-lg font-black text-white">Virtual Overlay</p>
+          <p className="mt-1 text-lg font-black text-white">GPS Overlay</p>
           <p className="mt-1 text-sm text-[var(--ld-muted)]">
-            Live GPS + aligned amenity map. 10 free minutes, then $5 unlocks all features and
-            removes all ads always.
+            Live GPS + aligned amenity map on satellite. Always free alongside this tap map.
+          </p>
+        </div>
+        <span className="shrink-0 text-2xl text-[var(--ld-neon-green)]" aria-hidden>
+          →
+        </span>
+      </Link>
+      <Link
+        href="/walkthrough"
+        className="mt-4 flex items-center justify-between gap-4 rounded-2xl border border-[var(--ld-purple)]/50 bg-[var(--ld-purple-dim)]/20 p-5 transition hover:border-[var(--ld-neon-green)]/40"
+      >
+        <div>
+          <p className="text-xs font-bold uppercase tracking-widest text-[var(--ld-purple)]">
+            Premium · $5
+          </p>
+          <p className="mt-1 text-lg font-black text-white">Walking 3D Map</p>
+          <p className="mt-1 text-sm text-[var(--ld-muted)]">
+            First-person desktop walkthrough. Unlocks with all festival games for $5.
           </p>
         </div>
         <span className="shrink-0 text-2xl text-[var(--ld-neon-green)]" aria-hidden>

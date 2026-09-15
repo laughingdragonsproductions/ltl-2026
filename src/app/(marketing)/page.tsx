@@ -33,9 +33,9 @@ export default function HomePage() {
             Fan-built companion
           </p>
           <p className="mt-4 text-sm leading-relaxed text-[var(--ld-text)]">
-            This unofficial LTL companion costs real money to make and host. Free official tap
-            map forever — <strong className="text-white">$5</strong> unlocks all features and
-            removes all ads always.
+            Free tap map, GPS overlay, and locators forever. Flappy Skull is free to play.{" "}
+            <strong className="text-white">$5</strong> unlocks the walking 3D map, all games,
+            and removes ads.
           </p>
         </div>
 

@@ -1,4 +1,5 @@
 import { GameShell } from "@/components/games/GameShell";
+import { GamePremiumGate } from "@/components/games/GamePremiumGate";
 import { BandMatcherPlaceholder } from "@/components/games/BandMatcherPlaceholder";
 
 export default function BandMatcherPage() {
@@ -7,7 +8,9 @@ export default function BandMatcherPage() {
       title="Band Matcher"
       subtitle="Flip tiles and match band logo pairs."
     >
-      <BandMatcherPlaceholder />
+      <GamePremiumGate gameId="band-matcher" gameTitle="Band Matcher">
+        <BandMatcherPlaceholder />
+      </GamePremiumGate>
     </GameShell>
   );
 }
