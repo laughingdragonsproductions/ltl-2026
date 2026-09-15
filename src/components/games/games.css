@@ -215,6 +215,23 @@
   opacity: 0.4;
 }
 
+.ltl-hangman-gallows {
+  position: relative;
+  width: min(100%, 220px);
+  aspect-ratio: 3 / 4;
+}
+
+.ltl-hangman-frame {
+  width: 100%;
+  height: 100%;
+}
+
+.ltl-hangman-sprites {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
 .hl-part {
   opacity: 0;
   transition: opacity 0.2s;
@@ -224,10 +241,72 @@
   opacity: 1;
 }
 
-.ltl-hangman-skull.is-limp .hl-limb,
-#hl-gallows.is-limp .hl-limb {
-  transform-origin: 78px 60px;
-  transform: rotate(18deg);
+.hl-sprite {
+  position: absolute;
+  object-fit: contain;
+  transform-origin: 50% 20%;
+}
+
+.hl-head {
+  left: 52%;
+  top: 14%;
+  width: 28%;
+  transform: translateX(-50%);
+}
+
+.hl-body {
+  left: 50%;
+  top: 28%;
+  width: 38%;
+  transform: translateX(-50%);
+}
+
+.hl-arm-l {
+  left: 18%;
+  top: 32%;
+  width: 22%;
+}
+
+.hl-arm-r {
+  right: 18%;
+  top: 32%;
+  width: 22%;
+}
+
+.hl-leg-l {
+  left: 38%;
+  bottom: 8%;
+  width: 18%;
+}
+
+.hl-leg-r {
+  right: 38%;
+  bottom: 8%;
+  width: 18%;
+}
+
+#hl-gallows.is-limp .hl-body,
+#hl-gallows.is-limp .hl-arm-l,
+#hl-gallows.is-limp .hl-arm-r,
+#hl-gallows.is-limp .hl-leg-l,
+#hl-gallows.is-limp .hl-leg-r {
+  transform: rotate(12deg);
+}
+
+.ltl-slider-image-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.ltl-slider-select {
+  border-radius: 0.5rem;
+  border: 1px solid var(--ld-purple-dim);
+  background: #111;
+  color: var(--ld-text);
+  padding: 0.35rem 0.5rem;
+  max-width: 14rem;
 }
 
 .ltl-hangman-win {

@@ -9,20 +9,30 @@ const DIFF_KEY = "ltl26-hangman-difficulty";
 const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 const PART_ORDER = ["head", "body", "arm-l", "arm-r", "leg-l", "leg-r"];
 
-function skullSvg() {
+const HANGMAN_SPRITES: Record<(typeof PART_ORDER)[number], string> = {
+  head: "/games/ltl26/hangman/head.png",
+  body: "/games/ltl26/hangman/body.png",
+  "arm-l": "/games/ltl26/hangman/arm-l.png",
+  "arm-r": "/games/ltl26/hangman/arm-r.png",
+  "leg-l": "/games/ltl26/hangman/leg-l.png",
+  "leg-r": "/games/ltl26/hangman/leg-r.png",
+};
+
+function hangmanStageHtml() {
+  const parts = PART_ORDER.map(
+    (part) =>
+      `<img class="hl-part hl-sprite hl-${part}" data-part="${part}" src="${HANGMAN_SPRITES[part]}" alt="" />`
+  ).join("");
   return `
-    <svg viewBox="0 0 120 160" aria-hidden="true" class="ltl-hangman-skull">
-      <line x1="20" y1="150" x2="100" y2="150" stroke="#9b30ff" stroke-width="4" />
-      <line x1="36" y1="150" x2="36" y2="18" stroke="#9b30ff" stroke-width="4" />
-      <line x1="36" y1="18" x2="78" y2="18" stroke="#9b30ff" stroke-width="4" />
-      <line x1="78" y1="18" x2="78" y2="36" stroke="#9b30ff" stroke-width="3" />
-      <circle class="hl-part" data-part="head" cx="78" cy="48" r="12" fill="#e8e8f0" stroke="#39ff14" stroke-width="2" />
-      <line class="hl-part hl-limb" data-part="body" x1="78" y1="60" x2="78" y2="98" stroke="#39ff14" stroke-width="3" />
-      <line class="hl-part hl-limb" data-part="arm-l" x1="78" y1="70" x2="58" y2="88" stroke="#39ff14" stroke-width="3" />
-      <line class="hl-part hl-limb" data-part="arm-r" x1="78" y1="70" x2="98" y2="88" stroke="#39ff14" stroke-width="3" />
-      <line class="hl-part hl-limb" data-part="leg-l" x1="78" y1="98" x2="62" y2="124" stroke="#39ff14" stroke-width="3" />
-      <line class="hl-part hl-limb" data-part="leg-r" x1="78" y1="98" x2="94" y2="124" stroke="#39ff14" stroke-width="3" />
-    </svg>`;
+    <div class="ltl-hangman-gallows" aria-hidden="true">
+      <svg viewBox="0 0 120 160" class="ltl-hangman-frame">
+        <line x1="20" y1="150" x2="100" y2="150" stroke="#9b30ff" stroke-width="4" />
+        <line x1="36" y1="150" x2="36" y2="18" stroke="#9b30ff" stroke-width="4" />
+        <line x1="36" y1="18" x2="78" y2="18" stroke="#9b30ff" stroke-width="4" />
+        <line x1="78" y1="18" x2="78" y2="36" stroke="#9b30ff" stroke-width="3" />
+      </svg>
+      <div class="ltl-hangman-sprites">${parts}</div>
+    </div>`;
 }
 
 export function initHangman(root: HTMLElement) {
@@ -69,7 +79,7 @@ export function initHangman(root: HTMLElement) {
         <button type="button" class="ltl-btn" id="hl-quit">Menu</button>
       </div>
       <div class="ltl-hangman-stage">
-        <div id="hl-gallows">${skullSvg()}</div>
+        <div id="hl-gallows">${hangmanStageHtml()}</div>
         <div class="ltl-hangman-word-panel">
           <div class="ltl-hangman-word" id="hl-word"></div>
           <p id="hl-feedback"></p>
@@ -147,7 +157,7 @@ export function initHangman(root: HTMLElement) {
 
   function renderParts() {
     const visible = Math.min(state.wrongCount, PART_ORDER.length);
-    gallows.querySelectorAll<SVGElement>(".hl-part").forEach((el, i) => {
+    gallows.querySelectorAll<HTMLElement>(".hl-part").forEach((el, i) => {
       el.classList.toggle("is-shown", i < visible);
     });
   }

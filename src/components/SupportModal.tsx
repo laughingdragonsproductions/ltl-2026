@@ -1,8 +1,8 @@
 "use client";
 
 import { useSession } from "@/lib/session-context";
+import { STRIPE_CHECKOUT_ENABLED, STRIPE_PAYMENT_LINK } from "@/lib/stripe-public";
 
-const STRIPE_LINK = process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK;
 const KOFI_URL = process.env.NEXT_PUBLIC_KOFI_URL;
 
 export function SupportModal() {
@@ -40,18 +40,19 @@ export function SupportModal() {
           Watch video → +10 min free
         </button>
 
-        {STRIPE_LINK ? (
+        {STRIPE_CHECKOUT_ENABLED && STRIPE_PAYMENT_LINK ? (
           <a
-            href={STRIPE_LINK}
+            href={STRIPE_PAYMENT_LINK}
             className="mt-3 flex w-full items-center justify-center rounded-full bg-[var(--ld-neon-green)] px-6 py-3 text-sm font-black text-black transition hover:opacity-90"
           >
             Unlock all features — $5
           </a>
         ) : (
-          <p className="mt-5 rounded-lg border border-yellow-600/40 bg-yellow-950/30 px-3 py-2 text-xs text-yellow-200">
-            Stripe Payment Link not configured yet — add{" "}
-            <code className="text-yellow-100">NEXT_PUBLIC_STRIPE_PAYMENT_LINK</code> on
-            Vercel.
+          <p
+            className="mt-3 flex w-full cursor-not-allowed items-center justify-center rounded-full border border-[var(--ld-purple-dim)] bg-[var(--ld-purple-dim)]/20 px-6 py-3 text-sm font-black text-[var(--ld-muted)]"
+            aria-disabled="true"
+          >
+            Unlock all features — $5 · Coming soon
           </p>
         )}
 

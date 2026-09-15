@@ -1,6 +1,8 @@
+import sliderManifest from "../../../data/slider-images.json";
+
 export type SliderImage = { id: string; label: string; src: string };
 
-export const SLIDER_IMAGES: SliderImage[] = [
+const FALLBACK_IMAGES: SliderImage[] = [
   {
     id: "poster",
     label: "Festival poster",
@@ -11,12 +13,10 @@ export const SLIDER_IMAGES: SliderImage[] = [
     label: "Expo booth",
     src: "/games/ltl26/puzzle-booth.jpg",
   },
-  {
-    id: "map",
-    label: "Official amenity map",
-    src: "/maps/ltl-2026-official-amenity-map.png",
-  },
 ];
+
+export const SLIDER_IMAGES: SliderImage[] =
+  sliderManifest.images?.length > 0 ? sliderManifest.images : FALLBACK_IMAGES;
 
 export const SLIDER_DIFFICULTIES = {
   easy: { label: "Easy", size: 3 },
@@ -39,6 +39,11 @@ export const SLIDER_WIN_MESSAGES: Record<
   map: [
     { title: "Map restored!", body: "You won't get lost between stages." },
     { title: "Grounds locked in.", body: "Official amenity map — solved." },
+  ],
+  default: [
+    { title: "Puzzle solved!", body: "See you in the pit — LTL 2026." },
+    { title: "Festival ready.", body: "Every tile back where it belongs." },
+    { title: "LTL win.", body: "Louder Than Life energy — unlocked." },
   ],
 };
 
@@ -187,7 +192,10 @@ export function sliderPickWinMessage(
   imageId: string,
   rng: () => number = Math.random
 ) {
-  const list = SLIDER_WIN_MESSAGES[imageId] ?? SLIDER_WIN_MESSAGES.poster;
+  const list =
+    SLIDER_WIN_MESSAGES[imageId] ??
+    SLIDER_WIN_MESSAGES.default ??
+    SLIDER_WIN_MESSAGES.poster;
   return list[Math.floor(rng() * list.length)];
 }
 

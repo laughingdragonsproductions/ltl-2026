@@ -1,15 +1,19 @@
-const SPRITE = "/games/ltl26/flappy-sprites.png";
+const SPRITES = {
+  skull: "/games/ltl26/flappy/skull.png",
+  glasses: "/games/ltl26/flappy/glasses.png",
+  headphones: "/games/ltl26/flappy/headphones.png",
+};
 const STORAGE = { best: "ltl26-flappy-best" };
 
 const WORLD = { width: 400, height: 600, groundH: 48, ceilingPad: 8 };
 const BASE = {
   gravity: 0.42,
   flap: -7.8,
-  pipeGap: 148,
+  pipeGap: 178,
   pipeWidth: 56,
   pipeSpacing: 210,
   scrollSpeed: 2.4,
-  skullSize: 44,
+  skullSize: 48,
   skullX: 88,
 };
 
@@ -79,7 +83,11 @@ export async function initFlappySkull(root: HTMLElement): Promise<() => void> {
   let screen: Screen = "menu";
   let rafId = 0;
   let lastTs = 0;
-  let sprite: HTMLImageElement | null = null;
+  const sprites: {
+    skull: HTMLImageElement | null;
+    glasses: HTMLImageElement | null;
+    headphones: HTMLImageElement | null;
+  } = { skull: null, glasses: null, headphones: null };
   let mode: "easy" | "hard" = "hard";
 
   const cheat = {
@@ -103,16 +111,21 @@ export async function initFlappySkull(root: HTMLElement): Promise<() => void> {
     runUnlocks: [] as string[],
   };
 
-  const loadSprite = () =>
-    new Promise<void>((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => {
-        sprite = img;
-        resolve();
-      };
-      img.onerror = reject;
-      img.src = SPRITE;
-    });
+  const loadSprites = () =>
+    Promise.all(
+      (Object.entries(SPRITES) as [keyof typeof sprites, string][]).map(
+        ([key, src]) =>
+          new Promise<void>((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => {
+              sprites[key] = img;
+              resolve();
+            };
+            img.onerror = reject;
+            img.src = src;
+          })
+      )
+    );
 
   const physicsScale = () => (mode === "easy" ? 0.85 : 1);
   const gravity = () => BASE.gravity * physicsScale();
@@ -122,7 +135,7 @@ export async function initFlappySkull(root: HTMLElement): Promise<() => void> {
     const s = state.score;
     return {
       scrollSpeed: BASE.scrollSpeed + Math.min(s * 0.06, 3.6),
-      pipeGap: Math.max(BASE.pipeGap - Math.floor(s / 4) * 4, 108),
+      pipeGap: Math.max(BASE.pipeGap - Math.floor(s / 5) * 3, 128),
       pipeSpacing: Math.max(BASE.pipeSpacing - Math.floor(s / 6) * 6, 168),
     };
   }
@@ -181,17 +194,13 @@ export async function initFlappySkull(root: HTMLElement): Promise<() => void> {
     ctx.save();
     ctx.translate(cx, cy);
     ctx.rotate(state.rot);
-    if (sprite) {
-      const w = sprite.width;
-      const h = sprite.height;
-      const sw = w * 0.5;
-      const sh = h;
-      ctx.drawImage(sprite, 0, 0, sw, sh, -size / 2, -size / 2, size, size);
-      if (state.score >= 5) {
-        ctx.drawImage(sprite, sw, 0, sw, h * 0.5, -size / 2, -size / 2, size, size);
+    if (sprites.skull) {
+      ctx.drawImage(sprites.skull, -size / 2, -size / 2, size, size);
+      if (state.score >= 5 && sprites.glasses) {
+        ctx.drawImage(sprites.glasses, -size / 2, -size / 2, size, size);
       }
-      if (state.score >= 10) {
-        ctx.drawImage(sprite, sw, h * 0.5, sw, h * 0.5, -size / 2, -size / 2, size, size);
+      if (state.score >= 10 && sprites.headphones) {
+        ctx.drawImage(sprites.headphones, -size / 2, -size / 2, size, size);
       }
     } else {
       ctx.fillStyle = "#e8e8f0";
@@ -425,7 +434,7 @@ export async function initFlappySkull(root: HTMLElement): Promise<() => void> {
   window.addEventListener("resize", resizeCanvas);
 
   try {
-    await loadSprite();
+    await loadSprites();
   } catch {
     /* fallback circle skull */
   }

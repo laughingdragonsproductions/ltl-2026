@@ -1,6 +1,6 @@
 import { LitprintzAssociationClient } from "@/components/LitprintzAssociationClient";
+import { STRIPE_CHECKOUT_ENABLED, STRIPE_PAYMENT_LINK } from "@/lib/stripe-public";
 
-const STRIPE_LINK = process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK;
 const KOFI_URL = process.env.NEXT_PUBLIC_KOFI_URL;
 
 export function SiteFooter() {
@@ -14,15 +14,17 @@ export function SiteFooter() {
       <p className="mt-1">
         Costs real money to make and host · $5 unlocks all features &amp; removes all ads
       </p>
-      {STRIPE_LINK && (
+      {STRIPE_CHECKOUT_ENABLED && STRIPE_PAYMENT_LINK ? (
         <p className="mt-2">
           <a
-            href={STRIPE_LINK}
+            href={STRIPE_PAYMENT_LINK}
             className="font-semibold text-[var(--ld-neon-green)] hover:underline"
           >
             Unlock everything — $5
           </a>
         </p>
+      ) : (
+        <p className="mt-2 text-[var(--ld-muted)]">Unlock everything — $5 · Coming soon</p>
       )}
       {KOFI_URL && (
         <p className="mt-1">

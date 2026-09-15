@@ -32,9 +32,16 @@ export function initSliderPuzzle(mount: HTMLElement) {
       </div>
       <div class="ltl-slider-meta">
         <p class="ltl-slider-stats"><span id="ltl-ss-moves">0</span> moves</p>
-        <p id="ltl-ss-art-label"></p>
+        <div class="ltl-slider-image-picker">
+          <label for="ltl-ss-image">Artwork</label>
+          <select id="ltl-ss-image" class="ltl-slider-select">
+            ${SLIDER_IMAGES.map(
+              (img) => `<option value="${img.id}">${img.label}</option>`
+            ).join("")}
+          </select>
+        </div>
         <figure class="ltl-slider-ref">
-          <img id="ltl-ss-ref-img" src="" alt="Reference puzzle" width="192" height="108" loading="lazy" />
+          <img id="ltl-ss-ref-img" src="" alt="Reference puzzle" width="192" height="192" loading="lazy" />
           <figcaption>Reference</figcaption>
         </figure>
       </div>
@@ -55,7 +62,7 @@ export function initSliderPuzzle(mount: HTMLElement) {
   const winEl = mount.querySelector<HTMLElement>("#ltl-ss-win")!;
   const winTitleEl = mount.querySelector("#ltl-ss-win-title")!;
   const winBodyEl = mount.querySelector("#ltl-ss-win-body")!;
-  const artLabelEl = mount.querySelector("#ltl-ss-art-label")!;
+  const imageSelectEl = mount.querySelector<HTMLSelectElement>("#ltl-ss-image")!;
   const refImgEl = mount.querySelector<HTMLImageElement>("#ltl-ss-ref-img")!;
   const diffBtns = mount.querySelectorAll<HTMLButtonElement>(".ltl-diff-btn");
 
@@ -78,7 +85,9 @@ export function initSliderPuzzle(mount: HTMLElement) {
   }
 
   function updateImageUI() {
-    artLabelEl.textContent = `Art: ${currentImage.label}`;
+    if (imageSelectEl.value !== currentImage.id) {
+      imageSelectEl.value = currentImage.id;
+    }
     refImgEl.src = currentImage.src;
     refImgEl.alt = `Reference: ${currentImage.label}`;
   }
@@ -163,6 +172,14 @@ export function initSliderPuzzle(mount: HTMLElement) {
       const next = btn.dataset.diff as DiffKey | undefined;
       if (next && next !== difficulty) newGame(next);
     });
+  });
+
+  imageSelectEl.addEventListener("change", () => {
+    const picked = SLIDER_IMAGES.find((img) => img.id === imageSelectEl.value);
+    if (picked && picked.id !== currentImage.id) {
+      currentImage = picked;
+      newGame(undefined, false);
+    }
   });
 
   mount.querySelector("#ltl-ss-shuffle")?.addEventListener("click", () =>
