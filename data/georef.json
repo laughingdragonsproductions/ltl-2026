@@ -9,6 +9,15 @@
     "north": 38.204,
     "south": 38.188
   },
+  "overlay": {
+    "coordinates": [
+      [-85.752, 38.204],
+      [-85.728, 38.204],
+      [-85.728, 38.188],
+      [-85.752, 38.188]
+    ],
+    "opacity": 0.72
+  },
   "festivalMapPlane": {
     "widthMeters": 1200,
     "depthMeters": 900,

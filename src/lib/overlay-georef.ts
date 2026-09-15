@@ -1,0 +1,192 @@
+import georefData from "../../data/georef.json";
+import type { MapPosition } from "./georef";
+
+/** MapLibre image source corners: NW, NE, SE, SW */
+export type OverlayCoordinates = [
+  [number, number],
+  [number, number],
+  [number, number],
+  [number, number],
+];
+
+export type GeorefBounds = {
+  west: number;
+  east: number;
+  north: number;
+  south: number;
+};
+
+export type OverlayGeorefOverride = {
+  bounds: GeorefBounds;
+  coordinates: OverlayCoordinates;
+  opacity?: number;
+  updatedAt?: string;
+};
+
+export const OVERLAY_STORAGE_KEY = "ltl26-overlay-georef";
+export const MAP_IMAGE_ASPECT = 1024 / 503;
+
+const defaultBounds = georefData.bounds as GeorefBounds;
+
+export function boundsToCoordinates(b: GeorefBounds): OverlayCoordinates {
+  return [
+    [b.west, b.north],
+    [b.east, b.north],
+    [b.east, b.south],
+    [b.west, b.south],
+  ];
+}
+
+export function coordinatesToBounds(c: OverlayCoordinates): GeorefBounds {
+  const lngs = c.map(([lng]) => lng);
+  const lats = c.map(([, lat]) => lat);
+  return {
+    west: Math.min(...lngs),
+    east: Math.max(...lngs),
+    north: Math.max(...lats),
+    south: Math.min(...lats),
+  };
+}
+
+export function getDefaultOverlayGeoref(): OverlayGeorefOverride {
+  return {
+    bounds: { ...defaultBounds },
+    coordinates: boundsToCoordinates(defaultBounds),
+    opacity: 0.72,
+  };
+}
+
+export function loadOverlayOverride(): OverlayGeorefOverride | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(OVERLAY_STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw) as OverlayGeorefOverride;
+  } catch {
+    return null;
+  }
+}
+
+export function saveOverlayOverride(data: OverlayGeorefOverride): void {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(
+    OVERLAY_STORAGE_KEY,
+    JSON.stringify({ ...data, updatedAt: new Date().toISOString() })
+  );
+}
+
+export function clearOverlayOverride(): void {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem(OVERLAY_STORAGE_KEY);
+}
+
+/** Server/build default; client may override via localStorage */
+export function getEffectiveOverlayGeoref(): OverlayGeorefOverride {
+  const bounds = georefData.bounds as GeorefBounds;
+  const fileOverlay = georefData.overlay as
+    | { coordinates?: OverlayCoordinates; opacity?: number }
+    | undefined;
+  const coordinates =
+    fileOverlay?.coordinates ?? boundsToCoordinates(bounds);
+
+  const base: OverlayGeorefOverride = {
+    bounds,
+    coordinates,
+    opacity: fileOverlay?.opacity ?? 0.72,
+  };
+
+  if (typeof window === "undefined") return base;
+  return loadOverlayOverride() ?? base;
+}
+
+export function mapPercentToLatLngWithBounds(
+  pos: MapPosition,
+  b: GeorefBounds
+): { lat: number; lng: number } {
+  const lng = b.west + (pos.x / 100) * (b.east - b.west);
+  const lat = b.north - (pos.y / 100) * (b.north - b.south);
+  return { lat, lng };
+}
+
+/** Shift all corners by delta lng/lat */
+export function translateCoordinates(
+  coords: OverlayCoordinates,
+  dLng: number,
+  dLat: number
+): OverlayCoordinates {
+  return coords.map(([lng, lat]) => [lng + dLng, lat + dLat]) as OverlayCoordinates;
+}
+
+/** Scale corners around center (uniform) */
+export function scaleCoordinates(
+  coords: OverlayCoordinates,
+  factor: number
+): OverlayCoordinates {
+  const b = coordinatesToBounds(coords);
+  const cLng = (b.west + b.east) / 2;
+  const cLat = (b.north + b.south) / 2;
+  return coords.map(([lng, lat]) => [
+    cLng + (lng - cLng) * factor,
+    cLat + (lat - cLat) * factor,
+  ]) as OverlayCoordinates;
+}
+
+/**
+ * Adjust east/west span while keeping center; optionally lock PNG aspect on the ground.
+ */
+export function setBoundsWithAspect(
+  b: GeorefBounds,
+  next: Partial<GeorefBounds>,
+  lockAspect: boolean
+): GeorefBounds {
+  let west = next.west ?? b.west;
+  let east = next.east ?? b.east;
+  let north = next.north ?? b.north;
+  let south = next.south ?? b.south;
+
+  if (lockAspect) {
+    const cLng = (west + east) / 2;
+    const cLat = (north + south) / 2;
+    const lngSpan = east - west;
+    const latSpan = north - south;
+    const centerLat = cLat * (Math.PI / 180);
+    const metersPerLng = 111320 * Math.cos(centerLat);
+    const metersPerLat = 110540;
+    const widthM = lngSpan * metersPerLng;
+    const heightM = latSpan * metersPerLat;
+    const currentAspect = widthM / Math.max(heightM, 1);
+
+    if (next.east !== undefined || next.west !== undefined) {
+      const targetHeightM = widthM / MAP_IMAGE_ASPECT;
+      const newLatSpan = targetHeightM / metersPerLat;
+      north = cLat + newLatSpan / 2;
+      south = cLat - newLatSpan / 2;
+    } else if (next.north !== undefined || next.south !== undefined) {
+      const targetWidthM = heightM * MAP_IMAGE_ASPECT;
+      const newLngSpan = targetWidthM / metersPerLng;
+      west = cLng - newLngSpan / 2;
+      east = cLng + newLngSpan / 2;
+    } else if (Math.abs(currentAspect - MAP_IMAGE_ASPECT) > 0.05) {
+      const targetHeightM = widthM / MAP_IMAGE_ASPECT;
+      const newLatSpan = targetHeightM / metersPerLat;
+      north = cLat + newLatSpan / 2;
+      south = cLat - newLatSpan / 2;
+    }
+  }
+
+  return { west, east, north, south };
+}
+
+export function exportGeorefJsonSnippet(data: OverlayGeorefOverride): string {
+  return JSON.stringify(
+    {
+      bounds: data.bounds,
+      overlay: {
+        coordinates: data.coordinates,
+        opacity: data.opacity ?? 0.72,
+      },
+    },
+    null,
+    2
+  );
+}

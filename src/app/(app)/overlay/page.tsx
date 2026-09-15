@@ -20,7 +20,15 @@ export default function OverlayPage() {
             is always free — this mode adds real-world positioning.
           </p>
         </div>
-        <ShareButton url="https://ltl26.com/overlay" />
+        <div className="flex flex-wrap items-center gap-3">
+          <Link
+            href="/overlay/adjust"
+            className="text-xs font-bold uppercase tracking-wide text-[var(--ld-accent)] underline hover:text-[var(--ld-neon-green)]"
+          >
+            Align overlay
+          </Link>
+          <ShareButton url="https://ltl26.com/overlay" />
+        </div>
       </div>
       <div className="mt-6">
         <VirtualOverlayMap />
