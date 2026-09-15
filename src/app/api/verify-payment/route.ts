@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-import { UNLOCK_DEADLINE } from "@/lib/session-timer";
+import { UNLOCK_DEADLINE } from "@/lib/unlock-state";
 
 export async function POST(request: Request) {
   const secret = process.env.STRIPE_SECRET_KEY;

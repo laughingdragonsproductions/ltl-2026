@@ -20,11 +20,11 @@ export function SiteFooter() {
             href={STRIPE_PAYMENT_LINK}
             className="font-semibold text-[var(--ld-neon-green)] hover:underline"
           >
-            Unlock everything — $5
+            Unlock 3D walk + all games — $5
           </a>
         </p>
       ) : (
-        <p className="mt-2 text-[var(--ld-muted)]">Unlock everything — $5 · Coming soon</p>
+        <p className="mt-2 text-[var(--ld-muted)]">Unlock 3D walk + all games — $5 · Coming soon</p>
       )}
       {KOFI_URL && (
         <p className="mt-1">

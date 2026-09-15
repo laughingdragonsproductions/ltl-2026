@@ -155,9 +155,15 @@ async function processSlider() {
       await pipeline.toFile(dest);
     }
 
+    const bandName = file
+      .replace(/\.png$/i, "")
+      .replace(/[_-]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+
     manifest.push({
       id,
-      label: `LTL puzzle ${i + 1}`,
+      label: bandName || `LTL puzzle ${i + 1}`,
       src: `/games/ltl26/puzzles/${destName}`,
     });
     console.log(`Slider → public/games/ltl26/puzzles/${destName}`);
@@ -207,13 +213,23 @@ async function main() {
   const genericOk = await processGeneric();
 
   if (manifest.length > 0) {
+    const compiledAt = new Date().toISOString();
     const manifestPath = join(dataDir, "slider-images.json");
     writeFileSync(
       manifestPath,
-      JSON.stringify({ images: manifest, compiledAt: new Date().toISOString() }, null, 2),
+      JSON.stringify({ images: manifest, compiledAt }, null, 2),
       "utf8"
     );
     console.log(`\nWrote ${manifest.length} slider entries → data/slider-images.json`);
+
+    const bands = manifest.map(({ id, label, src }) => ({ id, name: label, src }));
+    const bandPath = join(dataDir, "band-matcher.json");
+    writeFileSync(
+      bandPath,
+      JSON.stringify({ bands, compiledAt }, null, 2),
+      "utf8"
+    );
+    console.log(`Wrote ${bands.length} band entries → data/band-matcher.json`);
   }
 
   const total = flappyOk + hangmanOk + sliderOk + genericOk;

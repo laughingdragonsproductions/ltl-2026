@@ -8,7 +8,7 @@ Created by [Laughing Dragons Productions](https://brandonsparks.com).
 
 - Production: **https://ltl26.com** (Vercel + HTTPS)
 - Default share URL: **https://ltl26.com/map**
-- Mobile-first: pinch map, live GPS, schedule, VIP guides, 10-min free session
+- Mobile-first: pinch map, live GPS overlay, schedule, VIP guides, festival games
 
 ## Local development
 
@@ -45,7 +45,8 @@ Open **http://localhost:3000/map**
 - **2D tap map** — pinch/pan/zoom on official amenity art
 - **Live GPS** — OpenStreetMap + your location vs stages
 - **Schedule** — NOW/NEXT, overlap hints, shareable `?day=&stage=&tier=` links
-- **Session** — 10 min free, then $5 Stripe unlock through Sept 21
+- **Free** — tap map, GPS overlay, locators, Flappy Skull
+- **$5 unlock** — 3D walk, all games, ad-free (Stripe)
 - **PWA** — add to home screen (`manifest.json`)
 
 ## Viral video (Google Flow)

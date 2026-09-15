@@ -2,7 +2,7 @@
 
 import { useSession } from "@/lib/session-context";
 
-export function SessionTimerPill() {
+export function UnlockPill() {
   const { unlocked, openSupportModal } = useSession();
 
   if (unlocked) {

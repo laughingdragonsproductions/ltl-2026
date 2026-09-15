@@ -13,7 +13,7 @@ import {
   loadSession,
   type SessionState,
   UNLOCK_DEADLINE,
-} from "./session-timer";
+} from "./unlock-state";
 
 type SessionContextValue = {
   unlocked: boolean;

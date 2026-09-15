@@ -1,3 +1,105 @@
 {
-  "bands": []
+  "bands": [
+    {
+      "id": "puzzle-01",
+      "name": "LTL puzzle 1",
+      "src": "/games/ltl26/puzzles/puzzle-01.png"
+    },
+    {
+      "id": "puzzle-02",
+      "name": "LTL puzzle 2",
+      "src": "/games/ltl26/puzzles/puzzle-02.png"
+    },
+    {
+      "id": "puzzle-03",
+      "name": "LTL puzzle 3",
+      "src": "/games/ltl26/puzzles/puzzle-03.png"
+    },
+    {
+      "id": "puzzle-04",
+      "name": "LTL puzzle 4",
+      "src": "/games/ltl26/puzzles/puzzle-04.png"
+    },
+    {
+      "id": "puzzle-05",
+      "name": "LTL puzzle 5",
+      "src": "/games/ltl26/puzzles/puzzle-05.png"
+    },
+    {
+      "id": "puzzle-06",
+      "name": "LTL puzzle 6",
+      "src": "/games/ltl26/puzzles/puzzle-06.png"
+    },
+    {
+      "id": "puzzle-07",
+      "name": "LTL puzzle 7",
+      "src": "/games/ltl26/puzzles/puzzle-07.png"
+    },
+    {
+      "id": "puzzle-08",
+      "name": "LTL puzzle 8",
+      "src": "/games/ltl26/puzzles/puzzle-08.png"
+    },
+    {
+      "id": "puzzle-09",
+      "name": "LTL puzzle 9",
+      "src": "/games/ltl26/puzzles/puzzle-09.png"
+    },
+    {
+      "id": "puzzle-10",
+      "name": "LTL puzzle 10",
+      "src": "/games/ltl26/puzzles/puzzle-10.png"
+    },
+    {
+      "id": "puzzle-11",
+      "name": "LTL puzzle 11",
+      "src": "/games/ltl26/puzzles/puzzle-11.png"
+    },
+    {
+      "id": "puzzle-12",
+      "name": "LTL puzzle 12",
+      "src": "/games/ltl26/puzzles/puzzle-12.png"
+    },
+    {
+      "id": "puzzle-13",
+      "name": "LTL puzzle 13",
+      "src": "/games/ltl26/puzzles/puzzle-13.png"
+    },
+    {
+      "id": "puzzle-14",
+      "name": "LTL puzzle 14",
+      "src": "/games/ltl26/puzzles/puzzle-14.png"
+    },
+    {
+      "id": "puzzle-15",
+      "name": "LTL puzzle 15",
+      "src": "/games/ltl26/puzzles/puzzle-15.png"
+    },
+    {
+      "id": "puzzle-16",
+      "name": "LTL puzzle 16",
+      "src": "/games/ltl26/puzzles/puzzle-16.png"
+    },
+    {
+      "id": "puzzle-17",
+      "name": "LTL puzzle 17",
+      "src": "/games/ltl26/puzzles/puzzle-17.png"
+    },
+    {
+      "id": "puzzle-18",
+      "name": "LTL puzzle 18",
+      "src": "/games/ltl26/puzzles/puzzle-18.png"
+    },
+    {
+      "id": "puzzle-19",
+      "name": "LTL puzzle 19",
+      "src": "/games/ltl26/puzzles/puzzle-19.png"
+    },
+    {
+      "id": "puzzle-20",
+      "name": "LTL puzzle 20",
+      "src": "/games/ltl26/puzzles/puzzle-20.png"
+    }
+  ],
+  "compiledAt": "2026-09-15T03:53:52.436Z"
 }

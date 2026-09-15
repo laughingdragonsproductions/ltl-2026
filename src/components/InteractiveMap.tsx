@@ -103,7 +103,7 @@ export function InteractiveMap({ fullscreen = false }: { fullscreen?: boolean })
             pinch={{ step: 5 }}
           >
             <TransformComponent wrapperClass="!h-full !w-full" contentClass="!h-full !w-full">
-              <div className="relative aspect-[4/3] min-h-full min-w-full">
+              <div className="relative aspect-[1024/503] min-h-full min-w-full">
                 <Image
                   src="/maps/ltl-2026-official-amenity-map.png"
                   alt="Louder Than Life 2026 official festival map"

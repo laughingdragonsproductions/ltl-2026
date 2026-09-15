@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SessionTimerPillClient } from "@/components/SessionTimerPillClient";
+import { UnlockPillClient } from "@/components/UnlockPillClient";
 
 export default function MarketingLayout({
   children,
@@ -16,7 +16,7 @@ export default function MarketingLayout({
           >
             LTL26
           </Link>
-          <SessionTimerPillClient />
+          <UnlockPillClient />
         </div>
       </header>
       {children}

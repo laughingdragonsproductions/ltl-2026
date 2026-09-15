@@ -23,7 +23,7 @@ export function GamePremiumGate({
   return (
     <div className="rounded-2xl border border-[var(--ld-purple-dim)]/50 bg-black/80 p-8 text-center">
       <p className="text-xs font-bold uppercase tracking-widest text-[var(--ld-purple)]">
-        Premium game
+        Premium · $5
       </p>
       <h2 className="mt-2 text-xl font-black text-[var(--ld-neon-green)]">{gameTitle}</h2>
       <p className="mx-auto mt-3 max-w-sm text-sm text-[var(--ld-muted)]">
@@ -36,7 +36,7 @@ export function GamePremiumGate({
           href={STRIPE_PAYMENT_LINK}
           className="mt-6 inline-flex rounded-full bg-[var(--ld-neon-green)] px-8 py-3 text-sm font-black text-black"
         >
-          Unlock all games — $5
+          Unlock 3D walk + all games — $5
         </a>
       ) : (
         <button
@@ -44,7 +44,7 @@ export function GamePremiumGate({
           onClick={openSupportModal}
           className="mt-6 rounded-full bg-[var(--ld-neon-green)] px-8 py-3 text-sm font-black text-black"
         >
-          Unlock all games — $5 · Coming soon
+          Unlock 3D walk + all games — $5 · Coming soon
         </button>
       )}
       <Link

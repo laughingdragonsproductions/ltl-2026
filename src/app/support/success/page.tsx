@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
-import { setUnlockedUntil, UNLOCK_DEADLINE } from "@/lib/session-timer";
+import { setUnlockedUntil, UNLOCK_DEADLINE } from "@/lib/unlock-state";
 
 function SuccessContent() {
   const params = useSearchParams();
@@ -47,7 +47,7 @@ function SuccessContent() {
           <p className="text-xs font-bold uppercase tracking-widest text-[var(--ld-neon-green)]">
             Thank you
           </p>
-          <h1 className="mt-2 text-2xl font-black text-white">All features unlocked</h1>
+          <h1 className="mt-2 text-2xl font-black text-white">3D walk + all games unlocked</h1>
           <p className="mt-3 text-sm text-[var(--ld-muted)]">
             Walking 3D map and all festival games are unlocked. Ads are removed. Thank you — your
             $5 helps keep this unofficial companion online.

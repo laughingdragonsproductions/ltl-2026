@@ -14,7 +14,7 @@ export default function MapPage() {
             Festival Map
           </h1>
           <p className="mt-2 max-w-2xl text-sm text-[var(--ld-muted)]">
-            Official amenity map with pinch-zoom and tap pins. No time limit. Switch pass tier
+            Official amenity map with pinch-zoom and tap pins. Switch pass tier
             above to filter VIP points.
           </p>
         </div>

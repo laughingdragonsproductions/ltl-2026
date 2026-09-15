@@ -9,7 +9,14 @@ function getBandCount(): number {
   try {
     const raw = readFileSync(join(process.cwd(), "data/band-matcher.json"), "utf8");
     const data = JSON.parse(raw) as BandManifest;
-    return data.bands?.length ?? 0;
+    if ((data.bands?.length ?? 0) >= 4) return data.bands.length;
+  } catch {
+    /* fall through */
+  }
+  try {
+    const raw = readFileSync(join(process.cwd(), "data/slider-images.json"), "utf8");
+    const data = JSON.parse(raw) as { images?: unknown[] };
+    return data.images?.length ?? 0;
   } catch {
     return 0;
   }
@@ -60,7 +67,7 @@ export default function GamesPage() {
       <p className="mt-2 max-w-xl text-[var(--ld-muted)]">
         <strong className="text-white">Flappy Skull</strong> is free.{" "}
         <strong className="text-white">$5</strong> unlocks all LOUDERTHANLIFE2026 mini-games and
-        the walking 3D map — no timers.
+        the walking 3D map.
       </p>
       <GamesHub games={games} />
     </div>

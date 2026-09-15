@@ -2,7 +2,7 @@
 
 import { useTier } from "@/lib/tier-context";
 import type { PassTier } from "@/lib/data";
-import { SessionTimerPill } from "@/components/SessionTimerPill";
+import { UnlockPill } from "@/components/UnlockPill";
 
 const tierLabels: Record<PassTier, string> = {
   ga: "GA",
@@ -36,7 +36,7 @@ export function TierBar() {
           </button>
         ))}
       </div>
-      <SessionTimerPill />
+      <UnlockPill />
     </div>
   );
 }
