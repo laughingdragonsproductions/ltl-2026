@@ -100,7 +100,7 @@ export function VirtualOverlayMap() {
   );
 
   useEffect(() => {
-    if (!containerRef.current || mapRef.current) return;
+    if (!hydrated || !containerRef.current || mapRef.current) return;
 
     const map = new maplibregl.Map({
       container: containerRef.current,
@@ -122,7 +122,7 @@ export function VirtualOverlayMap() {
           festivalMap: {
             type: "image",
             url: "/maps/ltl-2026-official-amenity-map.png",
-            coordinates: defaultGeoref.coordinates,
+            coordinates,
           },
           pois: {
             type: "geojson",
@@ -136,7 +136,7 @@ export function VirtualOverlayMap() {
             id: "festival-overlay",
             type: "raster",
             source: "festivalMap",
-            paint: { "raster-opacity": defaultGeoref.opacity ?? 0.72 },
+            paint: { "raster-opacity": opacity },
           },
           {
             id: "poi-circles",
@@ -181,6 +181,10 @@ export function VirtualOverlayMap() {
       map.resize();
     });
 
+    map.on("error", (e) => {
+      console.error("MapLibre error:", e.error?.message ?? e);
+    });
+
     map.on("click", "poi-circles", (e) => {
       if (adjustModeRef.current) return;
       const feature = e.features?.[0];
@@ -220,11 +224,11 @@ export function VirtualOverlayMap() {
       mapRef.current = null;
       setMapReady(false);
     };
-  }, []);
+  }, [hydrated]);
 
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !mapReady || !hydrated) return;
+    if (!map || !mapReady) return;
     const src = map.getSource("festivalMap") as maplibregl.ImageSource | undefined;
     src?.setCoordinates(coordinates);
     map.setPaintProperty(
@@ -232,7 +236,7 @@ export function VirtualOverlayMap() {
       "raster-opacity",
       showFestivalOverlay ? opacity : 0
     );
-  }, [coordinates, opacity, showFestivalOverlay, mapReady, hydrated]);
+  }, [coordinates, opacity, showFestivalOverlay, mapReady]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -275,14 +279,6 @@ export function VirtualOverlayMap() {
     saveNow();
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
-  }
-
-  if (!hydrated) {
-    return (
-      <div className="flex h-48 items-center justify-center text-[var(--ld-muted)]">
-        Loading map…
-      </div>
-    );
   }
 
   return (
@@ -354,7 +350,12 @@ export function VirtualOverlayMap() {
           </div>
 
           <div className="relative overflow-hidden rounded-xl border border-[var(--ld-border-green)] ld-glow-purple">
-            <div ref={containerRef} className="h-[min(70vh,560px)] w-full min-h-[320px]" />
+            <div ref={containerRef} className="h-[min(70vh,560px)] w-full min-h-[320px] bg-[#111]" />
+            {!mapReady && (
+              <p className="pointer-events-none absolute inset-0 flex items-center justify-center text-sm text-[var(--ld-muted)]">
+                Loading satellite map…
+              </p>
+            )}
             {adjustMode && (
               <p className="absolute bottom-2 left-2 rounded bg-black/80 px-2 py-1 text-[10px] font-bold uppercase text-[var(--ld-neon-green)]">
                 Drag corner handles

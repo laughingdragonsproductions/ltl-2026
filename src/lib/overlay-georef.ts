@@ -56,12 +56,39 @@ export function getDefaultOverlayGeoref(): OverlayGeorefOverride {
   };
 }
 
+function isValidCoordinates(value: unknown): value is OverlayCoordinates {
+  if (!Array.isArray(value) || value.length !== 4) return false;
+  return value.every(
+    (p) =>
+      Array.isArray(p) &&
+      p.length === 2 &&
+      Number.isFinite(p[0]) &&
+      Number.isFinite(p[1])
+  );
+}
+
+function isValidBounds(b: GeorefBounds): boolean {
+  return (
+    Number.isFinite(b.west) &&
+    Number.isFinite(b.east) &&
+    Number.isFinite(b.north) &&
+    Number.isFinite(b.south) &&
+    b.east > b.west &&
+    b.north > b.south
+  );
+}
+
 export function loadOverlayOverride(): OverlayGeorefOverride | null {
   if (typeof window === "undefined") return null;
   try {
     const raw = localStorage.getItem(OVERLAY_STORAGE_KEY);
     if (!raw) return null;
-    return JSON.parse(raw) as OverlayGeorefOverride;
+    const data = JSON.parse(raw) as OverlayGeorefOverride;
+    if (!isValidCoordinates(data.coordinates) || !isValidBounds(data.bounds)) {
+      localStorage.removeItem(OVERLAY_STORAGE_KEY);
+      return null;
+    }
+    return data;
   } catch {
     return null;
   }

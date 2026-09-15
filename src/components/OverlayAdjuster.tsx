@@ -55,7 +55,7 @@ export function OverlayAdjuster() {
   useOverlayCornerMarkers(mapRef.current, mapReady, coordinates, true, handleCoordinatesChange);
 
   useEffect(() => {
-    if (!containerRef.current || mapRef.current) return;
+    if (!hydrated || !containerRef.current || mapRef.current) return;
 
     const map = new maplibregl.Map({
       container: containerRef.current,
@@ -71,7 +71,7 @@ export function OverlayAdjuster() {
           festivalMap: {
             type: "image",
             url: "/maps/ltl-2026-official-amenity-map.png",
-            coordinates: defaultGeoref.coordinates,
+            coordinates,
           },
         },
         layers: [
@@ -80,7 +80,7 @@ export function OverlayAdjuster() {
             id: "festival-overlay",
             type: "raster",
             source: "festivalMap",
-            paint: { "raster-opacity": defaultGeoref.opacity ?? 0.72 },
+            paint: { "raster-opacity": opacity },
           },
         ],
       },
@@ -93,6 +93,9 @@ export function OverlayAdjuster() {
       setMapReady(true);
       map.resize();
     });
+    map.on("error", (e) => {
+      console.error("MapLibre error:", e.error?.message ?? e);
+    });
 
     mapRef.current = map;
     return () => {
@@ -100,15 +103,15 @@ export function OverlayAdjuster() {
       mapRef.current = null;
       setMapReady(false);
     };
-  }, []);
+  }, [hydrated]);
 
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !mapReady || !hydrated) return;
+    if (!map || !mapReady) return;
     const src = map.getSource("festivalMap") as maplibregl.ImageSource | undefined;
     src?.setCoordinates(coordinates);
     map.setPaintProperty("festival-overlay", "raster-opacity", opacity);
-  }, [coordinates, opacity, mapReady, hydrated]);
+  }, [coordinates, opacity, mapReady]);
 
   async function handleCopy() {
     await copyJson();
@@ -120,14 +123,6 @@ export function OverlayAdjuster() {
     saveNow();
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
-  }
-
-  if (!hydrated) {
-    return (
-      <div className="flex h-48 items-center justify-center text-[var(--ld-muted)]">
-        Loading adjuster…
-      </div>
-    );
   }
 
   return (
@@ -147,7 +142,12 @@ export function OverlayAdjuster() {
 
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="relative overflow-hidden rounded-xl border border-[var(--ld-border-green)]">
-          <div ref={containerRef} className="h-[min(75vh,640px)] w-full min-h-[360px]" />
+          <div ref={containerRef} className="h-[min(75vh,640px)] w-full min-h-[360px] bg-[#111]" />
+          {!mapReady && (
+            <p className="pointer-events-none absolute inset-0 flex items-center justify-center text-sm text-[var(--ld-muted)]">
+              Loading satellite map…
+            </p>
+          )}
         </div>
 
         <OverlayControlPanel
