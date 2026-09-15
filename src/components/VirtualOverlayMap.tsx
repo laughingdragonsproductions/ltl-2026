@@ -176,10 +176,13 @@ export function VirtualOverlayMap() {
     });
     geolocate.on("error", () => setLocStatus("denied"));
 
-    map.on("load", () => {
+    const markReady = () => {
       setMapReady(true);
       map.resize();
-    });
+    };
+    if (map.loaded()) markReady();
+    map.on("load", markReady);
+    map.on("idle", markReady);
 
     map.on("error", (e) => {
       console.error("MapLibre error:", e.error?.message ?? e);

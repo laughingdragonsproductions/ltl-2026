@@ -89,10 +89,13 @@ export function OverlayAdjuster() {
     });
 
     map.addControl(new maplibregl.NavigationControl({ showCompass: true }), "top-right");
-    map.on("load", () => {
+    const markReady = () => {
       setMapReady(true);
       map.resize();
-    });
+    };
+    if (map.loaded()) markReady();
+    map.on("load", markReady);
+    map.on("idle", markReady);
     map.on("error", (e) => {
       console.error("MapLibre error:", e.error?.message ?? e);
     });
