@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import Link from "next/link";
 import { georef } from "@/lib/georef";
 import {
   buildAllMapPoints,
@@ -16,17 +15,20 @@ import {
   type MapPoint,
 } from "@/lib/map-points";
 import {
-  getEffectiveOverlayGeoref,
+  getDefaultOverlayGeoref,
   mapPercentToLatLngWithBounds,
   type GeorefBounds,
-  type OverlayGeorefOverride,
 } from "@/lib/overlay-georef";
+import { useOverlayGeorefEditor } from "@/hooks/use-overlay-georef-editor";
+import { useOverlayCornerMarkers } from "@/hooks/use-overlay-corner-markers";
+import { OverlayControlPanel } from "@/components/OverlayControlPanel";
 import { useTier } from "@/lib/tier-context";
 
 type UserLocation = { lat: number; lng: number };
 
 const { center } = georef.venue;
 const SATELLITE_URL = georef.satellite.tileUrl;
+const defaultGeoref = getDefaultOverlayGeoref();
 
 function buildPointsForBounds(bounds: GeorefBounds): MapPoint[] {
   return buildAllMapPoints().map((p) => {
@@ -58,42 +60,47 @@ export function VirtualOverlayMap() {
   const mapRef = useRef<maplibregl.Map | null>(null);
   const popupRef = useRef<maplibregl.Popup | null>(null);
   const userLocationRef = useRef<UserLocation | null>(null);
+  const adjustModeRef = useRef(false);
 
-  const [overlayGeoref, setOverlayGeoref] = useState<OverlayGeorefOverride | null>(null);
+  const editor = useOverlayGeorefEditor(true);
+  const { state, hydrated, lockAspect, setLockAspect, setOpacity, setCoordinates, updateBounds, nudge, scale, saveNow, reset, copyJson } = editor;
+
   const [mapReady, setMapReady] = useState(false);
   const [layers, setLayers] = useState(DEFAULT_LAYERS);
   const [basemap, setBasemap] = useState<"streets" | "satellite">("satellite");
   const [showFestivalOverlay, setShowFestivalOverlay] = useState(true);
-  const [userLocation, setUserLocation] = useState<UserLocation | null>(null);
+  const [adjustMode, setAdjustMode] = useState(false);
+  adjustModeRef.current = adjustMode;
+  const [copied, setCopied] = useState(false);
+  const [saved, setSaved] = useState(false);
   const [locStatus, setLocStatus] = useState<"idle" | "active" | "denied">("idle");
 
-  useEffect(() => {
-    const refresh = () => setOverlayGeoref(getEffectiveOverlayGeoref());
-    refresh();
-    window.addEventListener("focus", refresh);
-    window.addEventListener("storage", refresh);
-    return () => {
-      window.removeEventListener("focus", refresh);
-      window.removeEventListener("storage", refresh);
-    };
-  }, []);
+  const opacity = state.opacity ?? 0.72;
+  const coordinates = state.coordinates;
+  const bounds = state.bounds;
 
-  const allPoints = useMemo(
-    () => (overlayGeoref ? buildPointsForBounds(overlayGeoref.bounds) : []),
-    [overlayGeoref]
-  );
+  const allPoints = useMemo(() => buildPointsForBounds(bounds), [bounds]);
   const visiblePoints = useMemo(
     () => filterMapPoints(allPoints, layers, tier),
     [allPoints, layers, tier]
   );
   const geojson = useMemo(() => pointsToGeoJson(visiblePoints), [visiblePoints]);
 
-  const bounds = overlayGeoref?.bounds;
-  const coordinates = overlayGeoref?.coordinates;
-  const overlayOpacity = overlayGeoref?.opacity ?? 0.72;
+  const handleCoordinatesChange = useCallback(
+    (coords: typeof coordinates) => setCoordinates(coords),
+    [setCoordinates]
+  );
+
+  useOverlayCornerMarkers(
+    mapRef.current,
+    mapReady,
+    coordinates,
+    adjustMode,
+    handleCoordinatesChange
+  );
 
   useEffect(() => {
-    if (!containerRef.current || mapRef.current || !coordinates || !bounds) return;
+    if (!containerRef.current || mapRef.current) return;
 
     const map = new maplibregl.Map({
       container: containerRef.current,
@@ -115,7 +122,7 @@ export function VirtualOverlayMap() {
           festivalMap: {
             type: "image",
             url: "/maps/ltl-2026-official-amenity-map.png",
-            coordinates,
+            coordinates: defaultGeoref.coordinates,
           },
           pois: {
             type: "geojson",
@@ -129,7 +136,7 @@ export function VirtualOverlayMap() {
             id: "festival-overlay",
             type: "raster",
             source: "festivalMap",
-            paint: { "raster-opacity": overlayOpacity },
+            paint: { "raster-opacity": defaultGeoref.opacity ?? 0.72 },
           },
           {
             id: "poi-circles",
@@ -147,8 +154,8 @@ export function VirtualOverlayMap() {
       center: [center.lng, center.lat],
       zoom: georef.satellite.defaultZoom,
       maxBounds: [
-        [bounds.west - 0.008, bounds.south - 0.008],
-        [bounds.east + 0.008, bounds.north + 0.008],
+        [defaultGeoref.bounds.west - 0.008, defaultGeoref.bounds.south - 0.008],
+        [defaultGeoref.bounds.east + 0.008, defaultGeoref.bounds.north + 0.008],
       ],
     });
 
@@ -165,7 +172,6 @@ export function VirtualOverlayMap() {
     geolocate.on("geolocate", (e) => {
       const loc = { lat: e.coords.latitude, lng: e.coords.longitude };
       userLocationRef.current = loc;
-      setUserLocation(loc);
       setLocStatus("active");
     });
     geolocate.on("error", () => setLocStatus("denied"));
@@ -176,6 +182,7 @@ export function VirtualOverlayMap() {
     });
 
     map.on("click", "poi-circles", (e) => {
+      if (adjustModeRef.current) return;
       const feature = e.features?.[0];
       if (!feature || feature.geometry.type !== "Point") return;
       const [lng, lat] = feature.geometry.coordinates;
@@ -200,7 +207,7 @@ export function VirtualOverlayMap() {
     });
 
     map.on("mouseenter", "poi-circles", () => {
-      map.getCanvas().style.cursor = "pointer";
+      if (!adjustModeRef.current) map.getCanvas().style.cursor = "pointer";
     });
     map.on("mouseleave", "poi-circles", () => {
       map.getCanvas().style.cursor = "";
@@ -213,19 +220,19 @@ export function VirtualOverlayMap() {
       mapRef.current = null;
       setMapReady(false);
     };
-  }, [coordinates, bounds, overlayOpacity]);
+  }, []);
 
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !mapReady || !coordinates) return;
+    if (!map || !mapReady || !hydrated) return;
     const src = map.getSource("festivalMap") as maplibregl.ImageSource | undefined;
     src?.setCoordinates(coordinates);
     map.setPaintProperty(
       "festival-overlay",
       "raster-opacity",
-      showFestivalOverlay ? overlayOpacity : 0
+      showFestivalOverlay ? opacity : 0
     );
-  }, [coordinates, overlayOpacity, showFestivalOverlay, mapReady]);
+  }, [coordinates, opacity, showFestivalOverlay, mapReady, hydrated]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -250,7 +257,6 @@ export function VirtualOverlayMap() {
       (pos) => {
         const loc = { lat: pos.coords.latitude, lng: pos.coords.longitude };
         userLocationRef.current = loc;
-        setUserLocation(loc);
         setLocStatus("active");
         map.flyTo({ center: [loc.lng, loc.lat], zoom: 17, essential: true });
       },
@@ -259,7 +265,19 @@ export function VirtualOverlayMap() {
     );
   }
 
-  if (!overlayGeoref) {
+  async function handleCopy() {
+    await copyJson();
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
+  function handleSave() {
+    saveNow();
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  }
+
+  if (!hydrated) {
     return (
       <div className="flex h-48 items-center justify-center text-[var(--ld-muted)]">
         Loading map…
@@ -274,77 +292,102 @@ export function VirtualOverlayMap() {
           Free · GPS overlay
         </p>
         <p className="mt-1 text-sm text-[var(--ld-text)]">
-          Live satellite + official map aligned on real GPS. Misaligned?{" "}
-          <Link href="/overlay/adjust" className="font-bold text-[var(--ld-neon-green)] underline">
-            Open adjuster
-          </Link>
-          .
+          Slide opacity anytime. Tap <strong className="text-white">Adjust placement</strong> to drag
+          corners on the satellite map — saves automatically in your browser.
         </p>
       </div>
 
-      <div className="flex flex-wrap gap-2">
-        {(Object.keys(layers) as LayerKey[]).map((key) => (
-          <button
-            key={key}
-            type="button"
-            onClick={() => setLayers((prev) => ({ ...prev, [key]: !prev[key] }))}
-            className={`rounded-full px-3 py-1.5 text-xs font-semibold uppercase ${
-              layers[key]
-                ? "bg-[var(--ld-neon-green)] text-black"
-                : "border border-[var(--ld-border)] text-[var(--ld-muted)]"
-            }`}
-          >
-            {key}
-          </button>
-        ))}
-      </div>
+      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_300px]">
+        <div className="space-y-4">
+          <div className="flex flex-wrap gap-2">
+            {(Object.keys(layers) as LayerKey[]).map((key) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setLayers((prev) => ({ ...prev, [key]: !prev[key] }))}
+                className={`rounded-full px-3 py-1.5 text-xs font-semibold uppercase ${
+                  layers[key]
+                    ? "bg-[var(--ld-neon-green)] text-black"
+                    : "border border-[var(--ld-border)] text-[var(--ld-muted)]"
+                }`}
+              >
+                {key}
+              </button>
+            ))}
+          </div>
 
-      <div className="flex flex-wrap gap-2">
-        <button
-          type="button"
-          onClick={() => setBasemap("satellite")}
-          className={`rounded px-3 py-1.5 text-xs font-semibold ${
-            basemap === "satellite" ? "bg-[var(--ld-neon-green-dim)] text-white" : "bg-zinc-900 text-[var(--ld-muted)]"
-          }`}
-        >
-          Satellite
-        </button>
-        <button
-          type="button"
-          onClick={() => setBasemap("streets")}
-          className={`rounded px-3 py-1.5 text-xs font-semibold ${
-            basemap === "streets" ? "bg-[var(--ld-neon-green-dim)] text-white" : "bg-zinc-900 text-[var(--ld-muted)]"
-          }`}
-        >
-          Streets
-        </button>
-        <button
-          type="button"
-          onClick={() => setShowFestivalOverlay((v) => !v)}
-          className={`rounded px-3 py-1.5 text-xs font-semibold ${
-            showFestivalOverlay ? "bg-[var(--ld-neon-green)] text-black" : "bg-[var(--ld-surface)] text-[var(--ld-muted)]"
-          }`}
-        >
-          Amenity overlay
-        </button>
-        <button
-          type="button"
-          onClick={centerOnMe}
-          className="rounded bg-[var(--ld-neon-green)]/15 px-3 py-1.5 text-xs font-bold text-[var(--ld-neon-green)] ring-1 ring-[var(--ld-neon-green)]/40"
-        >
-          Center on me
-        </button>
-      </div>
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => setBasemap("satellite")}
+              className={`rounded px-3 py-1.5 text-xs font-semibold ${
+                basemap === "satellite" ? "bg-[var(--ld-neon-green-dim)] text-white" : "bg-zinc-900 text-[var(--ld-muted)]"
+              }`}
+            >
+              Satellite
+            </button>
+            <button
+              type="button"
+              onClick={() => setBasemap("streets")}
+              className={`rounded px-3 py-1.5 text-xs font-semibold ${
+                basemap === "streets" ? "bg-[var(--ld-neon-green-dim)] text-white" : "bg-zinc-900 text-[var(--ld-muted)]"
+              }`}
+            >
+              Streets
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowFestivalOverlay((v) => !v)}
+              className={`rounded px-3 py-1.5 text-xs font-semibold ${
+                showFestivalOverlay ? "bg-[var(--ld-neon-green)] text-black" : "bg-[var(--ld-surface)] text-[var(--ld-muted)]"
+              }`}
+            >
+              {showFestivalOverlay ? "Hide art" : "Show art"}
+            </button>
+            <button
+              type="button"
+              onClick={centerOnMe}
+              className="rounded bg-[var(--ld-neon-green)]/15 px-3 py-1.5 text-xs font-bold text-[var(--ld-neon-green)] ring-1 ring-[var(--ld-neon-green)]/40"
+            >
+              Center on me
+            </button>
+          </div>
 
-      <div className="relative overflow-hidden rounded-xl border border-[var(--ld-border-green)] ld-glow-purple">
-        <div ref={containerRef} className="h-[min(70vh,560px)] w-full min-h-[320px]" />
-      </div>
+          <div className="relative overflow-hidden rounded-xl border border-[var(--ld-border-green)] ld-glow-purple">
+            <div ref={containerRef} className="h-[min(70vh,560px)] w-full min-h-[320px]" />
+            {adjustMode && (
+              <p className="absolute bottom-2 left-2 rounded bg-black/80 px-2 py-1 text-[10px] font-bold uppercase text-[var(--ld-neon-green)]">
+                Drag corner handles
+              </p>
+            )}
+          </div>
 
-      <p className="text-xs text-[var(--ld-muted)]">
-        {visiblePoints.length} GPS pins · Amenity art georeferenced over Kentucky Expo Center
-        {locStatus === "active" && userLocation && " · GPS active"}
-        {locStatus === "denied" && " · Enable location for live positioning"}
-      </p>
+          <p className="text-xs text-[var(--ld-muted)]">
+            {visiblePoints.length} GPS pins · Kentucky Expo Center
+            {locStatus === "active" && " · GPS active"}
+            {locStatus === "denied" && " · Enable location for live positioning"}
+          </p>
+        </div>
+
+        <OverlayControlPanel
+          bounds={bounds}
+          opacity={opacity}
+          lockAspect={lockAspect}
+          adjustMode={adjustMode}
+          compact
+          copied={copied}
+          saved={saved}
+          onOpacityChange={setOpacity}
+          onLockAspectChange={setLockAspect}
+          onAdjustModeChange={setAdjustMode}
+          onBoundsChange={updateBounds}
+          onNudge={nudge}
+          onScale={scale}
+          onSave={handleSave}
+          onCopy={handleCopy}
+          onReset={reset}
+        />
+      </div>
     </div>
   );
 }
