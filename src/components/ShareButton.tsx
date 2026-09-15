@@ -47,7 +47,7 @@ export function ShareButton({
       <button
         type="button"
         onClick={onShare}
-        className="min-h-[44px] rounded-full border border-[var(--ld-purple)]/50 bg-[var(--ld-purple-dim)]/30 px-4 py-2 text-xs font-bold uppercase tracking-wide text-[var(--ld-neon-green)] hover:bg-[var(--ld-purple-dim)]/50"
+        className="min-h-[44px] rounded-full border border-[var(--ld-border-green)] bg-[var(--ld-surface)] px-4 py-2 text-xs font-bold uppercase tracking-wide text-[var(--ld-neon-green)] hover:bg-[var(--ld-surface-2)]"
       >
         Share
       </button>

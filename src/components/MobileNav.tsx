@@ -25,7 +25,7 @@ export function MobileNav() {
 
   return (
     <>
-      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[var(--ld-purple-dim)]/40 bg-[var(--ld-black)]/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[var(--ld-border)] bg-[var(--ld-black)]/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
         <ul className="flex items-stretch justify-around">
           {tabs.map((tab) => {
             const active = pathname === tab.href || pathname.startsWith(`${tab.href}/`);
@@ -70,7 +70,7 @@ export function MobileNav() {
             aria-label="Close menu"
             onClick={() => setMoreOpen(false)}
           />
-          <div className="absolute bottom-0 left-0 right-0 rounded-t-2xl border-t border-[var(--ld-purple-dim)]/50 bg-[var(--ld-black)] p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
+          <div className="absolute bottom-0 left-0 right-0 rounded-t-2xl border-t border-[var(--ld-border-green)] bg-[var(--ld-black)] p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
             <p className="mb-3 text-xs font-bold uppercase tracking-widest text-[var(--ld-purple)]">
               More
             </p>
@@ -80,7 +80,7 @@ export function MobileNav() {
                   <Link
                     href={link.href}
                     onClick={() => setMoreOpen(false)}
-                    className="block rounded-lg px-3 py-3 text-sm font-semibold text-[var(--ld-text)] hover:bg-[var(--ld-purple-dim)]/30"
+                    className="block rounded-lg px-3 py-3 text-sm font-semibold text-[var(--ld-text)] hover:bg-[var(--ld-surface-2)] hover:text-[var(--ld-neon-green)]"
                   >
                     {link.label}
                   </Link>

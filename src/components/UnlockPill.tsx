@@ -17,7 +17,7 @@ export function UnlockPill() {
     <button
       type="button"
       onClick={openSupportModal}
-      className="rounded-full bg-[var(--ld-purple-dim)]/40 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-[var(--ld-muted)] ring-1 ring-[var(--ld-purple-dim)]/50 hover:text-white sm:text-xs"
+      className="rounded-full bg-[var(--ld-surface)] px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-[var(--ld-muted)] ring-1 ring-[var(--ld-border-green)] hover:text-[var(--ld-neon-green)] sm:text-xs"
     >
       3D + games · $5
     </button>

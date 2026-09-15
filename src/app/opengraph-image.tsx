@@ -15,11 +15,11 @@ export default function OgImage() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "#0a0a0f",
+          background: "#0a0a0a",
           fontFamily: "system-ui, sans-serif",
         }}
       >
-        <div style={{ color: "#9b30ff", fontSize: 28, letterSpacing: 8, fontWeight: 700 }}>
+        <div style={{ color: "#9bb88a", fontSize: 28, letterSpacing: 8, fontWeight: 700 }}>
           LOUDER THAN LIFE 2026
         </div>
         <div
@@ -36,7 +36,7 @@ export default function OgImage() {
         <div style={{ color: "#e8e8f0", fontSize: 32, marginTop: 24 }}>
           Live Map & Schedule
         </div>
-        <div style={{ color: "#9ca3af", fontSize: 22, marginTop: 12 }}>
+        <div style={{ color: "#9bb88a", fontSize: 22, marginTop: 12 }}>
           Sept 17–20 · Louisville · Unofficial fan guide
         </div>
       </div>

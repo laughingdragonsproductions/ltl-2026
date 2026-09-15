@@ -20,7 +20,7 @@ export function InstallPrompt() {
   if (!show) return null;
 
   return (
-    <div className="fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom))] left-4 right-4 z-40 rounded-xl border border-[var(--ld-purple)]/40 bg-[var(--ld-black)]/95 p-3 shadow-lg md:bottom-4 md:left-auto md:right-4 md:max-w-xs">
+    <div className="fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom))] left-4 right-4 z-40 rounded-xl border border-[var(--ld-border-green)] bg-[var(--ld-black)]/95 p-3 shadow-lg md:bottom-4 md:left-auto md:right-4 md:max-w-xs">
       <p className="text-xs font-semibold text-[var(--ld-neon-green)]">Add to Home Screen</p>
       <p className="mt-1 text-[11px] text-[var(--ld-muted)]">
         Save LTL26 for quick access in the crowd — Share → Add to Home Screen (iOS) or

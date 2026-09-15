@@ -17,7 +17,7 @@ export function Nav() {
   const pathname = usePathname();
 
   return (
-    <header className="hidden border-b border-[var(--ld-purple-dim)]/40 bg-[var(--ld-black)]/95 backdrop-blur md:block">
+    <header className="hidden border-b border-[var(--ld-border)] bg-[var(--ld-black)]/95 backdrop-blur md:block">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
         <Link
           href="/map"
@@ -33,8 +33,8 @@ export function Nav() {
               className={`rounded px-3 py-1.5 font-semibold ${
                 pathname === link.href ||
                 (link.href === "/games" && pathname.startsWith("/games"))
-                  ? "bg-[var(--ld-purple)] text-white"
-                  : "text-[var(--ld-muted)] hover:bg-[var(--ld-purple-dim)]/30 hover:text-white"
+                  ? "bg-[var(--ld-neon-green)] text-black"
+                  : "text-[var(--ld-muted)] hover:bg-[var(--ld-surface-2)] hover:text-[var(--ld-neon-green)]"
               }`}
             >
               {link.label}

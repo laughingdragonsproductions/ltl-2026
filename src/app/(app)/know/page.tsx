@@ -17,7 +17,7 @@ export default function KnowPage() {
         .
       </p>
       <section className="mt-6 space-y-4 text-sm text-[var(--ld-text)]">
-        <div className="rounded-lg border border-[var(--ld-purple-dim)]/40 p-4">
+        <div className="rounded-lg border border-[var(--ld-border)] p-4">
           <h2 className="font-bold text-[var(--ld-neon-green)]">Allowed in bags</h2>
           <ul className="mt-2 list-inside list-disc text-[var(--ld-muted)]">
             {data.bagPolicy.allowed.slice(0, 6).map((item) => (
@@ -25,7 +25,7 @@ export default function KnowPage() {
             ))}
           </ul>
         </div>
-        <div className="rounded-lg border border-[var(--ld-purple-dim)]/40 p-4">
+        <div className="rounded-lg border border-[var(--ld-border)] p-4">
           <h2 className="font-bold text-[var(--ld-neon-green)]">Sources</h2>
           <ul className="mt-2 space-y-1 text-[var(--ld-muted)]">
             {data.sources.sources.map((s) => (

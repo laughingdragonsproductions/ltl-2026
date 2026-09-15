@@ -228,7 +228,7 @@ export function VirtualOverlayMap() {
 
   return (
       <div className="space-y-4">
-        <div className="rounded-xl border border-[var(--ld-purple)]/40 bg-[var(--ld-purple-dim)]/15 p-4">
+        <div className="rounded-xl border border-[var(--ld-border-green)] bg-[var(--ld-surface)]/80 p-4">
           <p className="text-xs font-bold uppercase tracking-widest text-[var(--ld-neon-green)]">
             Free · GPS overlay
           </p>
@@ -246,8 +246,8 @@ export function VirtualOverlayMap() {
               onClick={() => setLayers((prev) => ({ ...prev, [key]: !prev[key] }))}
               className={`rounded-full px-3 py-1.5 text-xs font-semibold uppercase ${
                 layers[key]
-                  ? "bg-[var(--ld-purple)] text-white"
-                  : "border border-[var(--ld-purple-dim)]/50 text-[var(--ld-muted)]"
+                  ? "bg-[var(--ld-neon-green)] text-black"
+                  : "border border-[var(--ld-border)] text-[var(--ld-muted)]"
               }`}
             >
               {key}
@@ -278,7 +278,7 @@ export function VirtualOverlayMap() {
             type="button"
             onClick={() => setShowFestivalOverlay((v) => !v)}
             className={`rounded px-3 py-1.5 text-xs font-semibold ${
-              showFestivalOverlay ? "bg-[var(--ld-purple)] text-white" : "bg-zinc-900 text-[var(--ld-muted)]"
+              showFestivalOverlay ? "bg-[var(--ld-neon-green)] text-black" : "bg-[var(--ld-surface)] text-[var(--ld-muted)]"
             }`}
           >
             Amenity overlay
@@ -292,7 +292,7 @@ export function VirtualOverlayMap() {
           </button>
         </div>
 
-        <div className="relative overflow-hidden rounded-xl border border-[var(--ld-purple-dim)]/50 ld-glow-purple">
+        <div className="relative overflow-hidden rounded-xl border border-[var(--ld-border-green)] ld-glow-purple">
           <div ref={containerRef} className="h-[min(70vh,560px)] w-full min-h-[320px]" />
         </div>
 

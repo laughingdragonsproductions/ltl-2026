@@ -27,7 +27,7 @@ export default function MapPage() {
 
       <Link
         href="/overlay"
-        className="mt-8 flex items-center justify-between gap-4 rounded-2xl border border-[var(--ld-purple)]/50 bg-[var(--ld-purple-dim)]/20 p-5 transition hover:border-[var(--ld-neon-green)]/40"
+        className="mt-8 flex items-center justify-between gap-4 rounded-2xl border border-[var(--ld-border-green)] bg-[var(--ld-surface)]/80 p-5 transition hover:border-[var(--ld-neon-green)]/60"
       >
         <div>
           <p className="text-xs font-bold uppercase tracking-widest text-[var(--ld-neon-green)]">
@@ -44,7 +44,7 @@ export default function MapPage() {
       </Link>
       <Link
         href="/walkthrough"
-        className="mt-4 flex items-center justify-between gap-4 rounded-2xl border border-[var(--ld-purple)]/50 bg-[var(--ld-purple-dim)]/20 p-5 transition hover:border-[var(--ld-neon-green)]/40"
+        className="mt-4 flex items-center justify-between gap-4 rounded-2xl border border-[var(--ld-border)] bg-[var(--ld-surface)]/60 p-5 transition hover:border-[var(--ld-neon-green)]/40"
       >
         <div>
           <p className="text-xs font-bold uppercase tracking-widest text-[var(--ld-purple)]">

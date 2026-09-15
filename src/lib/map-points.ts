@@ -26,7 +26,7 @@ export const LAYER_COLORS: Record<LayerKey, string> = {
   stages: "#f97316",
   entrances: "#facc15",
   vip: "#39ff14",
-  food: "#9b30ff",
+  food: "#84cc16",
   partners: "#ec4899",
   kingdom: "#60a5fa",
   pois: "#22d3ee",

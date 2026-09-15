@@ -26,10 +26,10 @@ function hangmanStageHtml() {
   return `
     <div class="ltl-hangman-gallows" aria-hidden="true">
       <svg viewBox="0 0 120 160" class="ltl-hangman-frame">
-        <line x1="20" y1="150" x2="100" y2="150" stroke="#9b30ff" stroke-width="4" />
-        <line x1="36" y1="150" x2="36" y2="18" stroke="#9b30ff" stroke-width="4" />
-        <line x1="36" y1="18" x2="78" y2="18" stroke="#9b30ff" stroke-width="4" />
-        <line x1="78" y1="18" x2="78" y2="36" stroke="#9b30ff" stroke-width="3" />
+        <line x1="20" y1="150" x2="100" y2="150" stroke="#39ff14" stroke-width="4" />
+        <line x1="36" y1="150" x2="36" y2="18" stroke="#39ff14" stroke-width="4" />
+        <line x1="36" y1="18" x2="78" y2="18" stroke="#39ff14" stroke-width="4" />
+        <line x1="78" y1="18" x2="78" y2="36" stroke="#39ff14" stroke-width="3" />
       </svg>
       <div class="ltl-hangman-sprites">${parts}</div>
     </div>`;

@@ -224,7 +224,7 @@ export async function initFlappySkull(root: HTMLElement): Promise<() => void> {
       ctx.fillStyle = "#4a5868";
       ctx.fillRect(pipe.x, 0, BASE.pipeWidth, pipe.topH);
       ctx.fillRect(pipe.x, bottomY, BASE.pipeWidth, WORLD.height - WORLD.groundH - bottomY);
-      ctx.fillStyle = "#9b30ff";
+      ctx.fillStyle = "#39ff14";
       ctx.fillRect(pipe.x - 2, pipe.topH - 10, BASE.pipeWidth + 4, 10);
       ctx.fillRect(pipe.x - 2, bottomY, BASE.pipeWidth + 4, 10);
     }

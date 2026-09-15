@@ -41,7 +41,7 @@ export function GamesHub({ games }: { games: HubGame[] }) {
                 </span>
               )}
               {locked && (
-                <span className="shrink-0 rounded-full bg-[var(--ld-purple-dim)]/40 px-2 py-0.5 text-[10px] font-bold uppercase text-[var(--ld-purple)]">
+                <span className="shrink-0 rounded-full bg-[var(--ld-surface-2)] px-2 py-0.5 text-[10px] font-bold uppercase text-[var(--ld-accent)]">
                   $5
                 </span>
               )}

@@ -5,7 +5,7 @@ const KOFI_URL = process.env.NEXT_PUBLIC_KOFI_URL;
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-[var(--ld-purple-dim)]/40 bg-black/40 px-4 py-6 text-center text-xs text-[var(--ld-muted)]">
+    <footer className="border-t border-[var(--ld-border)] bg-black/40 px-4 py-6 text-center text-xs text-[var(--ld-muted)]">
       <LitprintzAssociationClient />
       <p className="mt-2">
         Unofficial fan project · Not affiliated with Danny Wimmer Presents or Louder Than

@@ -40,6 +40,10 @@ Open **http://localhost:3000/map**
 
 **https://github.com/laughingdragonsproductions/ltl-2026**
 
+## Mobile-first notes
+
+Most traffic is phones at the event. Primary on-site routes: **`/overlay`** (GPS), **`/map`**, **`/schedule`**. The 3D walk (`/walkthrough`) is desktop WASD today; future mobile plan (virtual joystick + GPS follow) is in [`docs/walkthrough-mobile-future.md`](docs/walkthrough-mobile-future.md).
+
 ## Features
 
 - **2D tap map** — pinch/pan/zoom on official amenity art

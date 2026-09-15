@@ -28,7 +28,7 @@ export default function HomePage() {
           Live map & schedule
         </p>
 
-        <div className="ld-glow-purple mt-10 max-w-md rounded-2xl border border-[var(--ld-purple)]/50 bg-[var(--ld-purple-dim)]/20 px-8 py-10">
+        <div className="ld-glow-purple mt-10 max-w-md rounded-2xl border border-[var(--ld-border-green)] bg-[var(--ld-surface)]/80 px-8 py-10">
           <p className="text-sm font-semibold uppercase tracking-widest text-[var(--ld-neon-green)]">
             Fan-built companion
           </p>
@@ -48,7 +48,7 @@ export default function HomePage() {
         </Link>
         <Link
           href="/overlay"
-          className="mt-3 text-sm font-semibold text-[var(--ld-purple)] underline hover:text-white"
+          className="mt-3 text-sm font-semibold text-[var(--ld-neon-green)] underline hover:text-white"
         >
           Try virtual overlay →
         </Link>

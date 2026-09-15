@@ -81,8 +81,8 @@ export function InteractiveMap({ fullscreen = false }: { fullscreen?: boolean })
                 onClick={() => setLayers((prev) => ({ ...prev, [key]: !prev[key] }))}
                 className={`rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-wide ${
                   layers[key]
-                    ? "bg-[var(--ld-purple)] text-white"
-                    : "border border-[var(--ld-purple-dim)]/50 bg-black/40 text-[var(--ld-muted)]"
+                    ? "bg-[var(--ld-neon-green)] text-black"
+                    : "border border-[var(--ld-border)] bg-[var(--ld-surface)] text-[var(--ld-muted)]"
                 }`}
               >
                 {key}
@@ -92,7 +92,7 @@ export function InteractiveMap({ fullscreen = false }: { fullscreen?: boolean })
         )}
 
         <div
-          className={`relative w-full overflow-hidden rounded-xl border border-[var(--ld-purple-dim)]/50 bg-black/60 ld-glow-purple ${mapHeight}`}
+          className={`relative w-full overflow-hidden rounded-xl border border-[var(--ld-border-green)] bg-black/80 ld-glow-purple ${mapHeight}`}
         >
           <TransformWrapper
             initialScale={1}
@@ -132,7 +132,7 @@ export function InteractiveMap({ fullscreen = false }: { fullscreen?: boolean })
         </div>
 
         {selected && (
-          <div className="fixed inset-x-0 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-30 mx-4 rounded-t-2xl border border-[var(--ld-purple-dim)]/50 bg-[var(--ld-black)]/95 p-4 shadow-2xl md:static md:mx-0 md:rounded-lg md:bg-[var(--ld-purple-dim)]/20">
+          <div className="fixed inset-x-0 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-30 mx-4 rounded-t-2xl border border-[var(--ld-border-green)] bg-[var(--ld-black)]/95 p-4 shadow-2xl md:static md:mx-0 md:rounded-lg md:bg-[var(--ld-surface)]/90">
             <div className="mx-auto mb-2 h-1 w-10 rounded-full bg-zinc-600 md:hidden" />
             <div className="flex items-start justify-between gap-4">
               <div>
@@ -167,7 +167,7 @@ function dotColor(layer: LayerKey, tier: PassTier): string {
   if (layer === "vip") return tier === "topshelf" ? "bg-red-500" : "bg-green-500";
   if (layer === "entrances") return "bg-yellow-400";
   if (layer === "stages") return "bg-orange-500";
-  if (layer === "food") return "bg-purple-500";
+  if (layer === "food") return "bg-lime-500";
   if (layer === "kingdom") return "bg-blue-400";
   if (layer === "partners") return "bg-pink-500";
   return "bg-cyan-400";

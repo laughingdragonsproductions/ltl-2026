@@ -21,7 +21,7 @@ export function GamePremiumGate({
   }
 
   return (
-    <div className="rounded-2xl border border-[var(--ld-purple-dim)]/50 bg-black/80 p-8 text-center">
+    <div className="rounded-2xl border border-[var(--ld-border-green)] bg-[var(--ld-surface)]/90 p-8 text-center">
       <p className="text-xs font-bold uppercase tracking-widest text-[var(--ld-purple)]">
         Premium · $5
       </p>

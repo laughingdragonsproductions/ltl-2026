@@ -7,7 +7,7 @@
   font-weight: 700;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: var(--ld-purple);
+  color: var(--ld-accent);
 }
 
 .ltl-game-title {
@@ -21,7 +21,7 @@
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
   font-weight: 700;
-  border: 1px solid var(--ld-purple-dim);
+  border: 1px solid var(--ld-border);
   background: transparent;
   color: var(--ld-text);
   cursor: pointer;
@@ -35,7 +35,7 @@
 
 .ltl-btn-soft.is-active,
 .ltl-diff-btn.is-active {
-  background: var(--ld-purple-dim);
+  background: var(--ld-surface-2);
   color: var(--ld-neon-green);
 }
 
@@ -63,7 +63,7 @@
 
 .ltl-slider-ref img {
   border-radius: 0.5rem;
-  border: 1px solid var(--ld-purple-dim);
+  border: 1px solid var(--ld-border);
   max-width: 12rem;
 }
 
@@ -120,7 +120,7 @@
   display: block;
   width: 100%;
   border-radius: 0.75rem;
-  border: 1px solid var(--ld-purple-dim);
+  border: 1px solid var(--ld-border);
 }
 
 .ltl-flappy-overlay {
@@ -199,7 +199,7 @@
   min-width: 2.25rem;
   min-height: 2.75rem;
   border-radius: 0.35rem;
-  border: 1px solid var(--ld-purple-dim);
+  border: 1px solid var(--ld-border);
   background: #111;
   color: var(--ld-text);
   font-weight: 700;
@@ -302,7 +302,7 @@
 
 .ltl-slider-select {
   border-radius: 0.5rem;
-  border: 1px solid var(--ld-purple-dim);
+  border: 1px solid var(--ld-border);
   background: #111;
   color: var(--ld-text);
   padding: 0.35rem 0.5rem;
@@ -312,7 +312,7 @@
 .ltl-hangman-win {
   text-align: center;
   padding: 1.5rem;
-  border: 1px solid var(--ld-purple);
+  border: 1px solid var(--ld-border-green);
   border-radius: 1rem;
 }
 
@@ -331,7 +331,7 @@
 .ltl-game-card {
   display: block;
   border-radius: 1rem;
-  border: 1px solid var(--ld-purple-dim);
+  border: 1px solid var(--ld-border);
   padding: 1.25rem;
   transition: border-color 0.2s;
   text-decoration: none;
@@ -348,11 +348,11 @@
 }
 
 .ltl-game-card.is-locked {
-  border-color: var(--ld-purple-dim);
+  border-color: var(--ld-border);
 }
 
 .ltl-game-card.is-locked:hover {
-  border-color: var(--ld-purple);
+  border-color: var(--ld-neon-green);
 }
 
 .ltl-game-card h3 {
@@ -391,7 +391,7 @@
 
 .ltl-band-card {
   aspect-ratio: 1;
-  border: 2px solid var(--ld-purple-dim);
+  border: 2px solid var(--ld-border);
   border-radius: 0.75rem;
   background: #111;
   cursor: pointer;
@@ -417,7 +417,7 @@
 }
 
 .ltl-band-card-back {
-  background: linear-gradient(145deg, var(--ld-purple-dim), #111);
+  background: linear-gradient(145deg, var(--ld-surface-2), #0a0a0a);
   color: var(--ld-neon-green);
   font-weight: 900;
   font-size: 0.75rem;

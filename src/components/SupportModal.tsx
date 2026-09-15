@@ -13,7 +13,7 @@ export function SupportModal() {
   return (
     <div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/70 p-4 sm:items-center">
       <div
-        className="ld-glow-purple w-full max-w-md rounded-2xl border border-[var(--ld-purple)]/60 bg-[var(--ld-black)] p-6 shadow-2xl"
+        className="ld-glow-purple w-full max-w-md rounded-2xl border border-[var(--ld-border-green)] bg-[var(--ld-black)] p-6 shadow-2xl"
         role="dialog"
         aria-labelledby="support-title"
       >
@@ -41,7 +41,7 @@ export function SupportModal() {
           </a>
         ) : (
           <p
-            className="mt-5 flex w-full cursor-not-allowed items-center justify-center rounded-full border border-[var(--ld-purple-dim)] bg-[var(--ld-purple-dim)]/20 px-6 py-3 text-sm font-black text-[var(--ld-muted)]"
+            className="mt-5 flex w-full cursor-not-allowed items-center justify-center rounded-full border border-[var(--ld-border)] bg-[var(--ld-surface)] px-6 py-3 text-sm font-black text-[var(--ld-muted)]"
             aria-disabled="true"
           >
             Unlock 3D walk + all games — $5 · Coming soon

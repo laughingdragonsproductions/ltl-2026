@@ -1,14 +1,21 @@
 @import "tailwindcss";
 
-/* Laughing Dragons Productions palette */
+/* Laughing Dragons Productions palette — laughing-dragons.com */
 :root {
-  --ld-black: #0a0a0f;
+  --ld-black: #0a0a0a;
+  --ld-surface: #121212;
+  --ld-surface-2: #181818;
   --ld-neon-green: #39ff14;
   --ld-neon-green-dim: #1a8f0a;
-  --ld-purple: #9b30ff;
-  --ld-purple-dim: #5a1a99;
-  --ld-text: #e8e8f0;
-  --ld-muted: #9ca3af;
+  --ld-accent: #9bb88a;
+  --ld-text: #f2f2f2;
+  --ld-muted: #9bb88a;
+  --ld-silver: #a8a8a8;
+  --ld-border: rgba(168, 168, 168, 0.22);
+  --ld-border-green: rgba(57, 255, 20, 0.35);
+  /* Legacy token names — purple removed, mapped to LDP greens/blacks */
+  --ld-purple: var(--ld-accent);
+  --ld-purple-dim: var(--ld-surface);
   --background: var(--ld-black);
   --foreground: var(--ld-text);
 }
@@ -17,7 +24,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-ld-green: var(--ld-neon-green);
-  --color-ld-purple: var(--ld-purple);
+  --color-ld-accent: var(--ld-accent);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -33,5 +40,5 @@ body {
 }
 
 .ld-glow-purple {
-  box-shadow: 0 0 40px rgba(155, 48, 255, 0.25);
+  box-shadow: 0 0 32px rgba(57, 255, 20, 0.1);
 }

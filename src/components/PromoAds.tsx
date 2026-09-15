@@ -8,7 +8,7 @@ import { useSession } from "@/lib/session-context";
 
 const ACCENT: Record<PromoAd["accent"], string> = {
   green: "border-[var(--ld-neon-green)]/50 bg-[var(--ld-neon-green)]/10 text-[var(--ld-neon-green)]",
-  purple: "border-[var(--ld-purple)]/50 bg-[var(--ld-purple-dim)]/25 text-[var(--ld-purple)]",
+  purple: "border-[var(--ld-border-green)] bg-[var(--ld-surface)]/80 text-[var(--ld-accent)]",
   orange: "border-orange-500/50 bg-orange-950/40 text-orange-400",
 };
 
@@ -69,7 +69,7 @@ export function PromoAds() {
   return (
     <>
       {/* Top strip — fake browser ad bar */}
-      <div className="border-b border-[var(--ld-purple-dim)]/30 bg-black/80 px-3 py-2">
+      <div className="border-b border-[var(--ld-border)] bg-black/80 px-3 py-2">
         <div className="mx-auto flex max-w-6xl items-center gap-3">
           <span className="shrink-0 text-[9px] font-bold uppercase tracking-widest text-[var(--ld-muted)]">
             Promo

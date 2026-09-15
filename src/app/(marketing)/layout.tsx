@@ -8,7 +8,7 @@ export default function MarketingLayout({
 }) {
   return (
     <>
-      <header className="border-b border-[var(--ld-purple-dim)]/30 px-4 py-4">
+      <header className="border-b border-[var(--ld-border)] px-4 py-4">
         <div className="mx-auto flex max-w-4xl items-center justify-between">
           <Link
             href="/"
