@@ -1,8 +1,8 @@
-import { SimpleOverlayGui } from "@/components/SimpleOverlayGui";
+import { VirtualOverlayMap } from "@/components/VirtualOverlayMap";
 import { ShareButton } from "@/components/ShareButton";
 import Link from "next/link";
 
-export default function OverlayPage() {
+export default function OverlayLivePage() {
   return (
     <div>
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -11,20 +11,19 @@ export default function OverlayPage() {
             Virtual overlay
           </p>
           <h1 className="mt-1 text-3xl font-black text-[var(--ld-neon-green)]">
-            Align overlay
+            Live GPS Overlay
           </h1>
           <p className="mt-2 text-sm text-[var(--ld-muted)]">
-            Drag <strong className="text-white">✥</strong> or use arrows — updates instantly.{" "}
-            <Link href="/overlay/live" className="text-[var(--ld-neon-green)] underline">
-              GPS live mode
+            <Link href="/overlay" className="text-[var(--ld-neon-green)] underline">
+              Align overlay
             </Link>{" "}
-            for pins at the fest.
+            first, then use GPS pins here at the fest.
           </p>
         </div>
-        <ShareButton url="https://ltl26.com/overlay" />
+        <ShareButton url="https://ltl26.com/overlay/live" />
       </div>
       <div className="mt-6">
-        <SimpleOverlayGui />
+        <VirtualOverlayMap />
       </div>
     </div>
   );

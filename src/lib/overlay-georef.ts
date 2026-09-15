@@ -204,6 +204,66 @@ export function setBoundsWithAspect(
   return { west, east, north, south };
 }
 
+/** Centroid of the four MapLibre image corners */
+export function getCoordinatesCenter(coords: OverlayCoordinates): [number, number] {
+  const lng = coords.reduce((sum, [x]) => sum + x, 0) / 4;
+  const lat = coords.reduce((sum, [, y]) => sum + y, 0) / 4;
+  return [lng, lat];
+}
+
+/** Midpoint of edge: 0=N (NW–NE), 1=E, 2=S, 3=W */
+export function getEdgeMidpoint(
+  coords: OverlayCoordinates,
+  edge: 0 | 1 | 2 | 3
+): [number, number] {
+  const a = edge;
+  const b = (edge + 1) % 4;
+  return [(coords[a][0] + coords[b][0]) / 2, (coords[a][1] + coords[b][1]) / 2];
+}
+
+/** Rotate all corners around center (small-area lng/lat approximation). */
+export function rotateCoordinatesAroundCenter(
+  coords: OverlayCoordinates,
+  deltaDeg: number,
+  center?: [number, number]
+): OverlayCoordinates {
+  const [cLng, cLat] = center ?? getCoordinatesCenter(coords);
+  const rad = (deltaDeg * Math.PI) / 180;
+  const cos = Math.cos(rad);
+  const sin = Math.sin(rad);
+  return coords.map(([lng, lat]) => {
+    const dx = lng - cLng;
+    const dy = lat - cLat;
+    return [cLng + dx * cos - dy * sin, cLat + dx * sin + dy * cos];
+  }) as OverlayCoordinates;
+}
+
+/** Ray-cast point-in-quad test (lng/lat treated as planar). */
+export function pointInQuad(lng: number, lat: number, coords: OverlayCoordinates): boolean {
+  let inside = false;
+  for (let i = 0, j = coords.length - 1; i < coords.length; j = i++) {
+    const [xi, yi] = coords[i];
+    const [xj, yj] = coords[j];
+    const intersect =
+      yi > lat !== yj > lat &&
+      lng < ((xj - xi) * (lat - yi)) / (yj - yi + Number.EPSILON) + xi;
+    if (intersect) inside = !inside;
+  }
+  return inside;
+}
+
+export function coordinatesToFrameGeoJson(
+  coords: OverlayCoordinates
+): GeoJSON.Feature<GeoJSON.Polygon> {
+  const ring = coords.map(([lng, lat]) => [lng, lat] as [number, number]);
+  ring.push(ring[0]);
+  return {
+    type: "Feature",
+    geometry: { type: "Polygon", coordinates: [ring] },
+    properties: {},
+  };
+}
+
 export function exportGeorefJsonSnippet(data: OverlayGeorefOverride): string {
   return JSON.stringify(
     {

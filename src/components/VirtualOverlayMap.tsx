@@ -14,15 +14,16 @@ import {
   type LayerKey,
   type MapPoint,
 } from "@/lib/map-points";
+import { syncOverlayMap } from "@/lib/overlay-map-sync";
 import {
   getDefaultOverlayGeoref,
   mapPercentToLatLngWithBounds,
   type GeorefBounds,
 } from "@/lib/overlay-georef";
 import { useOverlayGeorefEditor } from "@/hooks/use-overlay-georef-editor";
-import { useOverlayCornerMarkers } from "@/hooks/use-overlay-corner-markers";
-import { OverlayControlPanel } from "@/components/OverlayControlPanel";
 import { useTier } from "@/lib/tier-context";
+import Link from "next/link";
+import { getEffectiveOverlayGeoref } from "@/lib/overlay-georef";
 
 type UserLocation = { lat: number; lng: number };
 
@@ -60,19 +61,13 @@ export function VirtualOverlayMap() {
   const mapRef = useRef<maplibregl.Map | null>(null);
   const popupRef = useRef<maplibregl.Popup | null>(null);
   const userLocationRef = useRef<UserLocation | null>(null);
-  const adjustModeRef = useRef(false);
-
   const editor = useOverlayGeorefEditor(true);
-  const { state, hydrated, lockAspect, setLockAspect, setOpacity, setCoordinates, updateBounds, nudge, scale, saveNow, reset, copyJson } = editor;
+  const { state, hydrated, setOpacity, reload } = editor;
 
-  const [mapReady, setMapReady] = useState(false);
+  const [mapVisible, setMapVisible] = useState(false);
   const [layers, setLayers] = useState(DEFAULT_LAYERS);
   const [basemap, setBasemap] = useState<"streets" | "satellite">("satellite");
   const [showFestivalOverlay, setShowFestivalOverlay] = useState(true);
-  const [adjustMode, setAdjustMode] = useState(false);
-  adjustModeRef.current = adjustMode;
-  const [copied, setCopied] = useState(false);
-  const [saved, setSaved] = useState(false);
   const [locStatus, setLocStatus] = useState<"idle" | "active" | "denied">("idle");
 
   const opacity = state.opacity ?? 0.72;
@@ -86,18 +81,35 @@ export function VirtualOverlayMap() {
   );
   const geojson = useMemo(() => pointsToGeoJson(visiblePoints), [visiblePoints]);
 
-  const handleCoordinatesChange = useCallback(
-    (coords: typeof coordinates) => setCoordinates(coords),
-    [setCoordinates]
-  );
-
-  useOverlayCornerMarkers(
-    mapRef.current,
-    mapReady,
+  const syncOptsRef = useRef({
     coordinates,
-    adjustMode,
-    handleCoordinatesChange
-  );
+    opacity,
+    showFestivalOverlay,
+    basemap,
+    geojson,
+  });
+  syncOptsRef.current = { coordinates, opacity, showFestivalOverlay, basemap, geojson };
+
+  const pushToMap = useCallback(() => {
+    const map = mapRef.current;
+    if (!map) return false;
+    return syncOverlayMap(map, syncOptsRef.current);
+  }, []);
+
+  useEffect(() => {
+    const syncFromStorage = () => {
+      const loaded = getEffectiveOverlayGeoref();
+      syncOptsRef.current = {
+        ...syncOptsRef.current,
+        coordinates: loaded.coordinates,
+        opacity: loaded.opacity ?? 0.72,
+      };
+      reload();
+      pushToMap();
+    };
+    window.addEventListener("focus", syncFromStorage);
+    return () => window.removeEventListener("focus", syncFromStorage);
+  }, [reload, pushToMap]);
 
   useEffect(() => {
     if (!hydrated || !containerRef.current || mapRef.current) return;
@@ -122,7 +134,7 @@ export function VirtualOverlayMap() {
           festivalMap: {
             type: "image",
             url: "/maps/ltl-2026-official-amenity-map.png",
-            coordinates,
+            coordinates: syncOptsRef.current.coordinates,
           },
           pois: {
             type: "geojson",
@@ -136,7 +148,7 @@ export function VirtualOverlayMap() {
             id: "festival-overlay",
             type: "raster",
             source: "festivalMap",
-            paint: { "raster-opacity": opacity },
+            paint: { "raster-opacity": syncOptsRef.current.opacity },
           },
           {
             id: "poi-circles",
@@ -176,20 +188,19 @@ export function VirtualOverlayMap() {
     });
     geolocate.on("error", () => setLocStatus("denied"));
 
-    const markReady = () => {
-      setMapReady(true);
+    const syncWhenReady = () => {
+      pushToMap();
       map.resize();
     };
-    if (map.loaded()) markReady();
-    map.on("load", markReady);
-    map.on("idle", markReady);
+
+    map.on("load", syncWhenReady);
+    map.on("idle", syncWhenReady);
 
     map.on("error", (e) => {
       console.error("MapLibre error:", e.error?.message ?? e);
     });
 
     map.on("click", "poi-circles", (e) => {
-      if (adjustModeRef.current) return;
       const feature = e.features?.[0];
       if (!feature || feature.geometry.type !== "Point") return;
       const [lng, lat] = feature.geometry.coordinates;
@@ -214,45 +225,54 @@ export function VirtualOverlayMap() {
     });
 
     map.on("mouseenter", "poi-circles", () => {
-      if (!adjustModeRef.current) map.getCanvas().style.cursor = "pointer";
+      map.getCanvas().style.cursor = "pointer";
     });
     map.on("mouseleave", "poi-circles", () => {
       map.getCanvas().style.cursor = "";
     });
 
     mapRef.current = map;
+    setMapVisible(true);
+    queueMicrotask(syncWhenReady);
+
     return () => {
       popupRef.current?.remove();
       map.remove();
       mapRef.current = null;
-      setMapReady(false);
+      setMapVisible(false);
     };
-  }, [hydrated]);
+  }, [hydrated, pushToMap]);
 
   useEffect(() => {
-    const map = mapRef.current;
-    if (!map || !mapReady) return;
-    const src = map.getSource("festivalMap") as maplibregl.ImageSource | undefined;
-    src?.setCoordinates(coordinates);
-    map.setPaintProperty(
-      "festival-overlay",
-      "raster-opacity",
-      showFestivalOverlay ? opacity : 0
-    );
-  }, [coordinates, opacity, showFestivalOverlay, mapReady]);
+    pushToMap();
+  }, [coordinates, opacity, showFestivalOverlay, basemap, geojson, pushToMap]);
 
-  useEffect(() => {
-    const map = mapRef.current;
-    if (!map || !mapReady) return;
-    (map.getSource("pois") as maplibregl.GeoJSONSource)?.setData(geojson);
-  }, [geojson, mapReady]);
+  const handleOpacityChange = useCallback(
+    (value: number) => {
+      setOpacity(value);
+      syncOptsRef.current = { ...syncOptsRef.current, opacity: value };
+      pushToMap();
+    },
+    [setOpacity, pushToMap]
+  );
 
-  useEffect(() => {
-    const map = mapRef.current;
-    if (!map || !mapReady) return;
-    map.setLayoutProperty("basemap-streets", "visibility", basemap === "streets" ? "visible" : "none");
-    map.setLayoutProperty("basemap-satellite", "visibility", basemap === "satellite" ? "visible" : "none");
-  }, [basemap, mapReady]);
+  const handleBasemap = useCallback(
+    (mode: "streets" | "satellite") => {
+      setBasemap(mode);
+      syncOptsRef.current = { ...syncOptsRef.current, basemap: mode };
+      pushToMap();
+    },
+    [pushToMap]
+  );
+
+  const handleToggleArt = useCallback(() => {
+    setShowFestivalOverlay((prev) => {
+      const next = !prev;
+      syncOptsRef.current = { ...syncOptsRef.current, showFestivalOverlay: next };
+      pushToMap();
+      return next;
+    });
+  }, [pushToMap]);
 
   function centerOnMe() {
     const map = mapRef.current;
@@ -272,18 +292,6 @@ export function VirtualOverlayMap() {
     );
   }
 
-  async function handleCopy() {
-    await copyJson();
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }
-
-  function handleSave() {
-    saveNow();
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
-  }
-
   return (
     <div className="space-y-4">
       <div className="rounded-xl border border-[var(--ld-border-green)] bg-[var(--ld-surface)]/80 p-4">
@@ -291,8 +299,11 @@ export function VirtualOverlayMap() {
           Free · GPS overlay
         </p>
         <p className="mt-1 text-sm text-[var(--ld-text)]">
-          Slide opacity anytime. Tap <strong className="text-white">Adjust placement</strong> to drag
-          corners on the satellite map — saves automatically in your browser.
+          Live GPS view. To move or resize the amenity art, use the{" "}
+          <Link href="/overlay" className="font-bold text-[var(--ld-neon-green)] underline">
+            overlay aligner
+          </Link>
+          .
         </p>
       </div>
 
@@ -318,7 +329,7 @@ export function VirtualOverlayMap() {
           <div className="flex flex-wrap gap-2">
             <button
               type="button"
-              onClick={() => setBasemap("satellite")}
+              onClick={() => handleBasemap("satellite")}
               className={`rounded px-3 py-1.5 text-xs font-semibold ${
                 basemap === "satellite" ? "bg-[var(--ld-neon-green-dim)] text-white" : "bg-zinc-900 text-[var(--ld-muted)]"
               }`}
@@ -327,7 +338,7 @@ export function VirtualOverlayMap() {
             </button>
             <button
               type="button"
-              onClick={() => setBasemap("streets")}
+              onClick={() => handleBasemap("streets")}
               className={`rounded px-3 py-1.5 text-xs font-semibold ${
                 basemap === "streets" ? "bg-[var(--ld-neon-green-dim)] text-white" : "bg-zinc-900 text-[var(--ld-muted)]"
               }`}
@@ -336,7 +347,7 @@ export function VirtualOverlayMap() {
             </button>
             <button
               type="button"
-              onClick={() => setShowFestivalOverlay((v) => !v)}
+              onClick={handleToggleArt}
               className={`rounded px-3 py-1.5 text-xs font-semibold ${
                 showFestivalOverlay ? "bg-[var(--ld-neon-green)] text-black" : "bg-[var(--ld-surface)] text-[var(--ld-muted)]"
               }`}
@@ -354,14 +365,9 @@ export function VirtualOverlayMap() {
 
           <div className="relative overflow-hidden rounded-xl border border-[var(--ld-border-green)] ld-glow-purple">
             <div ref={containerRef} className="h-[min(70vh,560px)] w-full min-h-[320px] bg-[#111]" />
-            {!mapReady && (
+            {!mapVisible && (
               <p className="pointer-events-none absolute inset-0 flex items-center justify-center text-sm text-[var(--ld-muted)]">
                 Loading satellite map…
-              </p>
-            )}
-            {adjustMode && (
-              <p className="absolute bottom-2 left-2 rounded bg-black/80 px-2 py-1 text-[10px] font-bold uppercase text-[var(--ld-neon-green)]">
-                Drag corner handles
               </p>
             )}
           </div>
@@ -373,24 +379,29 @@ export function VirtualOverlayMap() {
           </p>
         </div>
 
-        <OverlayControlPanel
-          bounds={bounds}
-          opacity={opacity}
-          lockAspect={lockAspect}
-          adjustMode={adjustMode}
-          compact
-          copied={copied}
-          saved={saved}
-          onOpacityChange={setOpacity}
-          onLockAspectChange={setLockAspect}
-          onAdjustModeChange={setAdjustMode}
-          onBoundsChange={updateBounds}
-          onNudge={nudge}
-          onScale={scale}
-          onSave={handleSave}
-          onCopy={handleCopy}
-          onReset={reset}
-        />
+        <div className="space-y-4 rounded-xl border border-[var(--ld-border)] bg-[var(--ld-surface)] p-4">
+          <p className="text-xs font-bold uppercase tracking-widest text-[var(--ld-neon-green)]">
+            View controls
+          </p>
+          <label className="block text-xs text-[var(--ld-muted)]">
+            Opacity — {Math.round(opacity * 100)}%
+            <input
+              type="range"
+              min={0}
+              max={1}
+              step={0.01}
+              value={opacity}
+              onInput={(e) => handleOpacityChange(Number(e.currentTarget.value))}
+              className="mt-1 w-full accent-[var(--ld-neon-green)]"
+            />
+          </label>
+          <Link
+            href="/overlay"
+            className="block rounded-full bg-[var(--ld-neon-green)] py-2.5 text-center text-sm font-black text-black"
+          >
+            Open overlay aligner
+          </Link>
+        </div>
       </div>
     </div>
   );

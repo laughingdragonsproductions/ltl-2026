@@ -1,17 +1,18 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type RefObject } from "react";
 import * as maplibregl from "maplibre-gl";
 import type { OverlayCoordinates } from "@/lib/overlay-georef";
 
 const CORNER_LABELS = ["NW", "NE", "SE", "SW"] as const;
 
 export function useOverlayCornerMarkers(
-  map: maplibregl.Map | null,
+  mapRef: RefObject<maplibregl.Map | null>,
+  enabled: boolean,
   mapReady: boolean,
   coordinates: OverlayCoordinates,
-  enabled: boolean,
-  onCoordinatesChange: (coords: OverlayCoordinates) => void
+  onCoordinatesChange: (coords: OverlayCoordinates) => void,
+  onDragLive?: (coords: OverlayCoordinates) => void
 ) {
   const markersRef = useRef<maplibregl.Marker[]>([]);
   const draggingRef = useRef(false);
@@ -20,7 +21,8 @@ export function useOverlayCornerMarkers(
   coordsRef.current = coordinates;
 
   useEffect(() => {
-    if (!map || !mapReady || !enabled) {
+    const map = mapRef.current;
+    if (!map || !enabled || !mapReady) {
       markersRef.current.forEach((m) => m.remove());
       markersRef.current = [];
       return;
@@ -45,8 +47,7 @@ export function useOverlayCornerMarkers(
         const pos = marker.getLngLat();
         const next = [...coordsRef.current] as OverlayCoordinates;
         next[i] = [pos.lng, pos.lat];
-        const src = map.getSource("festivalMap") as maplibregl.ImageSource | undefined;
-        src?.setCoordinates(next);
+        onDragLive?.(next);
       };
 
       marker.on("dragstart", () => {
@@ -68,13 +69,14 @@ export function useOverlayCornerMarkers(
       markersRef.current.forEach((m) => m.remove());
       markersRef.current = [];
     };
-  }, [map, mapReady, enabled, onCoordinatesChange]);
+  }, [mapRef, enabled, mapReady, onCoordinatesChange, onDragLive]);
 
   useEffect(() => {
-    if (!map || !mapReady || !enabled || draggingRef.current) return;
+    const map = mapRef.current;
+    if (!map || !enabled || draggingRef.current) return;
     markersRef.current.forEach((marker, i) => {
       const [lng, lat] = coordinates[i];
       marker.setLngLat([lng, lat]);
     });
-  }, [coordinates, map, mapReady, enabled]);
+  }, [coordinates, mapRef, enabled]);
 }

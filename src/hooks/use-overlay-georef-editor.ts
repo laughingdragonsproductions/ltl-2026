@@ -19,9 +19,7 @@ import {
 } from "@/lib/overlay-georef";
 
 export function useOverlayGeorefEditor(autoSave = true) {
-  const [state, setState] = useState<OverlayGeorefOverride>(() =>
-    getEffectiveOverlayGeoref()
-  );
+  const [state, setState] = useState<OverlayGeorefOverride>(() => getDefaultOverlayGeoref());
   const [lockAspect, setLockAspect] = useState(true);
   const [hydrated, setHydrated] = useState(false);
 

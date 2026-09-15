@@ -82,8 +82,10 @@ export function OverlayControlPanel({
       {adjustMode && (
         <>
           <p className="text-xs text-[var(--ld-muted)]">
-            Drag <strong className="text-white">NW / NE / SE / SW</strong> on the map. Changes save
-            automatically in this browser.
+            <strong className="text-[#39ff14]">Green</strong> corners & edges ·{" "}
+            <strong className="text-[#7eb8d4]">cyan ✥</strong> move whole overlay ·{" "}
+            <strong className="text-[#e8bc55]">gold ↻</strong> rotate (Shift = 15°) · drag inside
+            dashed frame to pan. Saves automatically in this browser.
           </p>
 
           <label className="flex items-center gap-2 text-sm text-[var(--ld-text)]">
@@ -178,8 +180,8 @@ export function OverlayControlPanel({
           </button>
         )}
         {!compact && (
-          <Link href="/overlay/adjust" className="text-xs text-[var(--ld-accent)] underline">
-            Full-screen adjuster →
+          <Link href="/overlay" className="text-xs text-[var(--ld-accent)] underline">
+            Overlay aligner →
           </Link>
         )}
       </div>
