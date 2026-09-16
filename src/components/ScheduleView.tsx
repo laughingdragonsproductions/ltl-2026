@@ -104,24 +104,26 @@ export function ScheduleView() {
     return sets.filter((s) => s.stage === selectedStage);
   }, [day, selectedStage, viewMode, mySets, selectedDay]);
 
-  const overlapping = useMemo(() => {
+  /** Overlap only among starred My sets for this day — not every simultaneous stage slot. */
+  const overlappingSetIds = useMemo(() => {
     const ids = new Set<string>();
-    for (let i = 0; i < filteredSets.length; i++) {
-      for (let j = i + 1; j < filteredSets.length; j++) {
-        const a = filteredSets[i];
-        const b = filteredSets[j];
+    const sets = getMySetsForDay(selectedDay, mySets);
+    for (let i = 0; i < sets.length; i++) {
+      for (let j = i + 1; j < sets.length; j++) {
+        const a = sets[i];
+        const b = sets[j];
         const aStart = toMinutes(a.start);
         const aEnd = toMinutes(a.end);
         const bStart = toMinutes(b.start);
         const bEnd = toMinutes(b.end);
         if (aStart < bEnd && bStart < aEnd) {
-          ids.add(`${a.artist}-${a.start}`);
-          ids.add(`${b.artist}-${b.start}`);
+          ids.add(makeSetId(a));
+          ids.add(makeSetId(b));
         }
       }
     }
     return ids;
-  }, [filteredSets]);
+  }, [selectedDay, mySets]);
 
   const nowNext = useMemo(() => {
     const today = festivalTodayIso();
@@ -426,7 +428,6 @@ export function ScheduleView() {
             <tbody>
               {filteredSets.map((set, i) => {
                 const rowKey = `${set.artist}-${set.start}-${i}`;
-                const conflict = overlapping.has(`${set.artist}-${set.start}`);
                 const rowDate = "date" in set && typeof set.date === "string" ? set.date : selectedDay;
                 const setId = makeSetId({
                   date: rowDate,
@@ -434,6 +435,7 @@ export function ScheduleView() {
                   artist: set.artist,
                   start: set.start,
                 });
+                const conflict = overlappingSetIds.has(setId);
                 const saved = mySetIds.has(setId);
                 const isMyView = viewMode === "my";
 
@@ -441,12 +443,12 @@ export function ScheduleView() {
                   <tr
                     key={rowKey}
                     className={`border-t border-zinc-800 ${
-                      saved
-                        ? "ring-1 ring-inset ring-[var(--ld-neon-green)]/30 bg-[var(--ld-neon-green)]/5"
-                        : set.headliner
-                          ? "bg-orange-950/20"
-                          : conflict
-                            ? "bg-red-950/20"
+                      conflict
+                        ? "bg-red-950/20 ring-1 ring-inset ring-red-700/50"
+                        : saved
+                          ? "ring-1 ring-inset ring-[var(--ld-neon-green)]/30 bg-[var(--ld-neon-green)]/5"
+                          : set.headliner
+                            ? "bg-orange-950/20"
                             : "bg-black/40"
                     }`}
                   >
@@ -520,7 +522,7 @@ export function ScheduleView() {
         >
           official schedule
         </a>
-        . Red rows = overlapping sets you might have to choose between.
+        . Red on starred sets = two picks overlap — you may need to choose one.
         {viewMode === "my" && disclaimerDismissed && savedCount > 0 && alertsEnabled && (
           <> In-app alerts require an open browser tab.</>
         )}
