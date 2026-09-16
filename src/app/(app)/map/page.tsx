@@ -26,7 +26,7 @@ export default function MapPage() {
       </div>
 
       <Link
-        href="/overlay"
+        href="/overlay/live"
         className="mt-8 flex items-center justify-between gap-4 rounded-2xl border border-[var(--ld-border-green)] bg-[var(--ld-surface)]/80 p-5 transition hover:border-[var(--ld-neon-green)]/60"
       >
         <div>

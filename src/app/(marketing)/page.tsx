@@ -1,13 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ShareButton } from "@/components/ShareButton";
+import { FESTIVAL_MAP_SRC } from "@/lib/festival-map";
 
 export default function HomePage() {
   return (
     <div className="relative mx-auto flex min-h-[calc(100vh-8rem)] max-w-4xl flex-col items-center justify-center overflow-hidden px-4 text-center">
       <div className="pointer-events-none absolute inset-0 opacity-[0.12]">
         <Image
-          src="/maps/ltl-2026-official-amenity-map.png"
+          src={FESTIVAL_MAP_SRC}
           alt=""
           fill
           priority
@@ -33,7 +34,7 @@ export default function HomePage() {
             Fan-built companion
           </p>
           <p className="mt-4 text-sm leading-relaxed text-[var(--ld-text)]">
-            Free tap map, GPS overlay, and locators forever. Flappy Skull is free to play.{" "}
+            Free tap map, GPS overlay, and locators forever. Pick one game free.{" "}
             <strong className="text-white">$5</strong> unlocks the walking 3D map, all games,
             and removes ads.
           </p>
@@ -47,7 +48,7 @@ export default function HomePage() {
           <span aria-hidden>→</span>
         </Link>
         <Link
-          href="/overlay"
+          href="/overlay/live"
           className="mt-3 text-sm font-semibold text-[var(--ld-neon-green)] underline hover:text-white"
         >
           Try virtual overlay →

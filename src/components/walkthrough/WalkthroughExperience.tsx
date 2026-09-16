@@ -57,7 +57,14 @@ export function WalkthroughExperience() {
   return (
     <div className="relative h-[min(80vh,720px)] w-full overflow-hidden rounded-xl border border-zinc-700 bg-black">
       <Canvas shadows camera={{ fov: 70, position: [0, 1.7, 0] }}>
-        <Suspense fallback={null}>
+        <Suspense
+          fallback={
+            <mesh>
+              <boxGeometry args={[1, 1, 1]} />
+              <meshBasicMaterial color="#111" />
+            </mesh>
+          }
+        >
           <WalkthroughWorld
             mode={mode}
             pois={pois}

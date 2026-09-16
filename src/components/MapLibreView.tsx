@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import * as maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
+import { FESTIVAL_MAP_SRC } from "@/lib/festival-map";
 
 const KEC = { lng: -85.7416, lat: 38.1969 };
 
@@ -27,7 +28,7 @@ export function MapLibreView() {
           },
           festivalMap: {
             type: "image",
-            url: "/maps/ltl-2026-official-amenity-map.png",
+            url: FESTIVAL_MAP_SRC,
             coordinates: [
               [-85.752, 38.204],
               [-85.728, 38.204],

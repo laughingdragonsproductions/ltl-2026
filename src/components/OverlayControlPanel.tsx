@@ -180,7 +180,7 @@ export function OverlayControlPanel({
           </button>
         )}
         {!compact && (
-          <Link href="/overlay" className="text-xs text-[var(--ld-accent)] underline">
+          <Link href="/overlay/live" className="text-xs text-[var(--ld-accent)] underline">
             Overlay aligner →
           </Link>
         )}

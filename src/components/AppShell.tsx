@@ -4,6 +4,7 @@ import { MobileNav } from "@/components/MobileNav";
 import { Nav } from "@/components/Nav";
 import { TierBar } from "@/components/TierBar";
 import { InstallPrompt } from "@/components/InstallPrompt";
+import { MySetAlertsProvider } from "@/components/MySetAlertsProvider";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
@@ -15,6 +16,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </div>
       <MobileNav />
       <InstallPrompt />
+      <MySetAlertsProvider />
     </>
   );
 }

@@ -39,7 +39,7 @@ The live LTL26 integration is **`src/hooks/use-overlay-freeform-mapper.ts`** —
 4. **Copy georef JSON** → paste `bounds` + `overlay` into `data/georef.json`.
 5. Commit and deploy for all users.
 
-Browser-only tweaks persist in `localStorage` key `ltl26-overlay-georef`.
+Placement is committed in `data/georef.json` (deploy for all users). Live GPS view only persists opacity in `localStorage` key `ltl26-overlay-opacity`.
 
 ## Data format
 

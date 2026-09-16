@@ -70,18 +70,20 @@
 .ltl-slider-board {
   display: grid;
   grid-template-columns: repeat(var(--ltl-size, 3), 1fr);
-  gap: 3px;
+  gap: 1px;
   max-width: min(100%, 420px);
   aspect-ratio: 1;
   margin: 0 auto;
+  background: #0a0a0f;
 }
 
 .ltl-tile {
   border: none;
-  border-radius: 4px;
+  border-radius: 0;
   min-height: 44px;
   cursor: pointer;
   background-color: #111;
+  background-repeat: no-repeat;
 }
 
 .ltl-tile-empty {
@@ -106,6 +108,24 @@
   margin-top: 1rem;
   font-size: 0.75rem;
   color: var(--ld-muted);
+}
+
+.ltl-litprintz-credit {
+  margin-top: 0.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ld-muted);
+  text-align: center;
+}
+
+.ltl-litprintz-credit a {
+  font-weight: 700;
+  color: var(--ld-purple);
+  text-decoration: none;
+}
+
+.ltl-litprintz-credit a:hover {
+  text-decoration: underline;
 }
 
 /* Flappy */
@@ -215,82 +235,78 @@
   opacity: 0.4;
 }
 
-.ltl-hangman-gallows {
-  position: relative;
-  width: min(100%, 220px);
-  aspect-ratio: 3 / 4;
+.ltl-hangman-fire-stage {
+  display: grid;
+  grid-template-columns: 56px 1fr 56px;
+  align-items: end;
+  gap: 0.5rem;
+  width: min(100%, 320px);
+  min-height: 140px;
+  padding: 1rem 0.5rem 0.75rem;
+  border-radius: 1rem;
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(255, 120, 0, 0.55), transparent 62%),
+    radial-gradient(ellipse at 30% 90%, rgba(255, 60, 0, 0.35), transparent 55%),
+    radial-gradient(ellipse at 70% 90%, rgba(255, 180, 0, 0.35), transparent 55%),
+    linear-gradient(180deg, #1a0505 0%, #0a0a0f 100%);
+  border: 1px solid rgba(255, 120, 0, 0.35);
 }
 
-.ltl-hangman-frame {
-  width: 100%;
-  height: 100%;
+.ltl-hangman-guitar {
+  width: 48px;
+  height: 120px;
+  opacity: 0.85;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: contain;
+  filter: drop-shadow(0 0 8px rgba(57, 255, 20, 0.25));
 }
 
-.ltl-hangman-sprites {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+.ltl-hangman-guitar--left {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 120'%3E%3Cellipse cx='24' cy='92' rx='16' ry='20' fill='%23222' stroke='%2339ff14' stroke-width='2'/%3E%3Cpath d='M24 92V28' stroke='%23c9a227' stroke-width='4'/%3E%3Crect x='18' y='12' width='12' height='22' rx='3' fill='%23111' stroke='%2339ff14'/%3E%3C/svg%3E");
 }
 
-.hl-part {
-  opacity: 0;
-  transition: opacity 0.2s;
+.ltl-hangman-guitar--right {
+  transform: scaleX(-1);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 120'%3E%3Cellipse cx='24' cy='92' rx='16' ry='20' fill='%23222' stroke='%2339ff14' stroke-width='2'/%3E%3Cpath d='M24 92V28' stroke='%23c9a227' stroke-width='4'/%3E%3Crect x='18' y='12' width='12' height='22' rx='3' fill='%23111' stroke='%2339ff14'/%3E%3C/svg%3E");
 }
 
-.hl-part.is-shown {
-  opacity: 1;
+.ltl-hangman-fire-core {
+  text-align: center;
 }
 
-.hl-sprite {
-  position: absolute;
-  object-fit: contain;
-  transform-origin: 50% 20%;
+.ltl-hangman-fire-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ld-muted);
 }
 
-.hl-head {
-  left: 52%;
-  top: 14%;
-  width: 28%;
-  transform: translateX(-50%);
+.ltl-hangman-strikes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
 }
 
-.hl-body {
-  left: 50%;
-  top: 28%;
-  width: 38%;
-  transform: translateX(-50%);
+.ltl-hangman-strike--ok {
+  color: var(--ld-neon-green);
 }
 
-.hl-arm-l {
-  left: 18%;
-  top: 32%;
-  width: 22%;
+.ltl-hangman-strike--burn {
+  color: #ff6b35;
 }
 
-.hl-arm-r {
-  right: 18%;
-  top: 32%;
-  width: 22%;
+.ltl-hangman-space {
+  display: inline-block;
+  width: 0.65rem;
 }
 
-.hl-leg-l {
-  left: 38%;
-  bottom: 8%;
-  width: 18%;
-}
-
-.hl-leg-r {
-  right: 38%;
-  bottom: 8%;
-  width: 18%;
-}
-
-#hl-gallows.is-limp .hl-body,
-#hl-gallows.is-limp .hl-arm-l,
-#hl-gallows.is-limp .hl-arm-r,
-#hl-gallows.is-limp .hl-leg-l,
-#hl-gallows.is-limp .hl-leg-r {
-  transform: rotate(12deg);
+#hl-gallows.is-limp .ltl-hangman-fire-stage {
+  filter: grayscale(0.6) brightness(0.7);
 }
 
 .ltl-slider-image-picker {

@@ -6,7 +6,7 @@ import { useState } from "react";
 
 const tabs = [
   { href: "/map", label: "Map", icon: "🗺️" },
-  { href: "/overlay", label: "Overlay", icon: "📍" },
+  { href: "/overlay/live", label: "Overlay", icon: "📍" },
   { href: "/schedule", label: "Schedule", icon: "🎸" },
   { href: "/arrival", label: "VIP", icon: "⭐" },
 ];

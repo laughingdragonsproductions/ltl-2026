@@ -7,31 +7,15 @@ import {
 
 const DIFF_KEY = "ltl26-hangman-difficulty";
 const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-const PART_ORDER = ["head", "body", "arm-l", "arm-r", "leg-l", "leg-r"];
-
-const HANGMAN_SPRITES: Record<(typeof PART_ORDER)[number], string> = {
-  head: "/games/ltl26/hangman/head.png",
-  body: "/games/ltl26/hangman/body.png",
-  "arm-l": "/games/ltl26/hangman/arm-l.png",
-  "arm-r": "/games/ltl26/hangman/arm-r.png",
-  "leg-l": "/games/ltl26/hangman/leg-l.png",
-  "leg-r": "/games/ltl26/hangman/leg-r.png",
-};
-
 function hangmanStageHtml() {
-  const parts = PART_ORDER.map(
-    (part) =>
-      `<img class="hl-part hl-sprite hl-${part}" data-part="${part}" src="${HANGMAN_SPRITES[part]}" alt="" />`
-  ).join("");
   return `
-    <div class="ltl-hangman-gallows" aria-hidden="true">
-      <svg viewBox="0 0 120 160" class="ltl-hangman-frame">
-        <line x1="20" y1="150" x2="100" y2="150" stroke="#39ff14" stroke-width="4" />
-        <line x1="36" y1="150" x2="36" y2="18" stroke="#39ff14" stroke-width="4" />
-        <line x1="36" y1="18" x2="78" y2="18" stroke="#39ff14" stroke-width="4" />
-        <line x1="78" y1="18" x2="78" y2="36" stroke="#39ff14" stroke-width="3" />
-      </svg>
-      <div class="ltl-hangman-sprites">${parts}</div>
+    <div class="ltl-hangman-fire-stage" aria-hidden="true">
+      <div class="ltl-hangman-guitar ltl-hangman-guitar--left"></div>
+      <div class="ltl-hangman-fire-core">
+        <p class="ltl-hangman-fire-label">Wrong guesses</p>
+        <div class="ltl-hangman-strikes" id="hl-strikes"></div>
+      </div>
+      <div class="ltl-hangman-guitar ltl-hangman-guitar--right"></div>
     </div>`;
 }
 
@@ -58,8 +42,8 @@ export function initHangman(root: HTMLElement) {
   root.innerHTML = `
     <div class="ltl-hangman-menu" id="hl-menu">
       <p class="ltl-game-eyebrow">LOUDERTHANLIFE2026</p>
-      <h2 class="ltl-game-title">Hangman</h2>
-      <p>Guess festival words before the skull goes limp.</p>
+      <h2 class="ltl-game-title">Band Hangman</h2>
+      <p>Guess LTL band names before you run out of strikes.</p>
       <fieldset class="ltl-hangman-diff">
         <legend>Difficulty</legend>
         <label><input type="radio" name="hl-diff" value="easy" /> Easy</label>
@@ -156,20 +140,25 @@ export function initHangman(root: HTMLElement) {
   }
 
   function renderParts() {
-    const visible = Math.min(state.wrongCount, PART_ORDER.length);
-    gallows.querySelectorAll<HTMLElement>(".hl-part").forEach((el, i) => {
-      el.classList.toggle("is-shown", i < visible);
-    });
+    const strikesEl = gallows.querySelector<HTMLElement>("#hl-strikes");
+    if (!strikesEl) return;
+    const left = Math.max(0, state.maxMisses - state.wrongCount);
+    strikesEl.innerHTML = Array.from({ length: state.maxMisses }, (_, i) =>
+      i < left
+        ? `<span class="ltl-hangman-strike ltl-hangman-strike--ok">●</span>`
+        : `<span class="ltl-hangman-strike ltl-hangman-strike--burn">✕</span>`
+    ).join("");
   }
 
   function renderWord() {
     wordEl.innerHTML = state.text
       .split("")
-      .map((ch, i) =>
-        state.revealed[i]
+      .map((ch, i) => {
+        if (ch === " ") return `<span class="ltl-hangman-space">&nbsp;</span>`;
+        return state.revealed[i]
           ? `<span class="ltl-hangman-letter">${ch}</span>`
-          : `<span class="ltl-hangman-blank">_</span>`
-      )
+          : `<span class="ltl-hangman-blank">_</span>`;
+      })
       .join("");
   }
 
@@ -190,14 +179,13 @@ export function initHangman(root: HTMLElement) {
     state.text = entry.text.toUpperCase();
     state.category = entry.category;
     state.usedWordIds.add(entry.id);
-    state.revealed = state.text.split("").map(() => false);
+    state.revealed = state.text.split("").map((ch) => ch === " ");
     state.guessed = new Set();
     state.wrongCount = 0;
     state.maxMisses = cfg.misses;
     state.hintShown = false;
     state.limp = false;
     gallows.classList.remove("is-limp");
-    gallows.querySelectorAll(".hl-part").forEach((p) => p.classList.remove("is-shown"));
     keys.querySelectorAll<HTMLButtonElement>(".ltl-hangman-key").forEach((btn) => {
       btn.disabled = false;
       btn.classList.remove("is-correct", "is-wrong");

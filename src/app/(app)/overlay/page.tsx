@@ -1,8 +1,13 @@
 import { SimpleOverlayGui } from "@/components/SimpleOverlayGui";
 import { ShareButton } from "@/components/ShareButton";
+import { isOverlayAdminEnabled } from "@/lib/overlay-georef";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default function OverlayPage() {
+  if (!isOverlayAdminEnabled()) {
+    redirect("/overlay/live");
+  }
   return (
     <div>
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -14,11 +19,13 @@ export default function OverlayPage() {
             Align overlay
           </h1>
           <p className="mt-2 text-sm text-[var(--ld-muted)]">
-            Drag <strong className="text-white">✥</strong> or use arrows — updates instantly.{" "}
+            Admin tool — drag <strong className="text-white">✥</strong> or use arrows, then{" "}
+            <strong className="text-white">Copy georef JSON</strong> into{" "}
+            <code className="text-[var(--ld-text)]">data/georef.json</code> and deploy.{" "}
             <Link href="/overlay/live" className="text-[var(--ld-neon-green)] underline">
               GPS live mode
             </Link>{" "}
-            for pins at the fest.
+            uses that fixed alignment; users adjust opacity only.
           </p>
         </div>
         <ShareButton url="https://ltl26.com/overlay" />

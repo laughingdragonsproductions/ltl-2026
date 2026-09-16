@@ -1,9 +1,15 @@
+import { setUnlockedUntil, UNLOCK_DEADLINE } from "../unlock-state";
+
 const SPRITES = {
   skull: "/games/ltl26/flappy/skull.png",
   glasses: "/games/ltl26/flappy/glasses.png",
   headphones: "/games/ltl26/flappy/headphones.png",
 };
+
 const STORAGE = { best: "ltl26-flappy-best" };
+
+/** Alpha testers: auto-pilot to this score unlocks full site (same as $5 unlock). */
+export const FLAPPY_ALPHA_UNLOCK_SCORE = 75;
 
 const WORLD = { width: 400, height: 600, groundH: 48, ceilingPad: 8 };
 const BASE = {
@@ -17,11 +23,22 @@ const BASE = {
   skullX: 88,
 };
 
-const DEV_CHEAT = { tapWindowMs: 1000, holdMs: 450, unlockTestScore: 75 };
+const DEV_CHEAT = {
+  tapWindowMs: 1000,
+  holdMs: 450,
+  unlockTestScore: FLAPPY_ALPHA_UNLOCK_SCORE,
+};
 
 type Screen = "menu" | "howto" | "ready" | "playing" | "over";
 
-export async function initFlappySkull(root: HTMLElement): Promise<() => void> {
+export type FlappySkullOptions = {
+  onPremiumUnlock?: () => void;
+};
+
+export async function initFlappySkull(
+  root: HTMLElement,
+  options: FlappySkullOptions = {}
+): Promise<() => void> {
   root.innerHTML = `
     <div class="ltl-flappy">
       <div class="ltl-flappy-stage">
@@ -47,7 +64,7 @@ export async function initFlappySkull(root: HTMLElement): Promise<() => void> {
               <li>Tap, click, or Space to flap.</li>
               <li>Fly through gaps — each gap scores 1.</li>
               <li>Score 5 → sunglasses. Score 10 → headphones.</li>
-              <li>Dev: triple-tap + hold before first pipe → auto-pilot test.</li>
+              <li>Alpha test: triple-tap + hold before the first pipe → auto-pilot runs to score ${FLAPPY_ALPHA_UNLOCK_SCORE} and unlocks the full site.</li>
             </ol>
             <button type="button" class="ltl-btn ltl-btn-primary" id="ltl-flap-howto-back">Back</button>
           </div>
@@ -187,6 +204,19 @@ export async function initFlappySkull(root: HTMLElement): Promise<() => void> {
     return WORLD.height * 0.42;
   }
 
+  function drawImageFit(
+    img: HTMLImageElement,
+    maxW: number,
+    maxH: number,
+    offsetX = 0,
+    offsetY = 0
+  ) {
+    const scale = Math.min(maxW / img.naturalWidth, maxH / img.naturalHeight);
+    const w = img.naturalWidth * scale;
+    const h = img.naturalHeight * scale;
+    ctx.drawImage(img, offsetX - w / 2, offsetY - h / 2, w, h);
+  }
+
   function drawSkull() {
     const size = BASE.skullSize;
     const cx = BASE.skullX + size / 2;
@@ -195,12 +225,13 @@ export async function initFlappySkull(root: HTMLElement): Promise<() => void> {
     ctx.translate(cx, cy);
     ctx.rotate(state.rot);
     if (sprites.skull) {
-      ctx.drawImage(sprites.skull, -size / 2, -size / 2, size, size);
+      // Preserve PNG aspect — full skull visible (no square stretch / top crop).
+      drawImageFit(sprites.skull, size * 1.08, size * 1.12, 0, size * 0.04);
       if (state.score >= 5 && sprites.glasses) {
-        ctx.drawImage(sprites.glasses, -size / 2, -size / 2, size, size);
+        drawImageFit(sprites.glasses, size * 0.82, size * 0.34, 0, -size * 0.06);
       }
       if (state.score >= 10 && sprites.headphones) {
-        ctx.drawImage(sprites.headphones, -size / 2, -size / 2, size, size);
+        drawImageFit(sprites.headphones, size * 1.02, size * 0.58, 0, -size * 0.1);
       }
     } else {
       ctx.fillStyle = "#e8e8f0";
@@ -269,6 +300,13 @@ export async function initFlappySkull(root: HTMLElement): Promise<() => void> {
     const unlocks: string[] = [];
     if (state.score >= 5) unlocks.push("Sunglasses");
     if (state.score >= 10) unlocks.push("Headphones");
+    const alphaUnlock =
+      cheat.autoPilot && state.score >= DEV_CHEAT.unlockTestScore;
+    if (alphaUnlock) {
+      setUnlockedUntil(UNLOCK_DEADLINE);
+      options.onPremiumUnlock?.();
+      unlocks.push("Full site access (alpha test)");
+    }
     if (state.score > state.best) {
       state.best = state.score;
       localStorage.setItem(STORAGE.best, String(state.best));

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
+import { FESTIVAL_MAP_SRC } from "@/lib/festival-map";
 import { georef } from "@/lib/georef";
 import {
   buildAllMapPoints,
@@ -16,20 +17,25 @@ import {
 } from "@/lib/map-points";
 import { syncOverlayMap } from "@/lib/overlay-map-sync";
 import {
-  getDefaultOverlayGeoref,
+  getPublishedOverlayGeoref,
+  loadUserOpacity,
   mapPercentToLatLngWithBounds,
+  saveUserOpacity,
   type GeorefBounds,
 } from "@/lib/overlay-georef";
-import { useOverlayGeorefEditor } from "@/hooks/use-overlay-georef-editor";
 import { useTier } from "@/lib/tier-context";
 import Link from "next/link";
-import { getEffectiveOverlayGeoref } from "@/lib/overlay-georef";
 
 type UserLocation = { lat: number; lng: number };
 
 const { center } = georef.venue;
 const SATELLITE_URL = georef.satellite.tileUrl;
-const defaultGeoref = getDefaultOverlayGeoref();
+const publishedGeoref = getPublishedOverlayGeoref();
+const PLACEMENT = {
+  coordinates: publishedGeoref.coordinates,
+  bounds: publishedGeoref.bounds,
+};
+const DEFAULT_OPACITY = publishedGeoref.opacity ?? 0.72;
 
 function buildPointsForBounds(bounds: GeorefBounds): MapPoint[] {
   return buildAllMapPoints().map((p) => {
@@ -61,18 +67,15 @@ export function VirtualOverlayMap() {
   const mapRef = useRef<maplibregl.Map | null>(null);
   const popupRef = useRef<maplibregl.Popup | null>(null);
   const userLocationRef = useRef<UserLocation | null>(null);
-  const editor = useOverlayGeorefEditor(true);
-  const { state, hydrated, setOpacity, reload } = editor;
-
   const [mapVisible, setMapVisible] = useState(false);
   const [layers, setLayers] = useState(DEFAULT_LAYERS);
   const [basemap, setBasemap] = useState<"streets" | "satellite">("satellite");
   const [showFestivalOverlay, setShowFestivalOverlay] = useState(true);
   const [locStatus, setLocStatus] = useState<"idle" | "active" | "denied">("idle");
+  const [opacity, setOpacity] = useState(DEFAULT_OPACITY);
+  const [hydrated, setHydrated] = useState(false);
 
-  const opacity = state.opacity ?? 0.72;
-  const coordinates = state.coordinates;
-  const bounds = state.bounds;
+  const { coordinates, bounds } = PLACEMENT;
 
   const allPoints = useMemo(() => buildPointsForBounds(bounds), [bounds]);
   const visiblePoints = useMemo(
@@ -97,19 +100,25 @@ export function VirtualOverlayMap() {
   }, []);
 
   useEffect(() => {
-    const syncFromStorage = () => {
-      const loaded = getEffectiveOverlayGeoref();
-      syncOptsRef.current = {
-        ...syncOptsRef.current,
-        coordinates: loaded.coordinates,
-        opacity: loaded.opacity ?? 0.72,
-      };
-      reload();
+    const userOpacity = loadUserOpacity();
+    if (userOpacity != null) {
+      setOpacity(userOpacity);
+      syncOptsRef.current = { ...syncOptsRef.current, opacity: userOpacity };
+    }
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    const syncOpacityFromStorage = () => {
+      const userOpacity = loadUserOpacity();
+      if (userOpacity == null) return;
+      setOpacity(userOpacity);
+      syncOptsRef.current = { ...syncOptsRef.current, opacity: userOpacity };
       pushToMap();
     };
-    window.addEventListener("focus", syncFromStorage);
-    return () => window.removeEventListener("focus", syncFromStorage);
-  }, [reload, pushToMap]);
+    window.addEventListener("focus", syncOpacityFromStorage);
+    return () => window.removeEventListener("focus", syncOpacityFromStorage);
+  }, [pushToMap]);
 
   useEffect(() => {
     if (!hydrated || !containerRef.current || mapRef.current) return;
@@ -133,7 +142,7 @@ export function VirtualOverlayMap() {
           },
           festivalMap: {
             type: "image",
-            url: "/maps/ltl-2026-official-amenity-map.png",
+            url: FESTIVAL_MAP_SRC,
             coordinates: syncOptsRef.current.coordinates,
           },
           pois: {
@@ -166,8 +175,8 @@ export function VirtualOverlayMap() {
       center: [center.lng, center.lat],
       zoom: georef.satellite.defaultZoom,
       maxBounds: [
-        [defaultGeoref.bounds.west - 0.008, defaultGeoref.bounds.south - 0.008],
-        [defaultGeoref.bounds.east + 0.008, defaultGeoref.bounds.north + 0.008],
+        [PLACEMENT.bounds.west - 0.008, PLACEMENT.bounds.south - 0.008],
+        [PLACEMENT.bounds.east + 0.008, PLACEMENT.bounds.north + 0.008],
       ],
     });
 
@@ -249,11 +258,13 @@ export function VirtualOverlayMap() {
 
   const handleOpacityChange = useCallback(
     (value: number) => {
-      setOpacity(value);
-      syncOptsRef.current = { ...syncOptsRef.current, opacity: value };
+      const clamped = Math.min(1, Math.max(0, value));
+      setOpacity(clamped);
+      saveUserOpacity(clamped);
+      syncOptsRef.current = { ...syncOptsRef.current, opacity: clamped };
       pushToMap();
     },
-    [setOpacity, pushToMap]
+    [pushToMap]
   );
 
   const handleBasemap = useCallback(
@@ -299,11 +310,8 @@ export function VirtualOverlayMap() {
           Free · GPS overlay
         </p>
         <p className="mt-1 text-sm text-[var(--ld-text)]">
-          Live GPS view. To move or resize the amenity art, use the{" "}
-          <Link href="/overlay" className="font-bold text-[var(--ld-neon-green)] underline">
-            overlay aligner
-          </Link>
-          .
+          Live GPS view with the official fest map aligned on satellite. Adjust opacity below —
+          map placement is fixed for everyone.
         </p>
       </div>
 
@@ -396,10 +404,10 @@ export function VirtualOverlayMap() {
             />
           </label>
           <Link
-            href="/overlay"
+            href="/map"
             className="block rounded-full bg-[var(--ld-neon-green)] py-2.5 text-center text-sm font-black text-black"
           >
-            Open overlay aligner
+            Open tap map
           </Link>
         </div>
       </div>

@@ -13,6 +13,7 @@ import {
   sliderTileBackgroundStyle,
   type SliderImage,
 } from "./slider-puzzle-logic";
+import { LITPRINTZ_GAME_CREDIT_HTML } from "./litprintz-credit";
 
 export function initSliderPuzzle(mount: HTMLElement) {
   const queryOpts = sliderParseOptions(window.location.search);
@@ -33,7 +34,7 @@ export function initSliderPuzzle(mount: HTMLElement) {
       <div class="ltl-slider-meta">
         <p class="ltl-slider-stats"><span id="ltl-ss-moves">0</span> moves</p>
         <div class="ltl-slider-image-picker">
-          <label for="ltl-ss-image">Artwork</label>
+          <label for="ltl-ss-image">Band</label>
           <select id="ltl-ss-image" class="ltl-slider-select">
             ${SLIDER_IMAGES.map(
               (img) => `<option value="${img.id}">${img.label}</option>`
@@ -54,6 +55,7 @@ export function initSliderPuzzle(mount: HTMLElement) {
         </div>
       </div>
       <p class="ltl-slider-hint">Tap tiles in the same row or column as the empty square. Arrow keys move one tile.</p>
+      ${LITPRINTZ_GAME_CREDIT_HTML}
     </section>
   `;
 
@@ -69,7 +71,9 @@ export function initSliderPuzzle(mount: HTMLElement) {
   type DiffKey = keyof typeof SLIDER_DIFFICULTIES;
   let size: number = SLIDER_DIFFICULTIES.easy.size;
   let difficulty: DiffKey = (queryOpts.difficulty as DiffKey) || "easy";
-  let currentImage: SliderImage = queryOpts.image || SLIDER_IMAGES[0];
+  const urlLockedImage = queryOpts.image;
+  let currentImage: SliderImage =
+    urlLockedImage ?? sliderPickRandomImage(sliderCreateRng(queryOpts.seed));
   let rng = sliderCreateRng(queryOpts.seed);
   let state: number[] = [];
   let moves = 0;
@@ -85,6 +89,7 @@ export function initSliderPuzzle(mount: HTMLElement) {
   }
 
   function updateImageUI() {
+    imageSelectEl.disabled = Boolean(urlLockedImage);
     if (imageSelectEl.value !== currentImage.id) {
       imageSelectEl.value = currentImage.id;
     }
@@ -93,8 +98,8 @@ export function initSliderPuzzle(mount: HTMLElement) {
   }
 
   function pickNextImage(randomize = false) {
-    if (queryOpts.image && queryOpts.image.id) {
-      currentImage = queryOpts.image;
+    if (urlLockedImage) {
+      currentImage = urlLockedImage;
       return;
     }
     if (randomize) {
@@ -117,6 +122,7 @@ export function initSliderPuzzle(mount: HTMLElement) {
         cell.style.backgroundImage = style.backgroundImage;
         cell.style.backgroundSize = style.backgroundSize;
         cell.style.backgroundPosition = style.backgroundPosition;
+        cell.style.backgroundRepeat = style.backgroundRepeat;
         cell.addEventListener("click", () => applySlide(position));
       }
       boardEl.appendChild(cell);
@@ -183,10 +189,10 @@ export function initSliderPuzzle(mount: HTMLElement) {
   });
 
   mount.querySelector("#ltl-ss-shuffle")?.addEventListener("click", () =>
-    newGame(undefined, !queryOpts.image)
+    newGame(undefined, !urlLockedImage)
   );
   mount.querySelector("#ltl-ss-play-again")?.addEventListener("click", () =>
-    newGame(undefined, !queryOpts.image)
+    newGame(undefined, !urlLockedImage)
   );
 
   const onKey = (event: KeyboardEvent) => {
@@ -203,7 +209,7 @@ export function initSliderPuzzle(mount: HTMLElement) {
   };
   window.addEventListener("keydown", onKey);
 
-  newGame(difficulty, !queryOpts.image);
+  newGame(difficulty, !urlLockedImage);
 
   return () => window.removeEventListener("keydown", onKey);
 }

@@ -9,6 +9,7 @@ import {
   type Band,
   type BandMatcherDifficulty,
 } from "./band-matcher-logic";
+import { LITPRINTZ_GAME_CREDIT_HTML } from "./litprintz-credit";
 
 export function initBandMatcher(mount: HTMLElement) {
   if (BAND_MATCHER_BANDS.length < 4) {
@@ -31,18 +32,7 @@ export function initBandMatcher(mount: HTMLElement) {
         </div>
         <button type="button" class="ltl-btn ltl-btn-primary" id="ltl-bm-shuffle">New game</button>
       </div>
-      <div class="ltl-band-controls">
-        <div class="ltl-slider-image-picker">
-          <label for="ltl-bm-band">Band set</label>
-          <select id="ltl-bm-band" class="ltl-slider-select">
-            <option value="random">Random bands</option>
-            ${BAND_MATCHER_BANDS.map(
-              (band) => `<option value="${band.id}">${band.name}</option>`
-            ).join("")}
-          </select>
-        </div>
-        <p class="ltl-band-stats"><span id="ltl-bm-moves">0</span> flips · <span id="ltl-bm-pairs">0</span> / <span id="ltl-bm-total">0</span> pairs</p>
-      </div>
+      <p class="ltl-band-stats"><span id="ltl-bm-moves">0</span> flips · <span id="ltl-bm-pairs">0</span> / <span id="ltl-bm-total">0</span> pairs</p>
       <div id="ltl-bm-board" class="ltl-band-board" role="grid"></div>
       <div id="ltl-bm-win" class="ltl-band-win" hidden>
         <p class="ltl-slider-win-title">All pairs matched!</p>
@@ -50,6 +40,7 @@ export function initBandMatcher(mount: HTMLElement) {
         <button type="button" class="ltl-btn ltl-btn-primary" id="ltl-bm-play-again">Play again</button>
       </div>
       <p class="ltl-slider-hint">Flip two tiles — match band logo pairs. Fewer flips wins bragging rights.</p>
+      ${LITPRINTZ_GAME_CREDIT_HTML}
     </section>
   `;
 
@@ -59,7 +50,6 @@ export function initBandMatcher(mount: HTMLElement) {
   const totalEl = mount.querySelector("#ltl-bm-total")!;
   const winEl = mount.querySelector<HTMLElement>("#ltl-bm-win")!;
   const winBodyEl = mount.querySelector("#ltl-bm-win-body")!;
-  const bandSelectEl = mount.querySelector<HTMLSelectElement>("#ltl-bm-band")!;
   const diffBtns = mount.querySelectorAll<HTMLButtonElement>(".ltl-diff-btn");
   const shuffleBtn = mount.querySelector<HTMLButtonElement>("#ltl-bm-shuffle")!;
   const playAgainBtn = mount.querySelector<HTMLButtonElement>("#ltl-bm-play-again")!;
@@ -86,17 +76,7 @@ export function initBandMatcher(mount: HTMLElement) {
 
   function pickBands(): Band[] {
     const pairCount = BAND_MATCHER_DIFFICULTIES[difficulty].pairs;
-    const choice = bandSelectEl.value;
-    if (choice === "random") {
-      return bandMatcherPickRandomBands(BAND_MATCHER_BANDS, pairCount, rng);
-    }
-    const anchor = bandById(choice);
-    if (!anchor) {
-      return bandMatcherPickRandomBands(BAND_MATCHER_BANDS, pairCount, rng);
-    }
-    const rest = BAND_MATCHER_BANDS.filter((b) => b.id !== anchor.id);
-    const others = bandMatcherPickRandomBands(rest, pairCount - 1, rng);
-    return bandMatcherShuffle([anchor, ...others], rng);
+    return bandMatcherPickRandomBands(BAND_MATCHER_BANDS, pairCount, rng);
   }
 
   function renderBoard() {
@@ -192,7 +172,6 @@ export function initBandMatcher(mount: HTMLElement) {
   boardEl.addEventListener("click", onCardClick);
   shuffleBtn.addEventListener("click", resetGame);
   playAgainBtn.addEventListener("click", resetGame);
-  bandSelectEl.addEventListener("change", resetGame);
   diffBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
       setDifficulty(btn.dataset.diff as BandMatcherDifficulty);

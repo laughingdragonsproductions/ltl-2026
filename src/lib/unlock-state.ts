@@ -2,6 +2,14 @@ export const UNLOCK_DEADLINE = "2026-09-21T23:59:59-04:00";
 
 const STORAGE_KEY = "ltl26_session";
 
+/** Local dev only — set NEXT_PUBLIC_DEV_UNLOCK=true in .env.local (ignored in production builds). */
+export function isDevUnlockEnabled(): boolean {
+  return (
+    process.env.NODE_ENV === "development" &&
+    process.env.NEXT_PUBLIC_DEV_UNLOCK === "true"
+  );
+}
+
 export type SessionState = {
   unlockedUntil: string | null;
 };

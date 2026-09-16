@@ -14,7 +14,7 @@ const WalkthroughExperience = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-[480px] items-center justify-center rounded-xl border border-zinc-700 bg-zinc-900 text-zinc-400">
+      <div className="flex h-[min(80vh,720px)] items-center justify-center rounded-xl border border-zinc-700 bg-zinc-900 text-zinc-400">
         Loading 3D walkthrough…
       </div>
     ),
@@ -59,7 +59,7 @@ export function WalkthroughLoader() {
           signal.
         </p>
         <Link
-          href="/overlay"
+          href="/overlay/live"
           className="mt-4 inline-flex min-h-[44px] items-center rounded-full bg-[var(--ld-neon-green)] px-8 py-3 text-sm font-black text-black"
         >
           Free GPS Overlay
@@ -85,7 +85,7 @@ export function WalkthroughLoader() {
         </h2>
         <p className="mx-auto mt-3 max-w-sm text-sm text-[var(--ld-muted)]">
           First-person WASD walkthrough of the grounds. Basic map, GPS overlay, and{" "}
-          <strong className="text-white">Flappy Skull</strong> stay free.{" "}
+          <strong className="text-white">One game</strong> stays free (your pick).{" "}
           <strong className="text-white">$5</strong> unlocks the 3D walk and all festival games.
         </p>
         {STRIPE_CHECKOUT_ENABLED && STRIPE_PAYMENT_LINK ? (

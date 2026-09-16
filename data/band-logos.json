@@ -1,0 +1,24 @@
+{
+  "bands": [
+    { "id": "puzzle-01", "name": "Danny Elfman", "verified": true },
+    { "id": "puzzle-02", "name": "The Prodigy", "verified": true },
+    { "id": "puzzle-03", "name": "Megadeth", "verified": true },
+    { "id": "puzzle-04", "name": "Danzig", "verified": true },
+    { "id": "puzzle-05", "name": "Knocked Loose", "verified": true },
+    { "id": "puzzle-06", "name": "Halestorm", "verified": true },
+    { "id": "puzzle-07", "name": "Rise Against", "verified": true },
+    { "id": "puzzle-08", "name": "Alice Cooper", "verified": true },
+    { "id": "puzzle-09", "name": "Circa Survive", "verified": true },
+    { "id": "puzzle-10", "name": "Ice Nine Kills", "verified": true },
+    { "id": "puzzle-11", "name": "Iron Maiden", "verified": true },
+    { "id": "puzzle-12", "name": "Tool", "verified": true },
+    { "id": "puzzle-13", "name": "Limp Bizkit", "verified": true },
+    { "id": "puzzle-14", "name": "Pantera", "verified": true },
+    { "id": "puzzle-15", "name": "Pierce The Veil", "verified": true },
+    { "id": "puzzle-16", "name": "Gojira", "verified": true },
+    { "id": "puzzle-17", "name": "Papa Roach", "verified": true },
+    { "id": "puzzle-18", "name": "Sublime", "verified": true },
+    { "id": "puzzle-19", "name": "A Day To Remember", "verified": true },
+    { "id": "puzzle-20", "name": "BABYMETAL", "verified": true }
+  ]
+}

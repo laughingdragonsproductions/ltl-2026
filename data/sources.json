@@ -33,10 +33,10 @@
     },
     {
       "id": "official-amenity-map",
-      "title": "Louder Than Life 2026 Official Amenity Map",
-      "url": "user-provided",
+      "title": "Louder Than Life 2026 Official Fest Map (1920×1080)",
+      "url": "https://louderthanlifefestival.com/wp-content/uploads/2026/09/LTL26_FestMap_1920x1080.jpg",
       "type": "official-map",
-      "file": "assets/maps/ltl-2026-official-amenity-map.png"
+      "file": "public/maps/LTL26_FestMap_1920x1080.jpg"
     },
     {
       "id": "wlky-map",

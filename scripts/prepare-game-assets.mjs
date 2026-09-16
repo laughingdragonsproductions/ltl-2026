@@ -8,6 +8,7 @@ import {
   mkdirSync,
   existsSync,
   readdirSync,
+  readFileSync,
   writeFileSync,
 } from "fs";
 import { dirname, join, extname } from "path";
@@ -51,7 +52,7 @@ async function processFlappy() {
   mkdirSync(flappyOut, { recursive: true });
 
   const mappings = [
-    ["Skull sprite.png", "skull.png", true],
+    ["Skull sprite.png", "skull.png", false],
     ["glasses.png", "glasses.png", false],
     ["Deadphones.png", "headphones.png", false],
   ];
@@ -117,10 +118,25 @@ function resolveSliderSrc() {
   return null;
 }
 
+function loadBandNames() {
+  const path = join(dataDir, "band-logos.json");
+  if (!existsSync(path)) return [];
+  try {
+    const data = JSON.parse(readFileSync(path, "utf8"));
+    if (!Array.isArray(data.bands)) return [];
+    return data.bands.filter(
+      (b) => b.verified !== false && typeof b.name === "string" && b.name.trim()
+    );
+  } catch {
+    return [];
+  }
+}
+
 async function processSlider() {
   const sliderSrc = resolveSliderSrc();
   const sliderOut = join(outRoot, "puzzles");
   mkdirSync(sliderOut, { recursive: true });
+  const bandNames = loadBandNames();
 
   if (!sliderSrc) {
     console.warn(`Skip slider (no PNGs in slider puzzle images/)`);
@@ -155,18 +171,21 @@ async function processSlider() {
       await pipeline.toFile(dest);
     }
 
-    const bandName = file
-      .replace(/\.png$/i, "")
-      .replace(/[_-]+/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
+    const mapped = bandNames.find((b) => b.id === id);
+    const bandName =
+      mapped?.name ||
+      file
+        .replace(/\.png$/i, "")
+        .replace(/[_-]+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
 
     manifest.push({
       id,
       label: bandName || `LTL puzzle ${i + 1}`,
       src: `/games/ltl26/puzzles/${destName}`,
     });
-    console.log(`Slider → public/games/ltl26/puzzles/${destName}`);
+    console.log(`Slider → public/games/ltl26/puzzles/${destName} (${bandName})`);
     ok += 1;
   }
 
@@ -214,15 +233,25 @@ async function main() {
 
   if (manifest.length > 0) {
     const compiledAt = new Date().toISOString();
+    const verified = loadBandNames();
     const manifestPath = join(dataDir, "slider-images.json");
     writeFileSync(
       manifestPath,
-      JSON.stringify({ images: manifest, compiledAt }, null, 2),
+      JSON.stringify(
+        {
+          images: manifest.map((m) => ({ ...m, verified: true })),
+          compiledAt,
+        },
+        null,
+        2
+      ),
       "utf8"
     );
     console.log(`\nWrote ${manifest.length} slider entries → data/slider-images.json`);
 
-    const bands = manifest.map(({ id, label, src }) => ({ id, name: label, src }));
+    const bands = manifest
+      .filter(({ id }) => verified.some((b) => b.id === id))
+      .map(({ id, label, src }) => ({ id, name: label, src, verified: true }));
     const bandPath = join(dataDir, "band-matcher.json");
     writeFileSync(
       bandPath,

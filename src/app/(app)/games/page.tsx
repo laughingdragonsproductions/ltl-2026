@@ -62,12 +62,11 @@ export default function GamesPage() {
 
   return (
     <div className="ltl-game">
-      <p className="ltl-game-eyebrow">Free taste + premium unlock</p>
+      <p className="ltl-game-eyebrow">Pick one free · unlock the rest</p>
       <h1 className="mt-1 text-3xl font-black text-[var(--ld-neon-green)]">Festival Games</h1>
       <p className="mt-2 max-w-xl text-[var(--ld-muted)]">
-        <strong className="text-white">Flappy Skull</strong> is free.{" "}
-        <strong className="text-white">$5</strong> unlocks all LOUDERTHANLIFE2026 mini-games and
-        the walking 3D map.
+        Choose <strong className="text-white">one game free</strong> on your first visit.{" "}
+        <strong className="text-white">$5</strong> unlocks all games and the walking 3D map.
       </p>
       <GamesHub games={games} />
     </div>

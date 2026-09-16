@@ -1,11 +1,19 @@
-/** One full game free; $5 unlocks all games + 3D walkthrough. */
-export const FREE_GAME_ID = "flappy-skull";
+import type { PickableGameId } from "./free-game-choice";
 
-export function canPlayGame(gameId: string, unlocked: boolean): boolean {
+/** One game free (user picks on first visit); $5 unlocks all games + 3D walkthrough. */
+export function canPlayGame(
+  gameId: string,
+  unlocked: boolean,
+  freeGameId: PickableGameId | null
+): boolean {
   if (unlocked) return true;
-  return gameId === FREE_GAME_ID;
+  if (!freeGameId) return false;
+  return gameId === freeGameId;
 }
 
-export function isFreeGame(gameId: string): boolean {
-  return gameId === FREE_GAME_ID;
+export function isFreeGameForUser(
+  gameId: string,
+  freeGameId: PickableGameId | null
+): boolean {
+  return Boolean(freeGameId && gameId === freeGameId);
 }

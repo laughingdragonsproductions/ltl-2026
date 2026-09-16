@@ -8,14 +8,13 @@ import * as maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import Link from "next/link";
 import { georef } from "@/lib/georef";
+import { FESTIVAL_MAP_SRC } from "@/lib/festival-map";
 import {
-  clearOverlayOverride,
   coordinatesToBounds,
   exportGeorefJsonSnippet,
   getCoordinatesCenter,
-  getDefaultOverlayGeoref,
-  getEffectiveOverlayGeoref,
-  saveOverlayOverride,
+  getPublishedOverlayGeoref,
+  rotateCoordinatesAroundCenter,
   scaleCoordinates,
   translateCoordinates,
   type OverlayCoordinates,
@@ -23,9 +22,21 @@ import {
 
 const { center } = georef.venue;
 const SATELLITE_URL = georef.satellite.tileUrl;
-const MAP_PNG = "/maps/ltl-2026-official-amenity-map.png";
+const MAP_PNG = FESTIVAL_MAP_SRC;
 const NUDGE = 0.00008;
 const NUDGE_FINE = 0.00002;
+const ROTATE = 1;
+const ROTATE_FINE = 0.25;
+
+function getRotateHandleLngLat(
+  map: maplibregl.Map,
+  coords: OverlayCoordinates
+): [number, number] {
+  const c = getCoordinatesCenter(coords);
+  const centerPx = map.project(c);
+  const ll = map.unproject([centerPx.x, centerPx.y - 48]);
+  return [ll.lng, ll.lat];
+}
 
 function cloneCoords(c: OverlayCoordinates): OverlayCoordinates {
   return c.map(([lng, lat]) => [lng, lat]) as OverlayCoordinates;
@@ -78,15 +89,18 @@ function NudgeBtn({
 export function SimpleOverlayGui() {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
-  const coordsRef = useRef<OverlayCoordinates>(getDefaultOverlayGeoref().coordinates);
+  const coordsRef = useRef<OverlayCoordinates>(getPublishedOverlayGeoref().coordinates);
   const opacityRef = useRef(0.72);
   const centerMarkerRef = useRef<maplibregl.Marker | null>(null);
+  const rotateMarkerRef = useRef<maplibregl.Marker | null>(null);
   const dragStartRef = useRef<{
     lng: number;
     lat: number;
     coords: OverlayCoordinates;
   } | null>(null);
   const draggingRef = useRef(false);
+  const rotatingRef = useRef(false);
+  const shiftRef = useRef(false);
 
   const [ready, setReady] = useState(false);
   const [opacityPct, setOpacityPct] = useState(72);
@@ -104,17 +118,16 @@ export function SimpleOverlayGui() {
       if (!draggingRef.current) {
         centerMarkerRef.current?.setLngLat(getCoordinatesCenter(coordsRef.current));
       }
+      if (!rotatingRef.current && rotateMarkerRef.current) {
+        rotateMarkerRef.current.setLngLat(getRotateHandleLngLat(map, coordsRef.current));
+      }
     } catch (err) {
       console.error("applyToMap:", err);
     }
   }, []);
 
   const persist = useCallback(() => {
-    saveOverlayOverride({
-      bounds: coordinatesToBounds(coordsRef.current),
-      coordinates: coordsRef.current,
-      opacity: opacityRef.current,
-    });
+    /* Placement is session-only — copy JSON and commit data/georef.json to publish. */
   }, []);
 
   const nudge = useCallback(
@@ -135,6 +148,15 @@ export function SimpleOverlayGui() {
     [applyToMap, persist]
   );
 
+  const rotate = useCallback(
+    (deltaDeg: number) => {
+      coordsRef.current = rotateCoordinatesAroundCenter(coordsRef.current, deltaDeg);
+      applyToMap();
+      persist();
+    },
+    [applyToMap, persist]
+  );
+
   const setOpacity = useCallback(
     (value: number) => {
       opacityRef.current = value;
@@ -146,8 +168,7 @@ export function SimpleOverlayGui() {
   );
 
   const resetAll = useCallback(() => {
-    clearOverlayOverride();
-    const d = getDefaultOverlayGeoref();
+    const d = getPublishedOverlayGeoref();
     coordsRef.current = cloneCoords(d.coordinates);
     opacityRef.current = d.opacity ?? 0.72;
     setOpacityPct(Math.round(opacityRef.current * 100));
@@ -166,10 +187,25 @@ export function SimpleOverlayGui() {
   }, []);
 
   useEffect(() => {
-    const loaded = getEffectiveOverlayGeoref();
+    const loaded = getPublishedOverlayGeoref();
     coordsRef.current = cloneCoords(loaded.coordinates);
     opacityRef.current = loaded.opacity ?? 0.72;
     setOpacityPct(Math.round(opacityRef.current * 100));
+  }, []);
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Shift") shiftRef.current = true;
+    };
+    const onKeyUp = (e: KeyboardEvent) => {
+      if (e.key === "Shift") shiftRef.current = false;
+    };
+    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("keyup", onKeyUp);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("keyup", onKeyUp);
+    };
   }, []);
 
   useEffect(() => {
@@ -254,9 +290,76 @@ export function SimpleOverlayGui() {
       centerMarkerRef.current = marker;
     };
 
+    const mountRotateHandle = () => {
+      const el = document.createElement("button");
+      el.type = "button";
+      el.title = "Drag to rotate (hold Shift for 15° snap)";
+      el.className =
+        "flex h-10 w-10 cursor-grab items-center justify-center rounded-full border-2 border-[#e8bc55] bg-black/90 text-sm font-black text-[#e8bc55] shadow-lg active:cursor-grabbing touch-none";
+      el.textContent = "↻";
+
+      const marker = new maplibregl.Marker({ element: el, draggable: true })
+        .setLngLat(getRotateHandleLngLat(map, coordsRef.current))
+        .addTo(map);
+
+      let rotateStart: {
+        angle: number;
+        coords: OverlayCoordinates;
+        center: [number, number];
+      } | null = null;
+
+      marker.on("dragstart", () => {
+        rotatingRef.current = true;
+        map.dragPan.disable();
+        const c = getCoordinatesCenter(coordsRef.current);
+        const pos = marker.getLngLat();
+        rotateStart = {
+          angle: Math.atan2(pos.lat - c[1], pos.lng - c[0]),
+          coords: cloneCoords(coordsRef.current),
+          center: c,
+        };
+      });
+
+      marker.on("drag", () => {
+        if (!rotateStart) return;
+        const pos = marker.getLngLat();
+        let deltaDeg =
+          ((Math.atan2(pos.lat - rotateStart.center[1], pos.lng - rotateStart.center[0]) -
+            rotateStart.angle) *
+            180) /
+          Math.PI;
+        if (shiftRef.current) {
+          deltaDeg = Math.round(deltaDeg / 15) * 15;
+        }
+        coordsRef.current = rotateCoordinatesAroundCenter(
+          rotateStart.coords,
+          deltaDeg,
+          rotateStart.center
+        );
+        applyToMap();
+      });
+
+      marker.on("dragend", () => {
+        rotatingRef.current = false;
+        map.dragPan.enable();
+        rotateStart = null;
+        marker.setLngLat(getRotateHandleLngLat(map, coordsRef.current));
+        persist();
+      });
+
+      rotateMarkerRef.current = marker;
+    };
+
+    map.on("moveend", () => {
+      if (!rotatingRef.current && rotateMarkerRef.current) {
+        rotateMarkerRef.current.setLngLat(getRotateHandleLngLat(map, coordsRef.current));
+      }
+    });
+
     map.on("load", () => {
       applyToMap();
       mountDragHandle();
+      mountRotateHandle();
       setReady(true);
       map.resize();
     });
@@ -266,6 +369,8 @@ export function SimpleOverlayGui() {
     return () => {
       centerMarkerRef.current?.remove();
       centerMarkerRef.current = null;
+      rotateMarkerRef.current?.remove();
+      rotateMarkerRef.current = null;
       map.remove();
       mapRef.current = null;
       setReady(false);
@@ -283,7 +388,7 @@ export function SimpleOverlayGui() {
         )}
         {ready && (
           <p className="pointer-events-none absolute bottom-2 left-2 rounded bg-black/85 px-2 py-1 text-[10px] font-bold uppercase text-[var(--ld-neon-green)]">
-            Drag ✥ or use arrows →
+            Drag ✥ move · gold ↻ rotate
           </p>
         )}
       </div>
@@ -294,7 +399,9 @@ export function SimpleOverlayGui() {
             Simple overlay
           </p>
           <p className="mt-1 text-xs text-[var(--ld-muted)]">
-            Changes apply instantly. Saved in this browser automatically.
+            Admin aligner — preview only. Copy JSON → paste into{" "}
+            <code className="text-[var(--ld-text)]">data/georef.json</code> → deploy for all
+            users. Live view only saves opacity per device.
           </p>
         </div>
 
@@ -337,6 +444,29 @@ export function SimpleOverlayGui() {
           <NudgeBtn label="Smaller" className="flex-1 py-2 text-xs" onStep={() => scale(0.98)} />
           <NudgeBtn label="Bigger" className="flex-1 py-2 text-xs" onStep={() => scale(1.02)} />
         </div>
+
+        <p className="text-[10px] font-bold uppercase tracking-wide text-[var(--ld-muted)]">
+          Rotate
+        </p>
+        <div className="grid grid-cols-2 gap-2">
+          <NudgeBtn label="↺ −1°" className="py-2 text-xs" onStep={() => rotate(-ROTATE)} />
+          <NudgeBtn label="↻ +1°" className="py-2 text-xs" onStep={() => rotate(ROTATE)} />
+        </div>
+        <div className="grid grid-cols-2 gap-2">
+          <NudgeBtn
+            label="↺ −0.25°"
+            className="py-2 text-xs"
+            onStep={() => rotate(-ROTATE_FINE)}
+          />
+          <NudgeBtn
+            label="↻ +0.25°"
+            className="py-2 text-xs"
+            onStep={() => rotate(ROTATE_FINE)}
+          />
+        </div>
+        <p className="text-[10px] text-[var(--ld-muted)]">
+          Or drag the gold ↻ handle above the overlay center. Hold Shift for 15° steps.
+        </p>
 
         <div className="flex flex-col gap-2 border-t border-[var(--ld-border)] pt-3">
           <button

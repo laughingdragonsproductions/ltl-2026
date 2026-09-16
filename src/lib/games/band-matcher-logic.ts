@@ -14,15 +14,23 @@ export type BandMatcherDifficulty = keyof typeof BAND_MATCHER_DIFFICULTIES;
 function bandsFromSlider(): Band[] {
   return (sliderManifest.images ?? []).map((img) => ({
     id: img.id,
-    name: img.label.replace(/^LTL puzzle /i, "Band "),
+    name: img.label,
     src: img.src,
   }));
 }
 
-export const BAND_MATCHER_BANDS: Band[] =
-  (bandManifest.bands?.length ?? 0) >= 4
-    ? bandManifest.bands
-    : bandsFromSlider();
+function verifiedBands(bands: Band[]): Band[] {
+  return bands.filter(
+    (b) =>
+      (b as Band & { verified?: boolean }).verified !== false &&
+      Boolean(b.name?.trim()) &&
+      Boolean(b.src?.trim())
+  );
+}
+
+export const BAND_MATCHER_BANDS: Band[] = verifiedBands(
+  (bandManifest.bands?.length ?? 0) >= 4 ? bandManifest.bands : bandsFromSlider()
+);
 
 export function bandMatcherCreateRng(seed?: number) {
   let s = seed ?? Date.now();

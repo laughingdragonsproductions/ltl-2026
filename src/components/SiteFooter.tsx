@@ -38,16 +38,8 @@ export function SiteFooter() {
           </a>
         </p>
       )}
-      <p className="mt-2">
-        Created by{" "}
-        <a
-          href="https://brandonsparks.com"
-          target="_blank"
-          rel="noreferrer"
-          className="font-semibold text-[var(--ld-neon-green)] hover:underline"
-        >
-          Laughing Dragons Productions
-        </a>
+      <p className="mt-2 font-semibold text-[var(--ld-neon-green)]">
+        Created by Laughing Dragons Productions
       </p>
       <p className="mt-1 text-[10px] opacity-70">© 2026 ltl26.com</p>
     </footer>

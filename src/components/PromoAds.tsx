@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { PROMO_ADS, type PromoAd } from "@/lib/promo-ads";
+import { getPromoAdAtRotationIndex, type PromoAd } from "@/lib/promo-ads";
 import { useSession } from "@/lib/session-context";
+import { STRIPE_CHECKOUT_ENABLED, STRIPE_PAYMENT_LINK } from "@/lib/stripe-public";
 
 const ACCENT: Record<PromoAd["accent"], string> = {
   green: "border-[var(--ld-neon-green)]/50 bg-[var(--ld-neon-green)]/10 text-[var(--ld-neon-green)]",
@@ -12,17 +13,27 @@ const ACCENT: Record<PromoAd["accent"], string> = {
   orange: "border-orange-500/50 bg-orange-950/40 text-orange-400",
 };
 
-function AdUnit({ ad, compact }: { ad: PromoAd; compact?: boolean }) {
-  const isExternal = ad.href.startsWith("http");
-  const className = `block rounded-lg border p-3 transition hover:opacity-90 ${ACCENT[ad.accent]} ${compact ? "text-left" : ""}`;
+function AdUnit({
+  ad,
+  compact,
+  onUnlock,
+}: {
+  ad: PromoAd;
+  compact?: boolean;
+  onUnlock: () => void;
+}) {
+  const isUnlock = ad.action === "unlock";
+  const className = `block w-full rounded-lg border p-3 text-left transition hover:opacity-90 ${ACCENT[ad.accent]} ${compact ? "" : ""}`;
 
   const inner = (
     <>
       <div className="flex items-center justify-between gap-2">
         <span className="rounded bg-black/40 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[var(--ld-muted)]">
-          Ad
+          {isUnlock ? "Upgrade" : "Ad"}
         </span>
-        <span className="text-[10px] text-[var(--ld-muted)]">Sponsored</span>
+        <span className="text-[10px] text-[var(--ld-muted)]">
+          {isUnlock ? "$5 · VIP unlock" : "Sponsored"}
+        </span>
       </div>
       <p className={`mt-2 font-black ${compact ? "text-sm" : "text-base"}`}>{ad.title}</p>
       <p className="mt-1 text-xs text-[var(--ld-text)] opacity-90">{ad.tagline}</p>
@@ -30,6 +41,22 @@ function AdUnit({ ad, compact }: { ad: PromoAd; compact?: boolean }) {
     </>
   );
 
+  if (isUnlock) {
+    if (STRIPE_CHECKOUT_ENABLED && STRIPE_PAYMENT_LINK) {
+      return (
+        <a href={STRIPE_PAYMENT_LINK} className={className}>
+          {inner}
+        </a>
+      );
+    }
+    return (
+      <button type="button" onClick={onUnlock} className={className}>
+        {inner}
+      </button>
+    );
+  }
+
+  const isExternal = ad.href.startsWith("http");
   if (isExternal) {
     return (
       <a href={ad.href} target="_blank" rel="noreferrer sponsored" className={className}>
@@ -46,44 +73,41 @@ function AdUnit({ ad, compact }: { ad: PromoAd; compact?: boolean }) {
 }
 
 export function PromoAds() {
-  const { unlocked } = useSession();
+  const { unlocked, openSupportModal } = useSession();
   const pathname = usePathname();
   const [index, setIndex] = useState(0);
 
-  const hidden =
-    unlocked ||
-    pathname.startsWith("/support");
+  const hidden = unlocked || pathname.startsWith("/support");
 
   useEffect(() => {
     if (hidden) return;
     const id = window.setInterval(() => {
-      setIndex((i) => (i + 1) % PROMO_ADS.length);
+      setIndex((i) => i + 1);
     }, 8000);
     return () => clearInterval(id);
   }, [hidden]);
 
   if (hidden) return null;
 
-  const current = PROMO_ADS[index];
+  const current = getPromoAdAtRotationIndex(index);
+  const next = getPromoAdAtRotationIndex(index + 1);
 
   return (
     <>
-      {/* Top strip — fake browser ad bar */}
       <div className="border-b border-[var(--ld-border)] bg-black/80 px-3 py-2">
         <div className="mx-auto flex max-w-6xl items-center gap-3">
           <span className="shrink-0 text-[9px] font-bold uppercase tracking-widest text-[var(--ld-muted)]">
             Promo
           </span>
           <div className="min-w-0 flex-1">
-            <AdUnit ad={current} compact />
+            <AdUnit ad={current} compact onUnlock={openSupportModal} />
           </div>
         </div>
       </div>
 
-      {/* Bottom sticky — above mobile nav */}
       <div className="pointer-events-none fixed inset-x-0 bottom-[calc(4.25rem+env(safe-area-inset-bottom))] z-40 px-3 md:bottom-4 md:max-w-sm md:translate-x-0 md:left-auto md:right-4">
         <div className="pointer-events-auto shadow-xl">
-          <AdUnit ad={PROMO_ADS[(index + 1) % PROMO_ADS.length]} />
+          <AdUnit ad={next} onUnlock={openSupportModal} />
         </div>
       </div>
     </>

@@ -4,6 +4,7 @@ import { PointerLockControls, useTexture } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import { FESTIVAL_MAP_SRC } from "@/lib/festival-map";
 import { mapPercentToLocal, georef } from "@/lib/georef";
 import type { WalkPOI } from "@/lib/walkthrough-pois";
 import type { WalkMode } from "./WalkthroughExperience";
@@ -32,7 +33,7 @@ export function WalkthroughWorld({
 }: Props) {
   const { camera } = useThree();
   const keys = useRef<Record<string, boolean>>({});
-  const mapTexture = useTexture("/maps/ltl-2026-official-amenity-map.png");
+  const mapTexture = useTexture(FESTIVAL_MAP_SRC);
   const [teleportPos, setTeleportPos] = useState<[number, number] | null>(null);
 
   useEffect(() => {

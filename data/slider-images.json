@@ -2,104 +2,124 @@
   "images": [
     {
       "id": "puzzle-01",
-      "label": "LTL puzzle 1",
-      "src": "/games/ltl26/puzzles/puzzle-01.png"
+      "label": "Danny Elfman",
+      "src": "/games/ltl26/puzzles/puzzle-01.png",
+      "verified": true
     },
     {
       "id": "puzzle-02",
-      "label": "LTL puzzle 2",
-      "src": "/games/ltl26/puzzles/puzzle-02.png"
+      "label": "The Prodigy",
+      "src": "/games/ltl26/puzzles/puzzle-02.png",
+      "verified": true
     },
     {
       "id": "puzzle-03",
-      "label": "LTL puzzle 3",
-      "src": "/games/ltl26/puzzles/puzzle-03.png"
+      "label": "Megadeth",
+      "src": "/games/ltl26/puzzles/puzzle-03.png",
+      "verified": true
     },
     {
       "id": "puzzle-04",
-      "label": "LTL puzzle 4",
-      "src": "/games/ltl26/puzzles/puzzle-04.png"
+      "label": "Danzig",
+      "src": "/games/ltl26/puzzles/puzzle-04.png",
+      "verified": true
     },
     {
       "id": "puzzle-05",
-      "label": "LTL puzzle 5",
-      "src": "/games/ltl26/puzzles/puzzle-05.png"
+      "label": "Knocked Loose",
+      "src": "/games/ltl26/puzzles/puzzle-05.png",
+      "verified": true
     },
     {
       "id": "puzzle-06",
-      "label": "LTL puzzle 6",
-      "src": "/games/ltl26/puzzles/puzzle-06.png"
+      "label": "Halestorm",
+      "src": "/games/ltl26/puzzles/puzzle-06.png",
+      "verified": true
     },
     {
       "id": "puzzle-07",
-      "label": "LTL puzzle 7",
-      "src": "/games/ltl26/puzzles/puzzle-07.png"
+      "label": "Rise Against",
+      "src": "/games/ltl26/puzzles/puzzle-07.png",
+      "verified": true
     },
     {
       "id": "puzzle-08",
-      "label": "LTL puzzle 8",
-      "src": "/games/ltl26/puzzles/puzzle-08.png"
+      "label": "Alice Cooper",
+      "src": "/games/ltl26/puzzles/puzzle-08.png",
+      "verified": true
     },
     {
       "id": "puzzle-09",
-      "label": "LTL puzzle 9",
-      "src": "/games/ltl26/puzzles/puzzle-09.png"
+      "label": "Circa Survive",
+      "src": "/games/ltl26/puzzles/puzzle-09.png",
+      "verified": true
     },
     {
       "id": "puzzle-10",
-      "label": "LTL puzzle 10",
-      "src": "/games/ltl26/puzzles/puzzle-10.png"
+      "label": "Ice Nine Kills",
+      "src": "/games/ltl26/puzzles/puzzle-10.png",
+      "verified": true
     },
     {
       "id": "puzzle-11",
-      "label": "LTL puzzle 11",
-      "src": "/games/ltl26/puzzles/puzzle-11.png"
+      "label": "Iron Maiden",
+      "src": "/games/ltl26/puzzles/puzzle-11.png",
+      "verified": true
     },
     {
       "id": "puzzle-12",
-      "label": "LTL puzzle 12",
-      "src": "/games/ltl26/puzzles/puzzle-12.png"
+      "label": "Tool",
+      "src": "/games/ltl26/puzzles/puzzle-12.png",
+      "verified": true
     },
     {
       "id": "puzzle-13",
-      "label": "LTL puzzle 13",
-      "src": "/games/ltl26/puzzles/puzzle-13.png"
+      "label": "Limp Bizkit",
+      "src": "/games/ltl26/puzzles/puzzle-13.png",
+      "verified": true
     },
     {
       "id": "puzzle-14",
-      "label": "LTL puzzle 14",
-      "src": "/games/ltl26/puzzles/puzzle-14.png"
+      "label": "Pantera",
+      "src": "/games/ltl26/puzzles/puzzle-14.png",
+      "verified": true
     },
     {
       "id": "puzzle-15",
-      "label": "LTL puzzle 15",
-      "src": "/games/ltl26/puzzles/puzzle-15.png"
+      "label": "Pierce The Veil",
+      "src": "/games/ltl26/puzzles/puzzle-15.png",
+      "verified": true
     },
     {
       "id": "puzzle-16",
-      "label": "LTL puzzle 16",
-      "src": "/games/ltl26/puzzles/puzzle-16.png"
+      "label": "Gojira",
+      "src": "/games/ltl26/puzzles/puzzle-16.png",
+      "verified": true
     },
     {
       "id": "puzzle-17",
-      "label": "LTL puzzle 17",
-      "src": "/games/ltl26/puzzles/puzzle-17.png"
+      "label": "Papa Roach",
+      "src": "/games/ltl26/puzzles/puzzle-17.png",
+      "verified": true
     },
     {
       "id": "puzzle-18",
-      "label": "LTL puzzle 18",
-      "src": "/games/ltl26/puzzles/puzzle-18.png"
+      "label": "Sublime",
+      "src": "/games/ltl26/puzzles/puzzle-18.png",
+      "verified": true
     },
     {
       "id": "puzzle-19",
-      "label": "LTL puzzle 19",
-      "src": "/games/ltl26/puzzles/puzzle-19.png"
+      "label": "A Day To Remember",
+      "src": "/games/ltl26/puzzles/puzzle-19.png",
+      "verified": true
     },
     {
       "id": "puzzle-20",
-      "label": "LTL puzzle 20",
-      "src": "/games/ltl26/puzzles/puzzle-20.png"
+      "label": "BABYMETAL",
+      "src": "/games/ltl26/puzzles/puzzle-20.png",
+      "verified": true
     }
   ],
-  "compiledAt": "2026-09-15T00:45:53.242Z"
+  "compiledAt": "2026-09-15T18:17:00.367Z"
 }

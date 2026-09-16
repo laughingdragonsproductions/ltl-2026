@@ -14,10 +14,12 @@ export default function OverlayLivePage() {
             Live GPS Overlay
           </h1>
           <p className="mt-2 text-sm text-[var(--ld-muted)]">
-            <Link href="/overlay" className="text-[var(--ld-neon-green)] underline">
-              Align overlay
+            Live GPS with the fest map on satellite. Map placement is fixed — adjust opacity in
+            the sidebar.{" "}
+            <Link href="/map" className="text-[var(--ld-neon-green)] underline">
+              Tap map
             </Link>{" "}
-            first, then use GPS pins here at the fest.
+            for pinch-zoom pins.
           </p>
         </div>
         <ShareButton url="https://ltl26.com/overlay/live" />

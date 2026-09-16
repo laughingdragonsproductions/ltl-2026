@@ -15,8 +15,14 @@ const FALLBACK_IMAGES: SliderImage[] = [
   },
 ];
 
+function isVerifiedBandEntry(entry: { label?: string; verified?: boolean }) {
+  return entry.verified !== false && Boolean(entry.label?.trim());
+}
+
 export const SLIDER_IMAGES: SliderImage[] =
-  sliderManifest.images?.length > 0 ? sliderManifest.images : FALLBACK_IMAGES;
+  sliderManifest.images?.length > 0
+    ? sliderManifest.images.filter(isVerifiedBandEntry)
+    : FALLBACK_IMAGES;
 
 export const SLIDER_DIFFICULTIES = {
   easy: { label: "Easy", size: 3 },
@@ -125,11 +131,15 @@ export function sliderTileBackgroundStyle(
   imageSrc: string
 ) {
   const { row, col } = sliderIndexToRowCol(tileIndex, size);
-  const pct = 100 / size;
+  // Align N×N slices: endpoints at 0% and 100% (not col/size, which leaves a gap).
+  const span = Math.max(size - 1, 1);
+  const x = (col / span) * 100;
+  const y = (row / span) * 100;
   return {
     backgroundImage: `url(${imageSrc})`,
     backgroundSize: `${size * 100}% ${size * 100}%`,
-    backgroundPosition: `${col * pct}% ${row * pct}%`,
+    backgroundPosition: `${x}% ${y}%`,
+    backgroundRepeat: "no-repeat",
   };
 }
 
@@ -179,11 +189,14 @@ export function sliderParseOptions(search: string) {
     string,
     { label: string; size: number }
   >;
-  const image = params.get("image");
+  const imageId = params.get("image");
   const seed = params.get("seed");
   return {
     difficulty: diff && difficulties[diff] ? diff : null,
-    image: sliderResolveImage(SLIDER_IMAGES, image),
+    image:
+      imageId != null && imageId !== ""
+        ? sliderResolveImage(SLIDER_IMAGES, imageId)
+        : null,
     seed: seed != null && seed !== "" ? seed : null,
   };
 }

@@ -11,6 +11,7 @@ import {
   type LayerKey,
   type MapPoint,
 } from "@/lib/map-points";
+import { FESTIVAL_MAP_ASPECT, FESTIVAL_MAP_SRC } from "@/lib/festival-map";
 import { useTier } from "@/lib/tier-context";
 type QuickFilter = "all" | "stages" | "food" | "vip" | "pois";
 
@@ -103,9 +104,12 @@ export function InteractiveMap({ fullscreen = false }: { fullscreen?: boolean })
             pinch={{ step: 5 }}
           >
             <TransformComponent wrapperClass="!h-full !w-full" contentClass="!h-full !w-full">
-              <div className="relative aspect-[1024/503] min-h-full min-w-full">
+              <div
+                className="relative min-h-full min-w-full"
+                style={{ aspectRatio: FESTIVAL_MAP_ASPECT }}
+              >
                 <Image
-                  src="/maps/ltl-2026-official-amenity-map.png"
+                  src={FESTIVAL_MAP_SRC}
                   alt="Louder Than Life 2026 official festival map"
                   fill
                   className="object-contain"

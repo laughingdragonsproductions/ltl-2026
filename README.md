@@ -2,7 +2,7 @@
 
 **https://ltl26.com/map** — unofficial fan festival companion.
 
-Created by [Laughing Dragons Productions](https://brandonsparks.com).
+Created by Laughing Dragons Productions.
 
 ## Live site
 

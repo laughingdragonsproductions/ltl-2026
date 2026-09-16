@@ -1,5 +1,6 @@
 import georefData from "../../data/georef.json";
 import type { MapPosition } from "./georef";
+import { FESTIVAL_MAP_ASPECT } from "./festival-map";
 
 /** MapLibre image source corners: NW, NE, SE, SW */
 export type OverlayCoordinates = [
@@ -23,10 +24,32 @@ export type OverlayGeorefOverride = {
   updatedAt?: string;
 };
 
+/** @deprecated Legacy key — placement overrides migrated away; opacity only now */
 export const OVERLAY_STORAGE_KEY = "ltl26-overlay-georef";
-export const MAP_IMAGE_ASPECT = 1024 / 503;
+export const OVERLAY_OPACITY_KEY = "ltl26-overlay-opacity";
+export const MAP_IMAGE_ASPECT = FESTIVAL_MAP_ASPECT;
+
+/** Set NEXT_PUBLIC_OVERLAY_ADMIN=true locally to access /overlay aligner. */
+export function isOverlayAdminEnabled(): boolean {
+  return process.env.NEXT_PUBLIC_OVERLAY_ADMIN === "true";
+}
 
 const defaultBounds = georefData.bounds as GeorefBounds;
+
+function readPublishedFromFile(): OverlayGeorefOverride {
+  const fileOverlay = georefData.overlay as
+    | { coordinates?: OverlayCoordinates; opacity?: number }
+    | undefined;
+  const coordinates =
+    fileOverlay?.coordinates && isValidCoordinates(fileOverlay.coordinates)
+      ? fileOverlay.coordinates
+      : boundsToCoordinates(defaultBounds);
+  return {
+    bounds: { ...defaultBounds },
+    coordinates,
+    opacity: fileOverlay?.opacity ?? 0.72,
+  };
+}
 
 export function boundsToCoordinates(b: GeorefBounds): OverlayCoordinates {
   return [
@@ -48,12 +71,14 @@ export function coordinatesToBounds(c: OverlayCoordinates): GeorefBounds {
   };
 }
 
+/** Committed alignment in data/georef.json — same for all users after deploy. */
+export function getPublishedOverlayGeoref(): OverlayGeorefOverride {
+  return readPublishedFromFile();
+}
+
+/** @alias getPublishedOverlayGeoref */
 export function getDefaultOverlayGeoref(): OverlayGeorefOverride {
-  return {
-    bounds: { ...defaultBounds },
-    coordinates: boundsToCoordinates(defaultBounds),
-    opacity: 0.72,
-  };
+  return getPublishedOverlayGeoref();
 }
 
 function isValidCoordinates(value: unknown): value is OverlayCoordinates {
@@ -78,52 +103,68 @@ function isValidBounds(b: GeorefBounds): boolean {
   );
 }
 
-export function loadOverlayOverride(): OverlayGeorefOverride | null {
-  if (typeof window === "undefined") return null;
+function migrateLegacyOverlayStorage(): void {
+  if (typeof window === "undefined") return;
   try {
     const raw = localStorage.getItem(OVERLAY_STORAGE_KEY);
-    if (!raw) return null;
+    if (!raw) return;
     const data = JSON.parse(raw) as OverlayGeorefOverride;
-    if (!isValidCoordinates(data.coordinates) || !isValidBounds(data.bounds)) {
-      localStorage.removeItem(OVERLAY_STORAGE_KEY);
-      return null;
+    if (data.opacity != null && localStorage.getItem(OVERLAY_OPACITY_KEY) == null) {
+      localStorage.setItem(OVERLAY_OPACITY_KEY, String(data.opacity));
     }
-    return data;
+    localStorage.removeItem(OVERLAY_STORAGE_KEY);
   } catch {
-    return null;
+    localStorage.removeItem(OVERLAY_STORAGE_KEY);
   }
 }
 
-export function saveOverlayOverride(data: OverlayGeorefOverride): void {
+export function loadUserOpacity(): number | null {
+  if (typeof window === "undefined") return null;
+  migrateLegacyOverlayStorage();
+  const raw = localStorage.getItem(OVERLAY_OPACITY_KEY);
+  if (raw == null) return null;
+  const value = Number(raw);
+  return Number.isFinite(value) ? Math.min(1, Math.max(0, value)) : null;
+}
+
+export function saveUserOpacity(opacity: number): void {
   if (typeof window === "undefined") return;
   localStorage.setItem(
-    OVERLAY_STORAGE_KEY,
-    JSON.stringify({ ...data, updatedAt: new Date().toISOString() })
+    OVERLAY_OPACITY_KEY,
+    String(Math.min(1, Math.max(0, opacity)))
   );
 }
 
-export function clearOverlayOverride(): void {
+export function clearUserOpacity(): void {
   if (typeof window === "undefined") return;
-  localStorage.removeItem(OVERLAY_STORAGE_KEY);
+  localStorage.removeItem(OVERLAY_OPACITY_KEY);
 }
 
-/** Server/build default; client may override via localStorage */
+/** @deprecated Placement is no longer stored client-side */
+export function loadOverlayOverride(): OverlayGeorefOverride | null {
+  migrateLegacyOverlayStorage();
+  return null;
+}
+
+/** Persists opacity only (placement comes from georef.json). */
+export function saveOverlayOverride(data: OverlayGeorefOverride): void {
+  if (data.opacity != null) saveUserOpacity(data.opacity);
+}
+
+export function clearOverlayOverride(): void {
+  clearUserOpacity();
+  if (typeof window !== "undefined") {
+    localStorage.removeItem(OVERLAY_STORAGE_KEY);
+  }
+}
+
+/** Published placement + optional per-user opacity preference. */
 export function getEffectiveOverlayGeoref(): OverlayGeorefOverride {
-  const bounds = georefData.bounds as GeorefBounds;
-  const fileOverlay = georefData.overlay as
-    | { coordinates?: OverlayCoordinates; opacity?: number }
-    | undefined;
-  const coordinates =
-    fileOverlay?.coordinates ?? boundsToCoordinates(bounds);
-
-  const base: OverlayGeorefOverride = {
-    bounds,
-    coordinates,
-    opacity: fileOverlay?.opacity ?? 0.72,
-  };
-
-  if (typeof window === "undefined") return base;
-  return loadOverlayOverride() ?? base;
+  const published = getPublishedOverlayGeoref();
+  if (typeof window === "undefined") return published;
+  const userOpacity = loadUserOpacity();
+  if (userOpacity == null) return published;
+  return { ...published, opacity: userOpacity };
 }
 
 export function mapPercentToLatLngWithBounds(

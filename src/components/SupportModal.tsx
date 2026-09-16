@@ -25,7 +25,7 @@ export function SupportModal() {
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-[var(--ld-text)]">
           Basic tap map, GPS overlay, and locators stay <strong className="text-white">free</strong>.
-          {" "}<strong className="text-white">Flappy Skull</strong> is free to play.{" "}
+          {" "}<strong className="text-white">One game</strong> is free to pick.{" "}
           <strong className="text-white">$5</strong> unlocks the{" "}
           <strong className="text-white">walking 3D map</strong>,{" "}
           <strong className="text-white">all festival games</strong>, and removes{" "}

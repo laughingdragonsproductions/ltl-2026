@@ -11,7 +11,9 @@
     "flow:brief": "node scripts/google-flow/generate-flow-brief.mjs",
     "games:assets": "node scripts/prepare-game-assets.mjs",
     "games:band-matcher": "node scripts/compile-band-matcher.mjs",
-    "overlay:mapper": "node scripts/compile-overlay-mapper.mjs"
+    "overlay:mapper": "node scripts/compile-overlay-mapper.mjs",
+    "dns:ltl26": "node scripts/setup-ltl26-dns.mjs",
+    "bands:sync": "node scripts/sync-band-manifests.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.8",

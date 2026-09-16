@@ -1,3 +1,4 @@
+import { KnowGuestArticle } from "@/components/KnowGuestArticle";
 import { data } from "@/lib/data";
 
 export default function KnowPage() {
@@ -17,6 +18,7 @@ export default function KnowPage() {
         .
       </p>
       <section className="mt-6 space-y-4 text-sm text-[var(--ld-text)]">
+        <KnowGuestArticle />
         <div className="rounded-lg border border-[var(--ld-border)] p-4">
           <h2 className="font-bold text-[var(--ld-neon-green)]">Allowed in bags</h2>
           <ul className="mt-2 list-inside list-disc text-[var(--ld-muted)]">
