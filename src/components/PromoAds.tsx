@@ -3,6 +3,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import {
+  dismissInstallPrompt,
+  recordVisitAndCheckInstallEligible,
+} from "@/lib/install-prompt";
 import { getPromoAdAtRotationIndex, type PromoAd } from "@/lib/promo-ads";
 import { useSession } from "@/lib/session-context";
 import { STRIPE_CHECKOUT_ENABLED, STRIPE_PAYMENT_LINK } from "@/lib/stripe-public";
@@ -17,29 +21,46 @@ function AdUnit({
   ad,
   compact,
   onUnlock,
+  onDismissInstall,
 }: {
   ad: PromoAd;
   compact?: boolean;
   onUnlock: () => void;
+  onDismissInstall?: () => void;
 }) {
   const isUnlock = ad.action === "unlock";
+  const isInstall = ad.action === "install";
   const className = `block w-full rounded-lg border p-3 text-left transition hover:opacity-90 ${ACCENT[ad.accent]} ${compact ? "" : ""}`;
 
   const inner = (
     <>
       <div className="flex items-center justify-between gap-2">
         <span className="rounded bg-black/40 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[var(--ld-muted)]">
-          {isUnlock ? "Upgrade" : "Ad"}
+          {isUnlock ? "Upgrade" : isInstall ? "Tip" : "Ad"}
         </span>
         <span className="text-[10px] text-[var(--ld-muted)]">
-          {isUnlock ? "$5 · VIP unlock" : "Sponsored"}
+          {isUnlock ? "$5 · VIP unlock" : isInstall ? "Save to phone" : "Sponsored"}
         </span>
       </div>
       <p className={`mt-2 font-black ${compact ? "text-sm" : "text-base"}`}>{ad.title}</p>
       <p className="mt-1 text-xs text-[var(--ld-text)] opacity-90">{ad.tagline}</p>
-      <span className="mt-2 inline-block text-xs font-bold underline">{ad.cta} →</span>
+      {isInstall ? (
+        <button
+          type="button"
+          onClick={onDismissInstall}
+          className="mt-2 text-xs font-bold text-[var(--ld-muted)] underline"
+        >
+          {ad.cta}
+        </button>
+      ) : (
+        <span className="mt-2 inline-block text-xs font-bold underline">{ad.cta} →</span>
+      )}
     </>
   );
+
+  if (isInstall) {
+    return <div className={className}>{inner}</div>;
+  }
 
   if (isUnlock) {
     if (STRIPE_CHECKOUT_ENABLED && STRIPE_PAYMENT_LINK) {
@@ -76,8 +97,13 @@ export function PromoAds() {
   const { unlocked, openSupportModal } = useSession();
   const pathname = usePathname();
   const [index, setIndex] = useState(0);
+  const [installEligible, setInstallEligible] = useState(false);
 
   const hidden = unlocked || pathname.startsWith("/support");
+
+  useEffect(() => {
+    setInstallEligible(recordVisitAndCheckInstallEligible());
+  }, []);
 
   useEffect(() => {
     if (hidden) return;
@@ -87,10 +113,15 @@ export function PromoAds() {
     return () => clearInterval(id);
   }, [hidden]);
 
+  const handleDismissInstall = () => {
+    dismissInstallPrompt();
+    setInstallEligible(false);
+  };
+
   if (hidden) return null;
 
-  const current = getPromoAdAtRotationIndex(index);
-  const next = getPromoAdAtRotationIndex(index + 1);
+  const current = getPromoAdAtRotationIndex(index, installEligible);
+  const next = getPromoAdAtRotationIndex(index + 1, installEligible);
 
   return (
     <>
@@ -100,14 +131,19 @@ export function PromoAds() {
             Promo
           </span>
           <div className="min-w-0 flex-1">
-            <AdUnit ad={current} compact onUnlock={openSupportModal} />
+            <AdUnit
+              ad={current}
+              compact
+              onUnlock={openSupportModal}
+              onDismissInstall={handleDismissInstall}
+            />
           </div>
         </div>
       </div>
 
       <div className="pointer-events-none fixed inset-x-0 bottom-[calc(4.25rem+env(safe-area-inset-bottom))] z-40 px-3 md:bottom-4 md:max-w-sm md:translate-x-0 md:left-auto md:right-4">
         <div className="pointer-events-auto shadow-xl">
-          <AdUnit ad={next} onUnlock={openSupportModal} />
+          <AdUnit ad={next} onUnlock={openSupportModal} onDismissInstall={handleDismissInstall} />
         </div>
       </div>
     </>

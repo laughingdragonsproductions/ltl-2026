@@ -3,7 +3,6 @@
 import { MobileNav } from "@/components/MobileNav";
 import { Nav } from "@/components/Nav";
 import { TierBar } from "@/components/TierBar";
-import { InstallPrompt } from "@/components/InstallPrompt";
 import { MySetAlertsProvider } from "@/components/MySetAlertsProvider";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -15,7 +14,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         {children}
       </div>
       <MobileNav />
-      <InstallPrompt />
       <MySetAlertsProvider />
     </>
   );
