@@ -27,6 +27,7 @@ import {
   formatTime,
   toMinutes,
 } from "@/lib/schedule-time";
+import { downloadMySetsCalendar } from "@/lib/calendar-export";
 import { playSetAlertSound, unlockAlertSound } from "@/lib/set-alert-sound";
 
 type ScheduleSet = (typeof data.schedule.days)[number]["sets"][number];
@@ -47,6 +48,7 @@ export function ScheduleView() {
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [disclaimerDismissed, setDisclaimerDismissed] = useState(true);
   const [showFirstSaveCallout, setShowFirstSaveCallout] = useState(false);
+  const [showCalendarHelp, setShowCalendarHelp] = useState(false);
 
   const refreshMySetsState = useCallback(() => {
     setMySets(loadMySets());
@@ -263,6 +265,67 @@ export function ScheduleView() {
           >
             Dismiss
           </button>
+        </div>
+      )}
+
+      {hydrated && savedCount > 0 && (
+        <div className="rounded-lg border border-[var(--ld-border-green)] bg-[var(--ld-surface)]/80 p-4">
+          <p className="text-xs font-bold uppercase tracking-widest text-[var(--ld-neon-green)]">
+            Google Calendar
+          </p>
+          <p className="mt-2 text-sm text-[var(--ld-muted)]">
+            You&apos;ve starred {savedCount} set{savedCount === 1 ? "" : "s"}. Download a file with
+            those times and add it to Google Calendar for reminders on your phone.
+          </p>
+          <button
+            type="button"
+            onClick={() => downloadMySetsCalendar(mySets)}
+            className="mt-3 min-h-[44px] rounded-full bg-[var(--ld-neon-green)] px-5 py-2.5 text-sm font-black text-black"
+          >
+            Download for Google Calendar
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowCalendarHelp((v) => !v)}
+            className="mt-2 block text-xs font-semibold text-[var(--ld-neon-green)] underline"
+          >
+            {showCalendarHelp ? "Hide how to add" : "How do I add this to Google Calendar?"}
+          </button>
+          {showCalendarHelp && (
+            <div className="mt-3 space-y-3 border-t border-[var(--ld-border)] pt-3 text-xs text-[var(--ld-muted)]">
+              <div>
+                <p className="font-bold text-white">On your phone</p>
+                <p className="mt-1">
+                  Open your Downloads folder, tap the file you just saved, and choose{" "}
+                  <strong className="text-white">Google Calendar</strong> (or Import) when prompted.
+                </p>
+              </div>
+              <div>
+                <p className="font-bold text-white">On a computer</p>
+                <ol className="mt-1 list-inside list-decimal space-y-1">
+                  <li>
+                    Go to{" "}
+                    <a
+                      href="https://calendar.google.com"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-[var(--ld-neon-green)] underline"
+                    >
+                      calendar.google.com
+                    </a>
+                  </li>
+                  <li>
+                    Settings → <strong className="text-white">Import &amp; export</strong> → Import
+                  </li>
+                  <li>Select the file you downloaded from LTL26</li>
+                </ol>
+              </div>
+              <p className="text-[10px] opacity-80">
+                Unofficial fan schedule — set times may change. Check the official LTL schedule
+                before you go.
+              </p>
+            </div>
+          )}
         </div>
       )}
 
