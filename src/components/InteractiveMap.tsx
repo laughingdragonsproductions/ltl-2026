@@ -11,7 +11,11 @@ import {
   type LayerKey,
   type MapPoint,
 } from "@/lib/map-points";
-import { FESTIVAL_MAP_ASPECT, FESTIVAL_MAP_SRC } from "@/lib/festival-map";
+import {
+  FESTIVAL_MAP_ASPECT,
+  FESTIVAL_MAP_SRC,
+  mapPinPercentToImage,
+} from "@/lib/festival-map";
 import { useTier } from "@/lib/tier-context";
 type QuickFilter = "all" | "stages" | "food" | "vip" | "pois";
 
@@ -104,10 +108,11 @@ export function InteractiveMap({ fullscreen = false }: { fullscreen?: boolean })
             pinch={{ step: 5 }}
           >
             <TransformComponent wrapperClass="!h-full !w-full" contentClass="!h-full !w-full">
-              <div
-                className="relative min-h-full min-w-full"
-                style={{ aspectRatio: FESTIVAL_MAP_ASPECT }}
-              >
+              <div className="flex h-full w-full items-center justify-center">
+                <div
+                  className="relative w-full max-h-full"
+                  style={{ aspectRatio: FESTIVAL_MAP_ASPECT }}
+                >
                 <Image
                   src={FESTIVAL_MAP_SRC}
                   alt="Louder Than Life 2026 official festival map"
@@ -116,20 +121,24 @@ export function InteractiveMap({ fullscreen = false }: { fullscreen?: boolean })
                   priority
                   draggable={false}
                 />
-                {points.map((point) => (
+                {points.map((point) => {
+                  const pos = mapPinPercentToImage(point.x, point.y);
+                  return (
                   <button
                     key={point.id}
                     type="button"
                     title={point.name}
                     onClick={() => setSelected(point)}
                     className="absolute flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center"
-                    style={{ left: `${point.x}%`, top: `${point.y}%` }}
+                    style={{ left: `${pos.left}%`, top: `${pos.top}%` }}
                   >
                     <span
                       className={`h-3.5 w-3.5 rounded-full border-2 border-black shadow-lg ${dotColor(point.layer, tier)}`}
                     />
                   </button>
-                ))}
+                  );
+                })}
+                </div>
               </div>
             </TransformComponent>
           </TransformWrapper>
