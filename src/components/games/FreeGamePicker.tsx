@@ -31,7 +31,8 @@ export function FreeGamePicker({
         </h2>
         <p className="mt-2 text-sm text-[var(--ld-muted)]">
           You get <strong className="text-white">one</strong> full game free on this device.{" "}
-          <strong className="text-white">$5</strong> unlocks all games plus the 3D walk map.
+          <strong className="text-white">$5</strong> unlocks all games and Google Calendar export
+          for My sets.
         </p>
         <ul className="mt-5 space-y-2">
           {choices.map((game) => (

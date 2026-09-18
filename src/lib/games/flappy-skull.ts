@@ -8,8 +8,9 @@ const SPRITES = {
 
 const STORAGE = { best: "ltl26-flappy-best" };
 
-/** Alpha testers: auto-pilot to this score unlocks full site (same as $5 unlock). */
-export const FLAPPY_ALPHA_UNLOCK_SCORE = 75;
+/** Dev-only cheat target — stripped from production builds. */
+const FLAPPY_DEV_UNLOCK_SCORE = 75;
+const DEV_CHEAT_ENABLED = process.env.NODE_ENV === "development";
 
 const WORLD = { width: 400, height: 600, groundH: 48, ceilingPad: 8 };
 const BASE = {
@@ -26,7 +27,7 @@ const BASE = {
 const DEV_CHEAT = {
   tapWindowMs: 1000,
   holdMs: 450,
-  unlockTestScore: FLAPPY_ALPHA_UNLOCK_SCORE,
+  unlockTestScore: FLAPPY_DEV_UNLOCK_SCORE,
 };
 
 type Screen = "menu" | "howto" | "ready" | "playing" | "over";
@@ -64,7 +65,11 @@ export async function initFlappySkull(
               <li>Tap, click, or Space to flap.</li>
               <li>Fly through gaps — each gap scores 1.</li>
               <li>Score 5 → sunglasses. Score 10 → headphones.</li>
-              <li>Alpha test: triple-tap + hold before the first pipe → auto-pilot runs to score ${FLAPPY_ALPHA_UNLOCK_SCORE} and unlocks the full site.</li>
+              ${
+                DEV_CHEAT_ENABLED
+                  ? `<li>Dev only: triple-tap + hold before the first pipe → auto-pilot to score ${FLAPPY_DEV_UNLOCK_SCORE} (local unlock test).</li>`
+                  : ""
+              }
             </ol>
             <button type="button" class="ltl-btn ltl-btn-primary" id="ltl-flap-howto-back">Back</button>
           </div>
@@ -175,6 +180,7 @@ export async function initFlappySkull(
   }
 
   function noteCheatTap() {
+    if (!DEV_CHEAT_ENABLED) return;
     if (screen !== "playing" || state.score !== 0 || cheat.autoPilot) {
       cheat.taps = [];
       return;
@@ -190,6 +196,7 @@ export async function initFlappySkull(
   }
 
   function updateCheatHold() {
+    if (!DEV_CHEAT_ENABLED) return;
     if (!cheat.armedHold || cheat.autoPilot || !(cheat.pointerDown || cheat.keyDown)) return;
     if (performance.now() - cheat.holdSince >= DEV_CHEAT.holdMs) cheat.autoPilot = true;
   }
@@ -269,7 +276,7 @@ export async function initFlappySkull(
   }
 
   function checkCollision() {
-    if (cheat.autoPilot) return false;
+    if (DEV_CHEAT_ENABLED && cheat.autoPilot) return false;
     const pad = 6;
     const box = {
       x: BASE.skullX + pad,
@@ -300,12 +307,14 @@ export async function initFlappySkull(
     const unlocks: string[] = [];
     if (state.score >= 5) unlocks.push("Sunglasses");
     if (state.score >= 10) unlocks.push("Headphones");
-    const alphaUnlock =
-      cheat.autoPilot && state.score >= DEV_CHEAT.unlockTestScore;
-    if (alphaUnlock) {
+    if (
+      DEV_CHEAT_ENABLED &&
+      cheat.autoPilot &&
+      state.score >= DEV_CHEAT.unlockTestScore
+    ) {
       setUnlockedUntil(UNLOCK_DEADLINE);
       options.onPremiumUnlock?.();
-      unlocks.push("Full site access (alpha test)");
+      unlocks.push("Dev unlock test");
     }
     if (state.score > state.best) {
       state.best = state.score;
@@ -334,7 +343,7 @@ export async function initFlappySkull(
     }
 
     updateCheatHold();
-    if (cheat.autoPilot) {
+    if (DEV_CHEAT_ENABLED && cheat.autoPilot) {
       state.y += (getAutoPilotY() - state.y) * 0.42;
       state.vy = 0;
       state.rot = 0;
@@ -363,7 +372,11 @@ export async function initFlappySkull(
     }
     state.pipes = state.pipes.filter((p) => p.x + BASE.pipeWidth > -20);
 
-    if (cheat.autoPilot && state.score >= DEV_CHEAT.unlockTestScore) {
+    if (
+      DEV_CHEAT_ENABLED &&
+      cheat.autoPilot &&
+      state.score >= DEV_CHEAT.unlockTestScore
+    ) {
       endRun();
       return;
     }

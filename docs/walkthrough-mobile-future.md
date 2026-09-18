@@ -1,6 +1,6 @@
-# 3D walk — mobile & GPS follow (future)
+# 3D walk — mobile & GPS follow
 
-**Context:** Most users will be on phones at the event. Today `/walkthrough` is desktop-only (WASD + pointer lock). The free **`/overlay`** route is the mobile “where am I / what’s near me” experience. This doc captures a future path if we bring 3D walk to phones.
+**Context:** Most users will be on phones at the event. `/walkthrough` now runs on mobile with touch controls + optional GPS follow. The free **`/overlay`** route remains the lightweight GPS map for everyone.
 
 ## Goals
 
@@ -15,9 +15,10 @@
 | `latLngToLocal()` in `src/lib/georef.ts` | ✅ GPS → 3D plane coords (unused in walkthrough) |
 | POI proximity in `WalkthroughWorld.tsx` | ✅ Works from camera `[x, z]` |
 | Geolocation pattern | ✅ `VirtualOverlayMap.tsx` (`watchPosition`, “Center on me”) |
-| Mobile gate | ❌ `WalkthroughLoader.tsx` blocks coarse pointer / ≤768px |
-| Device compass / heading | ❌ Not implemented |
-| Touch movement / look | ❌ Not implemented |
+| Mobile gate | ✅ Removed — unlocked users get full 3D on phone |
+| Device compass / heading | ❌ Not implemented (phase 2) |
+| Touch movement / look | ✅ Joystick + right-side drag in `WalkthroughMobileControls.tsx` |
+| GPS follow toggle | ✅ Festival map mode on mobile (`use-walkthrough-gps.ts`) |
 
 ## Future UX (mobile 3D)
 

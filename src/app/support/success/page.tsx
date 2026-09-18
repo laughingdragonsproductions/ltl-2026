@@ -3,11 +3,14 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
+import { PurchaseCelebration } from "@/components/PurchaseCelebration";
+import { useSession } from "@/lib/session-context";
 import { setUnlockedUntil, UNLOCK_DEADLINE } from "@/lib/unlock-state";
 
 function SuccessContent() {
   const params = useSearchParams();
   const sessionId = params.get("session_id");
+  const { refreshSession } = useSession();
   const [status, setStatus] = useState<"loading" | "ok" | "error">("loading");
 
   useEffect(() => {
@@ -25,20 +28,26 @@ function SuccessContent() {
         if (!res.ok) throw new Error("verify failed");
         const data = (await res.json()) as { unlockedUntil: string };
         setUnlockedUntil(data.unlockedUntil ?? UNLOCK_DEADLINE);
+        refreshSession();
         setStatus("ok");
+        window.history.replaceState({}, "", "/support/success");
       })
       .catch(() => {
         if (process.env.NODE_ENV === "development" && sessionId.startsWith("dev_")) {
           setUnlockedUntil(UNLOCK_DEADLINE);
+          refreshSession();
           setStatus("ok");
+          window.history.replaceState({}, "", "/support/success");
           return;
         }
         setStatus("error");
       });
-  }, [sessionId]);
+  }, [sessionId, refreshSession]);
 
   return (
-    <div className="mx-auto flex min-h-[60vh] max-w-lg flex-col items-center justify-center px-4 text-center">
+    <>
+      <PurchaseCelebration active={status === "ok"} />
+      <div className="relative z-10 mx-auto flex min-h-[60vh] max-w-lg flex-col items-center justify-center px-4 text-center">
       {status === "loading" && (
         <p className="text-[var(--ld-muted)]">Confirming your support…</p>
       )}
@@ -47,15 +56,26 @@ function SuccessContent() {
           <p className="text-xs font-bold uppercase tracking-widest text-[var(--ld-neon-green)]">
             Thank you
           </p>
-          <h1 className="mt-2 text-2xl font-black text-white">3D walk + all games unlocked</h1>
+          <h1 className="mt-2 text-2xl font-black text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]">
+            Full unlock active
+          </h1>
           <p className="mt-3 text-sm text-[var(--ld-muted)]">
-            Walking 3D map and all festival games are unlocked. Ads are removed. Thank you — your
-            $5 helps keep this unofficial companion online.
+            All games, Google Calendar export for My sets, and ad-free browsing are unlocked.
+            Thank you — your $5 helps keep this unofficial companion online.
           </p>
           <Link
-            href="/map"
+            href="/games"
             className="mt-8 rounded-full bg-[var(--ld-neon-green)] px-8 py-3 text-sm font-black text-black"
           >
+            Play all games
+          </Link>
+          <Link
+            href="/schedule"
+            className="mt-3 block text-sm text-[var(--ld-neon-green)] underline"
+          >
+            Export My sets to calendar
+          </Link>
+          <Link href="/map" className="mt-2 block text-sm text-[var(--ld-muted)] underline">
             Back to map
           </Link>
         </>
@@ -71,7 +91,8 @@ function SuccessContent() {
           </Link>
         </>
       )}
-    </div>
+      </div>
+    </>
   );
 }
 

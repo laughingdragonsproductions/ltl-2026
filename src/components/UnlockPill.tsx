@@ -19,7 +19,7 @@ export function UnlockPill() {
       onClick={openSupportModal}
       className="rounded-full bg-[var(--ld-surface)] px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-[var(--ld-muted)] ring-1 ring-[var(--ld-border-green)] hover:text-[var(--ld-neon-green)] sm:text-xs"
     >
-      3D + games · $5
+      Games + calendar · $5
     </button>
   );
 }

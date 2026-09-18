@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { InteractiveMap } from "@/components/InteractiveMap";
 import { ShareButton } from "@/components/ShareButton";
+import { WALKTHROUGH_ENABLED } from "@/lib/walkthrough-public";
 
 export default function MapPage() {
   return (
@@ -42,23 +43,26 @@ export default function MapPage() {
           →
         </span>
       </Link>
-      <Link
-        href="/walkthrough"
-        className="mt-4 flex items-center justify-between gap-4 rounded-2xl border border-[var(--ld-border)] bg-[var(--ld-surface)]/60 p-5 transition hover:border-[var(--ld-neon-green)]/40"
-      >
-        <div>
-          <p className="text-xs font-bold uppercase tracking-widest text-[var(--ld-purple)]">
-            Premium · $5
-          </p>
-          <p className="mt-1 text-lg font-black text-white">Walking 3D Map</p>
-          <p className="mt-1 text-sm text-[var(--ld-muted)]">
-            First-person desktop walkthrough. Unlocks with all festival games for $5.
-          </p>
-        </div>
-        <span className="shrink-0 text-2xl text-[var(--ld-neon-green)]" aria-hidden>
-          →
-        </span>
-      </Link>
+      {WALKTHROUGH_ENABLED && (
+        <Link
+          href="/walkthrough"
+          className="mt-4 flex items-center justify-between gap-4 rounded-2xl border border-[var(--ld-border)] bg-[var(--ld-surface)]/60 p-5 transition hover:border-[var(--ld-neon-green)]/40"
+        >
+          <div>
+            <p className="text-xs font-bold uppercase tracking-widest text-[var(--ld-purple)]">
+              Premium · $5
+            </p>
+            <p className="mt-1 text-lg font-black text-white">Walking 3D Map</p>
+            <p className="mt-1 text-sm text-[var(--ld-muted)]">
+              First-person walkthrough with 3D stages. $5 unlocks this, all games, and Google
+              Calendar export.
+            </p>
+          </div>
+          <span className="shrink-0 text-2xl text-[var(--ld-neon-green)]" aria-hidden>
+            →
+          </span>
+        </Link>
+      )}
     </div>
   );
 }

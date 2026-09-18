@@ -26,7 +26,7 @@ export default function HomePage() {
           ltl26.com
         </h1>
         <p className="mt-3 text-lg text-[var(--ld-muted)] sm:text-xl">
-          Live map & schedule
+          Live map, schedule & festival games
         </p>
 
         <div className="ld-glow-purple mt-10 max-w-md rounded-2xl border border-[var(--ld-border-green)] bg-[var(--ld-surface)]/80 px-8 py-10">
@@ -35,29 +35,29 @@ export default function HomePage() {
           </p>
           <p className="mt-4 text-sm leading-relaxed text-[var(--ld-text)]">
             Free tap map, GPS overlay, and locators forever. Pick one game free.{" "}
-            <strong className="text-white">$5</strong> unlocks the walking 3D map, all games,
-            and removes ads.
+            <strong className="text-white">$5</strong> unlocks all games, Google Calendar export for
+            My sets, and removes ads.
           </p>
         </div>
 
         <Link
-          href="/map"
+          href="/games"
           className="mt-8 inline-flex min-h-[44px] items-center gap-2 rounded-full border border-[var(--ld-neon-green)]/60 bg-[var(--ld-neon-green)] px-8 py-3 text-sm font-black uppercase tracking-wide text-black transition hover:opacity-90"
         >
-          Free map
+          Play festival games
           <span aria-hidden>→</span>
         </Link>
         <Link
-          href="/overlay/live"
+          href="/map"
           className="mt-3 text-sm font-semibold text-[var(--ld-neon-green)] underline hover:text-white"
         >
-          Try virtual overlay →
+          Free tap map →
         </Link>
         <Link
-          href="/games"
+          href="/overlay/live"
           className="mt-2 text-sm font-semibold text-[var(--ld-muted)] underline hover:text-white"
         >
-          Play festival games →
+          GPS overlay →
         </Link>
 
         <ShareButton

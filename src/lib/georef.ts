@@ -25,6 +25,15 @@ export function mapPercentToLatLng(pos: MapPosition): { lat: number; lng: number
 }
 
 /** WGS84 → local X/Z on festival plane (inverse linear) */
+export function isLatLngInBounds(lat: number, lng: number): boolean {
+  return (
+    lat >= bounds.south &&
+    lat <= bounds.north &&
+    lng >= bounds.west &&
+    lng <= bounds.east
+  );
+}
+
 export function latLngToLocal(lat: number, lng: number): [number, number] {
   const xPct =
     ((lng - bounds.west) / (bounds.east - bounds.west)) * 100;

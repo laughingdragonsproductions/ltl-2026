@@ -2,6 +2,7 @@
 
 import { useSession } from "@/lib/session-context";
 import { STRIPE_CHECKOUT_ENABLED, STRIPE_PAYMENT_LINK } from "@/lib/stripe-public";
+import { UNLOCK_CTA_FULL, UNLOCK_FEATURES_SENTENCE } from "@/lib/unlock-copy";
 
 const KOFI_URL = process.env.NEXT_PUBLIC_KOFI_URL;
 
@@ -24,12 +25,10 @@ export function SupportModal() {
           Unlock the full LTL26 experience
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-[var(--ld-text)]">
-          Basic tap map, GPS overlay, and locators stay <strong className="text-white">free</strong>.
-          {" "}<strong className="text-white">One game</strong> is free to pick.{" "}
-          <strong className="text-white">$5</strong> unlocks the{" "}
-          <strong className="text-white">walking 3D map</strong>,{" "}
-          <strong className="text-white">all festival games</strong>, and removes{" "}
-          <strong className="text-white">all ads</strong>.
+          Basic tap map, GPS overlay, locators, and in-app schedule alerts stay{" "}
+          <strong className="text-white">free</strong>.{" "}
+          <strong className="text-white">One game</strong> is free to pick.{" "}
+          {UNLOCK_FEATURES_SENTENCE}
         </p>
 
         {STRIPE_CHECKOUT_ENABLED && STRIPE_PAYMENT_LINK ? (
@@ -37,14 +36,14 @@ export function SupportModal() {
             href={STRIPE_PAYMENT_LINK}
             className="mt-5 flex w-full items-center justify-center rounded-full bg-[var(--ld-neon-green)] px-6 py-3 text-sm font-black text-black transition hover:opacity-90"
           >
-            Unlock 3D walk + all games — $5
+            {UNLOCK_CTA_FULL}
           </a>
         ) : (
           <p
             className="mt-5 flex w-full cursor-not-allowed items-center justify-center rounded-full border border-[var(--ld-border)] bg-[var(--ld-surface)] px-6 py-3 text-sm font-black text-[var(--ld-muted)]"
             aria-disabled="true"
           >
-            Unlock 3D walk + all games — $5 · Coming soon
+            {UNLOCK_CTA_FULL} · Coming soon
           </p>
         )}
 

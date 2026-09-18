@@ -5,6 +5,7 @@ import { useSession } from "@/lib/session-context";
 import { canPlayGame } from "@/lib/games/unlocks";
 import { GAME_TITLES } from "@/lib/games/free-game-choice";
 import { STRIPE_CHECKOUT_ENABLED, STRIPE_PAYMENT_LINK } from "@/lib/stripe-public";
+import { UNLOCK_CTA_FULL } from "@/lib/unlock-copy";
 
 export function GamePremiumGate({
   gameId,
@@ -34,8 +35,8 @@ export function GamePremiumGate({
         {freeTitle ? (
           <>
             Your free pick is <strong className="text-white">{freeTitle}</strong>.{" "}
-            <strong className="text-white">$5</strong> unlocks all festival games, the walking 3D
-            map, and removes ads.
+            <strong className="text-white">$5</strong> unlocks all festival games, Google Calendar
+            export for My sets, and removes ads.
           </>
         ) : (
           <>
@@ -52,7 +53,7 @@ export function GamePremiumGate({
           href={STRIPE_PAYMENT_LINK}
           className="mt-6 inline-flex rounded-full bg-[var(--ld-neon-green)] px-8 py-3 text-sm font-black text-black"
         >
-          Unlock 3D walk + all games — $5
+          {UNLOCK_CTA_FULL}
         </a>
       ) : (
         <button
@@ -60,7 +61,7 @@ export function GamePremiumGate({
           onClick={openSupportModal}
           className="mt-6 rounded-full bg-[var(--ld-neon-green)] px-8 py-3 text-sm font-black text-black"
         >
-          Unlock 3D walk + all games — $5 · Coming soon
+          {UNLOCK_CTA_FULL} · Coming soon
         </button>
       )}
       {freeTitle && (

@@ -59,7 +59,7 @@ export function GamesHub({ games }: { games: HubGame[] }) {
               <p>{game.desc}</p>
               {locked && freeGameId && (
                 <p className="mt-2 text-xs text-[var(--ld-purple)]">
-                  Unlock all games + 3D walk — $5
+                  Unlock all games + calendar — $5
                 </p>
               )}
               {locked && !freeGameId && freeGameHydrated && (

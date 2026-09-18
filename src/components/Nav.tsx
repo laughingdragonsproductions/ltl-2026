@@ -2,16 +2,22 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { WALKTHROUGH_ENABLED } from "@/lib/walkthrough-public";
 
-const links = [
+const baseLinks = [
   { href: "/map", label: "Map" },
   { href: "/overlay/live", label: "Overlay" },
   { href: "/schedule", label: "Schedule" },
-  { href: "/walkthrough", label: "Walk" },
   { href: "/arrival", label: "VIP" },
   { href: "/know", label: "Know" },
   { href: "/games", label: "Games" },
 ];
+
+const walkLink = { href: "/walkthrough", label: "Walk" };
+
+const links = WALKTHROUGH_ENABLED
+  ? [...baseLinks.slice(0, 3), walkLink, ...baseLinks.slice(3)]
+  : baseLinks;
 
 export function Nav() {
   const pathname = usePathname();

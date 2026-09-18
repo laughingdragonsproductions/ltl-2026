@@ -1,64 +1,51 @@
-# Stripe on Vercel (test mode, checkout gated)
+# Stripe on Vercel — games unlock ($5)
 
-Public checkout stays hidden until `NEXT_PUBLIC_STRIPE_ENABLED=true`. Until then, premium gates show **Coming soon**.
+Checkout is live when `NEXT_PUBLIC_STRIPE_ENABLED=true` and a Payment Link is set.
 
 ## What $5 unlocks
 
-- Walking 3D map (`/walkthrough`)
-- All festival games (one game free — user picks on first visit)
-- Ad-free experience
+- **All festival games** (one game free — user picks on first visit)
+- **Google Calendar export** for My sets on Schedule
+- **Ad-free** experience
 
-**Free forever:** basic tap map (`/map`), GPS overlay (`/overlay`), locators, Flappy Skull.
+**Free forever:** tap map, GPS overlay, locators, in-app schedule alerts, one game of your choice.
 
-## Vercel environment variables
-
-Add these in **Project → Settings → Environment Variables** for Preview and Production:
+## Vercel environment variables (Production)
 
 | Variable | Value |
 |----------|--------|
-| `STRIPE_SECRET_KEY` | `sk_test_…` from [Stripe Dashboard → Developers → API keys](https://dashboard.stripe.com/test/apikeys) |
-| `NEXT_PUBLIC_STRIPE_PAYMENT_LINK` | Test Payment Link URL (`https://buy.stripe.com/test_…`) |
-| `NEXT_PUBLIC_STRIPE_ENABLED` | `false` until ready to expose checkout publicly |
+| `STRIPE_SECRET_KEY` | `sk_live_…` (or `sk_test_…` for test mode) |
+| `NEXT_PUBLIC_STRIPE_PAYMENT_LINK` | Payment Link URL (`https://buy.stripe.com/…`) |
+| `NEXT_PUBLIC_STRIPE_ENABLED` | `true` |
+| `STRIPE_PAYMENT_LINK_ID` | Optional `plink_…` — rejects verify for other sessions |
+| `STRIPE_UNLOCK_AMOUNT_CENTS` | Optional — default `500` ($5.00) |
+| `STRIPE_MAX_REDEMPTIONS` | Optional — default `3` devices per checkout |
 
 Optional: `NEXT_PUBLIC_KOFI_URL` for Ko-fi tips.
 
 ## Payment Link success URL
 
-Until `ltl26.com` DNS is live, set the Payment Link success redirect to:
-
 ```
-https://ltl-2026.vercel.app/support/success?session_id={CHECKOUT_SESSION_ID}
+https://www.ltl26.com/support/success?session_id={CHECKOUT_SESSION_ID}
 ```
 
-After DNS is fixed, update to:
+## Go live checklist (event weekend)
 
-```
-https://ltl26.com/support/success?session_id={CHECKOUT_SESSION_ID}
-```
-
-## Enabling checkout
-
-1. Confirm test purchases work with `NEXT_PUBLIC_STRIPE_ENABLED=true` on a Preview deployment.
-2. Set `NEXT_PUBLIC_STRIPE_ENABLED=true` on Production when ready.
-3. For live charges, swap to `sk_live_…` and a live Payment Link, then redeploy.
-
-### Go live (after Stripe “account ready” email)
-
-1. [Stripe Dashboard](https://dashboard.stripe.com) → toggle **Live** (top right).
-2. **Product catalog** → create or reuse a **$5** one-time product (e.g. “LTL26 unlock — 3D walk + all games”).
-3. **Payment Links** → create link for that product. Set **After payment** redirect to:
-   ```
-   https://www.ltl26.com/support/success?session_id={CHECKOUT_SESSION_ID}
-   ```
-4. **Developers → API keys** → copy **Secret key** (`sk_live_…`).
-5. **Vercel → ltl-2026 → Settings → Environment Variables** (Production):
+1. Stripe Dashboard → **Live** mode → create **$5** one-time product (e.g. “LTL26 — all games + calendar”).
+2. **Payment Links** → set redirect to success URL above.
+3. Vercel → **Production** env:
    - `STRIPE_SECRET_KEY` = `sk_live_…`
-   - `NEXT_PUBLIC_STRIPE_PAYMENT_LINK` = live link (`https://buy.stripe.com/…` — no `test_` in URL)
+   - `NEXT_PUBLIC_STRIPE_PAYMENT_LINK` = live link (no `test_` in URL)
    - `NEXT_PUBLIC_STRIPE_ENABLED` = `true`
-6. **Redeploy** production (`npx vercel deploy --prod` or push to `master`).
+4. **Deploy** production (`git push` or `npx vercel deploy --prod`).
+5. Test: pay with a real card → land on `/support/success` → confetti → all games unlocked.
 
-Until step 5 uses live keys, checkout runs in **Stripe test mode** (test card `4242 4242 4242 4242`).
+**Test mode only:** use test card `4242 4242 4242 4242` — no real charges until live keys are set.
 
 ## Verify endpoint
 
-`POST /api/verify-payment` uses `STRIPE_SECRET_KEY` to confirm `session_id` after redirect. No code changes needed when flipping from test to live keys.
+`POST /api/verify-payment` confirms `session_id` after redirect:
+
+- Validates paid status, amount (500 USD cents default), optional Payment Link ID
+- Max **3** device redemptions per payment (Stripe session metadata)
+- Success page strips `session_id` from URL after verify

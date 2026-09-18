@@ -1,6 +1,6 @@
 import type { PickableGameId } from "./free-game-choice";
 
-/** One game free (user picks on first visit); $5 unlocks all games + 3D walkthrough. */
+/** One game free (user picks on first visit); $5 unlocks all games + calendar export. */
 export function canPlayGame(
   gameId: string,
   unlocked: boolean,

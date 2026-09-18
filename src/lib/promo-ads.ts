@@ -55,7 +55,7 @@ export const INSTALL_PROMO_AD: PromoAd = {
 export const UNLOCK_PROMO_AD: PromoAd = {
   id: "unlock-premium",
   title: "Want to remove ads and unlock all games and more features?",
-  tagline: "$5 unlocks the 3D walk, all games, and an ad-free experience.",
+  tagline: "$5 unlocks all games, Google Calendar export, and an ad-free experience.",
   href: "#",
   cta: "Unlock for $5",
   accent: "green",

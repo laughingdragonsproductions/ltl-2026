@@ -1,5 +1,6 @@
 import { LitprintzAssociationClient } from "@/components/LitprintzAssociationClient";
 import { STRIPE_CHECKOUT_ENABLED, STRIPE_PAYMENT_LINK } from "@/lib/stripe-public";
+import { UNLOCK_CTA_FULL, UNLOCK_FEATURES_SHORT, UNLOCK_PRICE_LABEL } from "@/lib/unlock-copy";
 
 const KOFI_URL = process.env.NEXT_PUBLIC_KOFI_URL;
 
@@ -12,7 +13,7 @@ export function SiteFooter() {
         Life
       </p>
       <p className="mt-1">
-        Free map &amp; GPS overlay · $5 unlocks 3D walk + all games &amp; removes ads
+        Free map &amp; GPS overlay · {UNLOCK_PRICE_LABEL} unlocks {UNLOCK_FEATURES_SHORT}
       </p>
       {STRIPE_CHECKOUT_ENABLED && STRIPE_PAYMENT_LINK ? (
         <p className="mt-2">
@@ -20,11 +21,11 @@ export function SiteFooter() {
             href={STRIPE_PAYMENT_LINK}
             className="font-semibold text-[var(--ld-neon-green)] hover:underline"
           >
-            Unlock 3D walk + all games — $5
+            {UNLOCK_CTA_FULL}
           </a>
         </p>
       ) : (
-        <p className="mt-2 text-[var(--ld-muted)]">Unlock 3D walk + all games — $5 · Coming soon</p>
+        <p className="mt-2 text-[var(--ld-muted)]">{UNLOCK_CTA_FULL} · Coming soon</p>
       )}
       {KOFI_URL && (
         <p className="mt-1">

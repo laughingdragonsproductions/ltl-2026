@@ -2,18 +2,19 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { WALKTHROUGH_ENABLED } from "@/lib/walkthrough-public";
 
 const tabs = [
   { href: "/map", label: "Map", icon: "🗺️" },
-  { href: "/overlay/live", label: "Overlay", icon: "📍" },
   { href: "/schedule", label: "Schedule", icon: "🎸" },
+  { href: "/games", label: "Games", icon: "🎮" },
+  { href: "/overlay/live", label: "Overlay", icon: "📍" },
   { href: "/arrival", label: "VIP", icon: "⭐" },
 ];
 
-const moreLinks = [
+const baseMoreLinks = [
   { href: "/games", label: "Festival Games" },
-  { href: "/walkthrough", label: "3D Walk (desktop)" },
   { href: "/know", label: "Know Before You Go" },
   { href: "/credentials", label: "Credentials & Wristbands" },
   { href: "/", label: "Home" },
@@ -23,12 +24,27 @@ export function MobileNav() {
   const pathname = usePathname();
   const [moreOpen, setMoreOpen] = useState(false);
 
+  const moreLinks = useMemo(
+    () =>
+      WALKTHROUGH_ENABLED
+        ? [
+            baseMoreLinks[0],
+            { href: "/walkthrough", label: "3D Walk" },
+            ...baseMoreLinks.slice(1),
+          ]
+        : baseMoreLinks,
+    []
+  );
+
   return (
     <>
       <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[var(--ld-border)] bg-[var(--ld-black)]/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
         <ul className="flex items-stretch justify-around">
           {tabs.map((tab) => {
-            const active = pathname === tab.href || pathname.startsWith(`${tab.href}/`);
+            const active =
+              pathname === tab.href ||
+              pathname.startsWith(`${tab.href}/`) ||
+              (tab.href === "/games" && pathname.startsWith("/games"));
             return (
               <li key={tab.href} className="flex-1">
                 <Link

@@ -29,9 +29,12 @@ export const OVERLAY_STORAGE_KEY = "ltl26-overlay-georef";
 export const OVERLAY_OPACITY_KEY = "ltl26-overlay-opacity";
 export const MAP_IMAGE_ASPECT = FESTIVAL_MAP_ASPECT;
 
-/** Set NEXT_PUBLIC_OVERLAY_ADMIN=true locally to access /overlay aligner. */
+/** Set NEXT_PUBLIC_OVERLAY_ADMIN=true in .env.local (dev only) to access /overlay aligner. */
 export function isOverlayAdminEnabled(): boolean {
-  return process.env.NEXT_PUBLIC_OVERLAY_ADMIN === "true";
+  return (
+    process.env.NODE_ENV === "development" &&
+    process.env.NEXT_PUBLIC_OVERLAY_ADMIN === "true"
+  );
 }
 
 const defaultBounds = georefData.bounds as GeorefBounds;

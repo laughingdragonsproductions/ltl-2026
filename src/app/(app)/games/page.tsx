@@ -2,6 +2,7 @@ import { readFileSync } from "fs";
 import { join } from "path";
 import "@/components/games/games.css";
 import { GamesHub, type HubGame } from "@/components/games/GamesHub";
+import { GamesUnlockBanner } from "@/components/games/GamesUnlockBanner";
 
 type BandManifest = { bands: { id: string; name: string; src: string }[] };
 
@@ -66,8 +67,10 @@ export default function GamesPage() {
       <h1 className="mt-1 text-3xl font-black text-[var(--ld-neon-green)]">Festival Games</h1>
       <p className="mt-2 max-w-xl text-[var(--ld-muted)]">
         Choose <strong className="text-white">one game free</strong> on your first visit.{" "}
-        <strong className="text-white">$5</strong> unlocks all games and the walking 3D map.
+        <strong className="text-white">$5</strong> unlocks all games, Google Calendar export for My
+        sets, and removes ads.
       </p>
+      <GamesUnlockBanner />
       <GamesHub games={games} />
     </div>
   );
