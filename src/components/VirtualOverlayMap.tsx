@@ -23,6 +23,7 @@ import {
   saveUserOpacity,
   type GeorefBounds,
 } from "@/lib/overlay-georef";
+import { isLowDataPreferred } from "@/lib/low-data-mode";
 import { useTier } from "@/lib/tier-context";
 import Link from "next/link";
 
@@ -69,7 +70,8 @@ export function VirtualOverlayMap() {
   const userLocationRef = useRef<UserLocation | null>(null);
   const [mapVisible, setMapVisible] = useState(false);
   const [layers, setLayers] = useState(DEFAULT_LAYERS);
-  const [basemap, setBasemap] = useState<"streets" | "satellite">("satellite");
+  const [lowData, setLowData] = useState(false);
+  const [basemap, setBasemap] = useState<"streets" | "satellite">("streets");
   const [showFestivalOverlay, setShowFestivalOverlay] = useState(true);
   const [locStatus, setLocStatus] = useState<"idle" | "active" | "denied">("idle");
   const [opacity, setOpacity] = useState(DEFAULT_OPACITY);
@@ -97,6 +99,20 @@ export function VirtualOverlayMap() {
     const map = mapRef.current;
     if (!map) return false;
     return syncOverlayMap(map, syncOptsRef.current);
+  }, []);
+
+  useEffect(() => {
+    const applyLowData = () => {
+      const on = isLowDataPreferred();
+      setLowData(on);
+      if (on) {
+        setBasemap("streets");
+        syncOptsRef.current = { ...syncOptsRef.current, basemap: "streets" };
+      }
+    };
+    applyLowData();
+    window.addEventListener("ltl26-low-data-change", applyLowData);
+    return () => window.removeEventListener("ltl26-low-data-change", applyLowData);
   }, []);
 
   useEffect(() => {
@@ -151,8 +167,8 @@ export function VirtualOverlayMap() {
           },
         },
         layers: [
-          { id: "basemap-streets", type: "raster", source: "osm", layout: { visibility: "none" } },
-          { id: "basemap-satellite", type: "raster", source: "satellite" },
+          { id: "basemap-streets", type: "raster", source: "osm" },
+          { id: "basemap-satellite", type: "raster", source: "satellite", layout: { visibility: "none" } },
           {
             id: "festival-overlay",
             type: "raster",
@@ -174,6 +190,8 @@ export function VirtualOverlayMap() {
       },
       center: [center.lng, center.lat],
       zoom: georef.satellite.defaultZoom,
+      maxZoom: lowData ? 16 : 18,
+      minZoom: 14,
       maxBounds: [
         [PLACEMENT.bounds.west - 0.008, PLACEMENT.bounds.south - 0.008],
         [PLACEMENT.bounds.east + 0.008, PLACEMENT.bounds.north + 0.008],
@@ -183,7 +201,7 @@ export function VirtualOverlayMap() {
     map.addControl(new maplibregl.NavigationControl({ showCompass: true }), "top-right");
 
     const geolocate = new maplibregl.GeolocateControl({
-      positionOptions: { enableHighAccuracy: true },
+      positionOptions: { enableHighAccuracy: !lowData },
       trackUserLocation: true,
       showUserLocation: true,
       showAccuracyCircle: true,
@@ -250,7 +268,7 @@ export function VirtualOverlayMap() {
       mapRef.current = null;
       setMapVisible(false);
     };
-  }, [hydrated, pushToMap]);
+  }, [hydrated, lowData, pushToMap]);
 
   useEffect(() => {
     pushToMap();
@@ -299,7 +317,7 @@ export function VirtualOverlayMap() {
         map.flyTo({ center: [loc.lng, loc.lat], zoom: 17, essential: true });
       },
       () => setLocStatus("denied"),
-      { enableHighAccuracy: true, timeout: 10000 }
+      { enableHighAccuracy: !lowData, timeout: 10000 }
     );
   }
 
@@ -310,9 +328,15 @@ export function VirtualOverlayMap() {
           Free · GPS overlay
         </p>
         <p className="mt-1 text-sm text-[var(--ld-text)]">
-          Live GPS view with the official fest map aligned on satellite. Adjust opacity below —
-          map placement is fixed for everyone.
+          Live GPS with the fest map on a lightweight basemap.{" "}
+          <strong className="text-white">Streets</strong> uses much less data than satellite
+          when cell towers are overloaded.
         </p>
+        {lowData && (
+          <p className="mt-2 text-xs text-[var(--ld-neon-green)]">
+            Save data mode — satellite tiles disabled. Tap map uses one cached JPG.
+          </p>
+        )}
       </div>
 
       <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_300px]">
@@ -337,12 +361,16 @@ export function VirtualOverlayMap() {
           <div className="flex flex-wrap gap-2">
             <button
               type="button"
-              onClick={() => handleBasemap("satellite")}
+              onClick={() => !lowData && handleBasemap("satellite")}
+              disabled={lowData}
+              title={lowData ? "Turn off Save data in footer to use satellite" : "Uses more mobile data"}
               className={`rounded px-3 py-1.5 text-xs font-semibold ${
-                basemap === "satellite" ? "bg-[var(--ld-neon-green-dim)] text-white" : "bg-zinc-900 text-[var(--ld-muted)]"
-              }`}
+                basemap === "satellite"
+                  ? "bg-[var(--ld-neon-green-dim)] text-white"
+                  : "bg-zinc-900 text-[var(--ld-muted)]"
+              } ${lowData ? "cursor-not-allowed opacity-40" : ""}`}
             >
-              Satellite
+              Satellite{lowData ? " (off)" : " · heavy"}
             </button>
             <button
               type="button"
@@ -351,7 +379,7 @@ export function VirtualOverlayMap() {
                 basemap === "streets" ? "bg-[var(--ld-neon-green-dim)] text-white" : "bg-zinc-900 text-[var(--ld-muted)]"
               }`}
             >
-              Streets
+              Streets · light
             </button>
             <button
               type="button"
@@ -375,7 +403,7 @@ export function VirtualOverlayMap() {
             <div ref={containerRef} className="h-[min(70vh,560px)] w-full min-h-[320px] bg-[#111]" />
             {!mapVisible && (
               <p className="pointer-events-none absolute inset-0 flex items-center justify-center text-sm text-[var(--ld-muted)]">
-                Loading satellite map…
+                Loading map…
               </p>
             )}
           </div>

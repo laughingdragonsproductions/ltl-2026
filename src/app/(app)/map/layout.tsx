@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { FESTIVAL_MAP_SRC } from "@/lib/festival-map";
 
 export const metadata: Metadata = {
   title: "Festival Map — LTL26",
@@ -7,5 +8,12 @@ export const metadata: Metadata = {
 };
 
 export default function MapLayout({ children }: { children: React.ReactNode }) {
-  return children;
+  return (
+    <>
+      <head>
+        <link rel="preload" href={FESTIVAL_MAP_SRC} as="image" type="image/jpeg" />
+      </head>
+      {children}
+    </>
+  );
 }

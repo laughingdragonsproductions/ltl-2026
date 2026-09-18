@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { GlobalSessionUI } from "@/components/GlobalSessionUI";
+import { OfflineCacheBootstrap } from "@/components/OfflineCacheBootstrap";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SessionProvider } from "@/lib/session-context";
 import { TierProvider } from "@/lib/tier-context";
@@ -64,6 +65,7 @@ export default function RootLayout({
         <TierProvider>
           <SessionProvider>
             <GlobalSessionUI />
+            <OfflineCacheBootstrap />
             <main className="mx-auto w-full flex-1">{children}</main>
             <SiteFooter />
           </SessionProvider>

@@ -1,7 +1,7 @@
 {
   "name": "Louder Than Life 2026 Map",
   "short_name": "LTL26",
-  "description": "Interactive Louder Than Life 2026 festival map, schedule, and VIP guide",
+  "description": "Festival map, schedule, and games — caches for weak cell service",
   "start_url": "/map",
   "display": "standalone",
   "background_color": "#0a0a0f",

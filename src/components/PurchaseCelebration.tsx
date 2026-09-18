@@ -62,7 +62,7 @@ export function PurchaseCelebration({ active }: { active: boolean }) {
         muted
         playsInline
         autoPlay
-        preload="auto"
+        preload="none"
       />
     </div>
   );

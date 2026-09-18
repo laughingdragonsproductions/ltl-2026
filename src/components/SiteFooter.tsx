@@ -1,4 +1,5 @@
 import { LitprintzAssociationClient } from "@/components/LitprintzAssociationClient";
+import { LowDataToggle } from "@/components/LowDataToggle";
 import { STRIPE_CHECKOUT_ENABLED, STRIPE_PAYMENT_LINK } from "@/lib/stripe-public";
 import { UNLOCK_CTA_FULL, UNLOCK_FEATURES_SHORT, UNLOCK_PRICE_LABEL } from "@/lib/unlock-copy";
 
@@ -15,6 +16,7 @@ export function SiteFooter() {
       <p className="mt-1">
         Free map &amp; GPS overlay · {UNLOCK_PRICE_LABEL} unlocks {UNLOCK_FEATURES_SHORT}
       </p>
+      <LowDataToggle />
       {STRIPE_CHECKOUT_ENABLED && STRIPE_PAYMENT_LINK ? (
         <p className="mt-2">
           <a
