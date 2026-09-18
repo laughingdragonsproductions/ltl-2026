@@ -1,5 +1,5 @@
 /* Festival weekend service worker — cache map + shell assets, save bandwidth on repeat visits. */
-const CACHE = "ltl26-fest-v1";
+const CACHE = "ltl26-fest-v2";
 
 const PRECACHE = [
   "/maps/LTL26_FestMap_1920x1080.jpg",
@@ -91,4 +91,26 @@ self.addEventListener("fetch", (event) => {
   if (event.request.mode === "navigate") {
     event.respondWith(networkFirst(event.request));
   }
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const raw = event.notification.data && event.notification.data.url;
+  const path = typeof raw === "string" && raw.startsWith("/") ? raw : "/schedule";
+  const target = new URL(path, self.location.origin).href;
+  event.waitUntil(
+    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
+      for (const client of clientList) {
+        if (client.url.startsWith(self.location.origin) && "focus" in client) {
+          return client.focus().then((focused) => {
+            if (focused && "navigate" in focused && typeof focused.navigate === "function") {
+              return focused.navigate(target);
+            }
+            return focused;
+          });
+        }
+      }
+      if (self.clients.openWindow) return self.clients.openWindow(target);
+    })
+  );
 });

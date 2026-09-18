@@ -29,6 +29,7 @@ import {
 } from "@/lib/schedule-time";
 import { downloadMySetsCalendar } from "@/lib/calendar-export";
 import { playSetAlertSound, unlockAlertSound } from "@/lib/set-alert-sound";
+import { requestNotificationPermission } from "@/lib/browser-notifications";
 import { useSession } from "@/lib/session-context";
 import { STRIPE_CHECKOUT_ENABLED, STRIPE_PAYMENT_LINK } from "@/lib/stripe-public";
 import {
@@ -164,6 +165,9 @@ export function ScheduleView() {
       });
       setMySets(next);
       setAlertsEnabled(areAlertsEnabled());
+      if (next.length === 1 && areAlertsEnabled()) {
+        void requestNotificationPermission();
+      }
       if (next.length > 0 && !hasSeenFirstSaveCallout()) {
         setShowFirstSaveCallout(true);
       }
@@ -241,8 +245,9 @@ export function ScheduleView() {
         <div className="rounded-lg border border-[var(--ld-neon-green)]/50 bg-[var(--ld-neon-green)]/10 p-3 text-sm text-[var(--ld-text)]">
           <p className="font-bold text-[var(--ld-neon-green)]">My sets saved on this device</p>
           <p className="mt-1 text-[var(--ld-muted)]">
-            In-app alerts fire at set start time while this browser tab is open. Close the browser
-            and alerts may not work — keep LTL26 active during the fest.
+            Free alerts: ~15 minutes before each starred set, and again when it starts. Allow phone
+            notifications when prompted so you can still get pings with the tab in the background.
+            Keep LTL26 open (or installed to your home screen) during the fest.
           </p>
           <button
             type="button"
@@ -259,11 +264,12 @@ export function ScheduleView() {
 
       {showDisclaimerBanner && (
         <div className="rounded-lg border border-amber-600/50 bg-amber-950/30 p-3 text-sm">
-          <p className="font-bold text-amber-400">Alert</p>
+          <p className="font-bold text-amber-400">Alert tip</p>
           <p className="mt-1 text-zinc-300">
-            In-app alerts only work while this browser tab is open and active. If you close the
-            browser or switch away for long periods, alerts may not fire. Keep LTL26 open on your
-            phone or laptop during the fest.
+            Alerts work best while LTL26 stays open (or added to your home screen). You get a
+            heads-up ~15 minutes before each starred set, plus a starting-now ping. Phone
+            notifications need permission — turn on &quot;Set alerts&quot; below and accept when
+            asked.
           </p>
           <button
             type="button"
@@ -376,8 +382,10 @@ export function ScheduleView() {
               type="checkbox"
               checked={alertsEnabled}
               onChange={(e) => {
-                saveAlertsEnabled(e.target.checked);
-                setAlertsEnabled(e.target.checked);
+                const on = e.target.checked;
+                saveAlertsEnabled(on);
+                setAlertsEnabled(on);
+                if (on) void requestNotificationPermission();
               }}
               className="accent-[var(--ld-neon-green)]"
             />
@@ -562,7 +570,7 @@ export function ScheduleView() {
         </a>
         . Red on starred sets = two picks overlap — you may need to choose one.
         {viewMode === "my" && disclaimerDismissed && savedCount > 0 && alertsEnabled && (
-          <> In-app alerts require an open browser tab.</>
+          <> Alerts: ~15 min before + at start (keep LTL26 open).</>
         )}
       </p>
     </div>

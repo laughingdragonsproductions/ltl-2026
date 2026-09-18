@@ -9,7 +9,7 @@ export const UNLOCK_FEATURES_SENTENCE = `${UNLOCK_PRICE_LABEL} unlocks all festi
 export const UNLOCK_CTA_FULL = `Unlock all games + calendar — ${UNLOCK_PRICE_LABEL}`;
 
 export const FREE_SCHEDULE_FEATURES =
-  "Star sets for free in-app alerts while this tab is open.";
+  "Star sets for free alerts (~15 min before + at start) while LTL26 is open.";
 
 export const PREMIUM_SCHEDULE_FEATURES =
   "Google Calendar download & import requires unlock.";

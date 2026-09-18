@@ -1,7 +1,7 @@
 import { FESTIVAL_MAP_SRC } from "./festival-map";
 
 /** Static assets worth caching before/at the fest — ~2 MB total, no game bundles. */
-export const OFFLINE_CACHE_NAME = "ltl26-fest-v1";
+export const OFFLINE_CACHE_NAME = "ltl26-fest-v2";
 
 export const CRITICAL_OFFLINE_ASSETS = [
   FESTIVAL_MAP_SRC,

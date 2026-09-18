@@ -25,7 +25,7 @@ export function SupportModal() {
           Unlock the full LTL26 experience
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-[var(--ld-text)]">
-          Basic tap map, GPS overlay, locators, and in-app schedule alerts stay{" "}
+          Basic tap map, GPS overlay, locators, and schedule alerts stay{" "}
           <strong className="text-white">free</strong>.{" "}
           <strong className="text-white">One game</strong> is free to pick.{" "}
           {UNLOCK_FEATURES_SENTENCE}
