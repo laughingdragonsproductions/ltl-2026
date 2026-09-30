@@ -3,7 +3,7 @@
   "redirects": [
     {
       "source": "/:path*",
-      "destination": "https://laughing-dragons.com/news/",
+      "destination": "https://theassociatedguess.com/",
       "permanent": true
     }
   ]
